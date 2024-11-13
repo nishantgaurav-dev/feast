@@ -5,7 +5,10 @@ metadata:
 spec:
   feastProject: my_project
   services:
+<<<<<<< HEAD
     # demonstrates using a pre-existing PVC
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
     onlineStore:
       persistence:
         file:
@@ -14,7 +17,10 @@ spec:
             ref:
               name: online-pvc
             mountPath: /data/online
+<<<<<<< HEAD
     # demonstrates specifying a storageClassName and storage size
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
     offlineStore:
       persistence:
         file:
@@ -26,7 +32,10 @@ spec:
                 requests:
                   storage: 5Gi
             mountPath: /data/offline
+<<<<<<< HEAD
     # demonstrates letting the Operator create a PVC w/ defaults set
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
     registry:
       local:
         persistence:
@@ -42,7 +51,11 @@ metadata:
   name: online-pvc
 spec:
   accessModes:
+<<<<<<< HEAD
     - ReadWriteOnce
+=======
+    - ReadWriteMany
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
   resources:
     requests:
       storage: 5Gi

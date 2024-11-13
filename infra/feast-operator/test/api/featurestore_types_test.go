@@ -16,6 +16,10 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+<<<<<<< HEAD
+=======
+// Function to create invalid OnlineStore resource
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 func createFeatureStore() *feastdevv1alpha1.FeatureStore {
 	return &feastdevv1alpha1.FeatureStore{
 		ObjectMeta: metav1.ObjectMeta{
@@ -39,8 +43,13 @@ func attemptInvalidCreationAndAsserts(ctx context.Context, featurestore *feastde
 }
 
 func onlineStoreWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+<<<<<<< HEAD
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OnlineStore: &feastdevv1alpha1.OnlineStore{
 			Persistence: &feastdevv1alpha1.OnlineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{
@@ -50,11 +59,19 @@ func onlineStoreWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureSto
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OnlineStore: &feastdevv1alpha1.OnlineStore{
 			Persistence: &feastdevv1alpha1.OnlineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{
@@ -63,6 +80,7 @@ func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feat
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 
@@ -87,6 +105,14 @@ func onlineStoreWithObjectStoreBucketForPvc(path string, featureStore *feastdevv
 func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+
+func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -95,12 +121,21 @@ func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureSto
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 
 func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+
+func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -111,11 +146,19 @@ func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore)
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -126,6 +169,7 @@ func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feature
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 func registryWithObjectStoreBucketForPvc(path string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
@@ -183,6 +227,13 @@ func registryWithS3AdditionalKeywordsForGsBucket(featureStore *feastdevv1alpha1.
 func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -191,11 +242,19 @@ func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStor
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -209,12 +268,21 @@ func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) 
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 
 func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+=======
+	return copy
+}
+
+func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := featureStore.DeepCopy()
+	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -248,26 +316,44 @@ func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feas
 			},
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 
 func pvcConfigWithResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := pvcConfigWithNoResources(featureStore)
 	fsCopy.Spec.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+=======
+	return copy
+}
+
+func pvcConfigWithResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	copy := pvcConfigWithNoResources(featureStore)
+	copy.Spec.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("10Gi"),
 		},
 	}
+<<<<<<< HEAD
 	fsCopy.Spec.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+=======
+	copy.Spec.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("1Gi"),
 		},
 	}
+<<<<<<< HEAD
 	fsCopy.Spec.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+=======
+	copy.Spec.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("500Mi"),
 		},
 	}
+<<<<<<< HEAD
 	return fsCopy
 }
 
@@ -332,6 +418,9 @@ func registryStoreWithDBPersistenceType(dbPersistenceType string, featureStore *
 		},
 	}
 	return fsCopy
+=======
+	return copy
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 }
 
 const resourceName = "test-resource"
@@ -371,6 +460,7 @@ var _ = Describe("FeatureStore API", func() {
 		It("should fail when ephemeral persistence has relative path", func() {
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithRelativePathForEphemeral(featurestore), "Ephemeral stores must have absolute paths")
 		})
+<<<<<<< HEAD
 		It("should fail when PVC persistence has object store bucket", func() {
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithObjectStoreBucketForPvc("s3://bucket/online_store.db", featurestore), "Online store does not support S3 or GS")
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithObjectStoreBucketForPvc("gs://bucket/online_store.db", featurestore), "Online store does not support S3 or GS")
@@ -379,6 +469,8 @@ var _ = Describe("FeatureStore API", func() {
 		It("should fail when db persistence type is invalid", func() {
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.online\", \"redis\", \"ikv\", \"datastore\", \"dynamodb\", \"bigtable\", \"postgres\", \"cassandra\", \"mysql\", \"hazelcast\", \"singlestore\", \"hbase\", \"elasticsearch\", \"qdrant\", \"couchbase\"")
 		})
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 	})
 
 	Context("When creating an invalid Offline Store", func() {
@@ -387,9 +479,12 @@ var _ = Describe("FeatureStore API", func() {
 		It("should fail when PVC persistence has absolute path", func() {
 			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithUnmanagedFileType(featurestore), "Unsupported value")
 		})
+<<<<<<< HEAD
 		It("should fail when db persistence type is invalid", func() {
 			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.offline\", \"bigquery\", \"redshift\", \"spark\", \"postgres\", \"trino\", \"redis\", \"athena\", \"mssql\"")
 		})
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 	})
 
 	Context("When creating an invalid Registry", func() {
@@ -399,6 +494,7 @@ var _ = Describe("FeatureStore API", func() {
 			attemptInvalidCreationAndAsserts(ctx, registryWithAbsolutePathForPvc(featurestore), "PVC path must be a file name only")
 		})
 		It("should fail when ephemeral persistence has relative path", func() {
+<<<<<<< HEAD
 			attemptInvalidCreationAndAsserts(ctx, registryWithRelativePathForEphemeral(featurestore), "Registry files must use absolute paths or be S3 ('s3://') or GS ('gs://')")
 		})
 		It("should fail when PVC persistence has object store bucket", func() {
@@ -411,6 +507,9 @@ var _ = Describe("FeatureStore API", func() {
 		})
 		It("should fail when db persistence type is invalid", func() {
 			attemptInvalidCreationAndAsserts(ctx, registryStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"sql\", \"snowflake.registry\"")
+=======
+			attemptInvalidCreationAndAsserts(ctx, registryWithRelativePathForEphemeral(featurestore), "Ephemeral stores must have absolute paths")
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		})
 	})
 
@@ -450,6 +549,7 @@ var _ = Describe("FeatureStore API", func() {
 			Expect(storage).To(Equal("500Mi"))
 		})
 	})
+<<<<<<< HEAD
 	Context("When omitting the AuthzConfig PvcConfig", func() {
 		_, featurestore := initContext()
 		It("should keep an empty AuthzConfig", func() {
@@ -464,4 +564,6 @@ var _ = Describe("FeatureStore API", func() {
 			attemptInvalidCreationAndAsserts(ctx, authzConfigWithOidc(authzConfigWithKubernetes(featurestore)), "One selection required between kubernetes or oidc")
 		})
 	})
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 })

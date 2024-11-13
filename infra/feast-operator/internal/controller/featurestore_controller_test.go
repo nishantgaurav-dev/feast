@@ -45,7 +45,10 @@ import (
 
 const feastProject = "test_project"
 const domain = ".svc.cluster.local:80"
+<<<<<<< HEAD
 const domainTls = ".svc.cluster.local:443"
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 
 var image = "test:latest"
 
@@ -242,8 +245,21 @@ var _ = Describe("FeatureStore Controller", func() {
 			repoConfig := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfig)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			testConfig := feast.GetDefaultRepoConfig()
 			Expect(repoConfig).To(Equal(&testConfig))
+=======
+			testConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				Registry: services.RegistryConfig{
+					RegistryType: services.RegistryFileConfigType,
+					Path:         services.DefaultRegistryEphemeralPath,
+				},
+			}
+			Expect(repoConfig).To(Equal(testConfig))
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 
 			// check client config
 			cm := &corev1.ConfigMap{}
@@ -464,7 +480,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.Applied.Services.OnlineStore).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence).NotTo(BeNil())
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.Path).To(Equal(services.EphemeralPath + "/" + services.DefaultOnlineStorePath))
+=======
+			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.Path).To(Equal(services.DefaultOnlineStoreEphemeralPath))
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 			Expect(resource.Status.Applied.Services.OnlineStore.Env).To(Equal(&[]corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue}, {Name: "fieldRefName", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{APIVersion: "v1", FieldPath: "metadata.namespace"}}}}))
 			Expect(resource.Status.Applied.Services.OnlineStore.EnvFrom).To(Equal(withEnvFrom()))
 			Expect(resource.Status.Applied.Services.OnlineStore.ImagePullPolicy).To(Equal(&pullPolicy))
@@ -474,7 +494,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.Applied.Services.Registry.Local).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence).NotTo(BeNil())
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.Path).To(Equal(services.EphemeralPath + "/" + services.DefaultRegistryPath))
+=======
+			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.Path).To(Equal(services.DefaultRegistryEphemeralPath))
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 			Expect(resource.Status.Applied.Services.Registry.Local.ImagePullPolicy).To(BeNil())
 			Expect(resource.Status.Applied.Services.Registry.Local.Resources).To(BeNil())
 			Expect(resource.Status.Applied.Services.Registry.Local.Image).To(Equal(&services.DefaultImage))
@@ -620,9 +644,20 @@ var _ = Describe("FeatureStore Controller", func() {
 			repoConfig := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfig)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			testConfig := feast.GetDefaultRepoConfig()
 			testConfig.OfflineStore = services.OfflineStoreConfig{
 				Type: services.OfflineFilePersistenceDaskConfigType,
+=======
+			testConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				Registry: services.RegistryConfig{
+					RegistryType: services.RegistryFileConfigType,
+					Path:         services.DefaultRegistryEphemeralPath,
+				},
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 			}
 			Expect(repoConfig).To(Equal(&testConfig))
 
@@ -664,7 +699,28 @@ var _ = Describe("FeatureStore Controller", func() {
 			repoConfigOnline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOnline).To(Equal(&testConfig))
+=======
+			offlineRemote := services.OfflineStoreConfig{
+				Host: "feast-services-offline.default.svc.cluster.local",
+				Type: services.OfflineRemoteConfigType,
+				Port: services.HttpPort,
+			}
+			onlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore:                  offlineRemote,
+				OnlineStore: services.OnlineStoreConfig{
+					Path: services.DefaultOnlineStoreEphemeralPath,
+					Type: services.OnlineSqliteConfigType,
+				},
+				Registry: regRemote,
+			}
+			Expect(repoConfigOnline).To(Equal(onlineConfig))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 
 			// check client config
 			cm := &corev1.ConfigMap{}

@@ -295,12 +295,15 @@ spec:
                                   create:
                                     description: Settings for creating a new PVC
                                     properties:
+<<<<<<< HEAD
                                       accessModes:
                                         description: AccessModes k8s persistent volume
                                           access modes. Defaults to ["ReadWriteOnce"].
                                         items:
                                           type: string
                                         type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                       resources:
                                         description: |-
                                           Resources describes the storage resource requirements for a volume.
@@ -359,8 +362,11 @@ spec:
                                         type: string
                                     type: object
                                     x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                 required:
                                 - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection is required between ref and
@@ -706,12 +712,15 @@ spec:
                                   create:
                                     description: Settings for creating a new PVC
                                     properties:
+<<<<<<< HEAD
                                       accessModes:
                                         description: AccessModes k8s persistent volume
                                           access modes. Defaults to ["ReadWriteOnce"].
                                         items:
                                           type: string
                                         type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                       resources:
                                         description: |-
                                           Resources describes the storage resource requirements for a volume.
@@ -770,8 +779,11 @@ spec:
                                         type: string
                                     type: object
                                     x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                 required:
                                 - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection is required between ref and
@@ -781,6 +793,7 @@ spec:
                                 - message: Mount path must start with '/' and must
                                     not contain ':'
                                   rule: self.mountPath.matches('^/[^:]*$')
+<<<<<<< HEAD
                             type: object
                             x-kubernetes-validations:
                             - message: Ephemeral stores must have absolute paths.
@@ -836,7 +849,17 @@ spec:
                             required:
                             - secretRef
                             - type
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                             type: object
+                            x-kubernetes-validations:
+                            - message: Ephemeral stores must have absolute paths.
+                              rule: '(!has(self.pvc) && has(self.path)) ? self.path.startsWith(''/'')
+                                : true'
+                            - message: PVC path must be a file name only, with no
+                                slashes.
+                              rule: '(has(self.pvc) && has(self.path)) ? !self.path.startsWith(''/'')
+                                : true'
                         type: object
                         x-kubernetes-validations:
                         - message: One selection required between file or store.
@@ -1134,12 +1157,15 @@ spec:
                                       create:
                                         description: Settings for creating a new PVC
                                         properties:
+<<<<<<< HEAD
                                           accessModes:
                                             description: AccessModes k8s persistent
                                               volume access modes. Defaults to ["ReadWriteOnce"].
                                             items:
                                               type: string
                                             type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                           resources:
                                             description: |-
                                               Resources describes the storage resource requirements for a volume.
@@ -1198,8 +1224,11 @@ spec:
                                             type: string
                                         type: object
                                         x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                     required:
                                     - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -1209,6 +1238,7 @@ spec:
                                     - message: Mount path must start with '/' and
                                         must not contain ':'
                                       rule: self.mountPath.matches('^/[^:]*$')
+<<<<<<< HEAD
                                   s3_additional_kwargs:
                                     additionalProperties:
                                       type: string
@@ -1263,7 +1293,17 @@ spec:
                                 required:
                                 - secretRef
                                 - type
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                 type: object
+                                x-kubernetes-validations:
+                                - message: Ephemeral stores must have absolute paths.
+                                  rule: '(!has(self.pvc) && has(self.path)) ? self.path.startsWith(''/'')
+                                    : true'
+                                - message: PVC path must be a file name only, with
+                                    no slashes.
+                                  rule: '(has(self.pvc) && has(self.path)) ? !self.path.startsWith(''/'')
+                                    : true'
                             type: object
                             x-kubernetes-validations:
                             - message: One selection required between file or store.
@@ -1683,12 +1723,15 @@ spec:
                                       create:
                                         description: Settings for creating a new PVC
                                         properties:
+<<<<<<< HEAD
                                           accessModes:
                                             description: AccessModes k8s persistent
                                               volume access modes. Defaults to ["ReadWriteOnce"].
                                             items:
                                               type: string
                                             type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                           resources:
                                             description: |-
                                               Resources describes the storage resource requirements for a volume.
@@ -1747,8 +1790,11 @@ spec:
                                             type: string
                                         type: object
                                         x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                     required:
                                     - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -2099,12 +2145,15 @@ spec:
                                       create:
                                         description: Settings for creating a new PVC
                                         properties:
+<<<<<<< HEAD
                                           accessModes:
                                             description: AccessModes k8s persistent
                                               volume access modes. Defaults to ["ReadWriteOnce"].
                                             items:
                                               type: string
                                             type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                           resources:
                                             description: |-
                                               Resources describes the storage resource requirements for a volume.
@@ -2163,8 +2212,11 @@ spec:
                                             type: string
                                         type: object
                                         x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                     required:
                                     - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -2174,6 +2226,7 @@ spec:
                                     - message: Mount path must start with '/' and
                                         must not contain ':'
                                       rule: self.mountPath.matches('^/[^:]*$')
+<<<<<<< HEAD
                                 type: object
                                 x-kubernetes-validations:
                                 - message: Ephemeral stores must have absolute paths.
@@ -2231,7 +2284,17 @@ spec:
                                 required:
                                 - secretRef
                                 - type
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                 type: object
+                                x-kubernetes-validations:
+                                - message: Ephemeral stores must have absolute paths.
+                                  rule: '(!has(self.pvc) && has(self.path)) ? self.path.startsWith(''/'')
+                                    : true'
+                                - message: PVC path must be a file name only, with
+                                    no slashes.
+                                  rule: '(has(self.pvc) && has(self.path)) ? !self.path.startsWith(''/'')
+                                    : true'
                             type: object
                             x-kubernetes-validations:
                             - message: One selection required between file or store.
@@ -2536,6 +2599,7 @@ spec:
                                             description: Settings for creating a new
                                               PVC
                                             properties:
+<<<<<<< HEAD
                                               accessModes:
                                                 description: AccessModes k8s persistent
                                                   volume access modes. Defaults to
@@ -2543,6 +2607,8 @@ spec:
                                                 items:
                                                   type: string
                                                 type: array
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                               resources:
                                                 description: |-
                                                   Resources describes the storage resource requirements for a volume.
@@ -2602,8 +2668,11 @@ spec:
                                                 type: string
                                             type: object
                                             x-kubernetes-map-type: atomic
+<<<<<<< HEAD
                                         required:
                                         - mountPath
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                         type: object
                                         x-kubernetes-validations:
                                         - message: One selection is required between
@@ -2613,6 +2682,7 @@ spec:
                                         - message: Mount path must start with '/'
                                             and must not contain ':'
                                           rule: self.mountPath.matches('^/[^:]*$')
+<<<<<<< HEAD
                                       s3_additional_kwargs:
                                         additionalProperties:
                                           type: string
@@ -2667,7 +2737,18 @@ spec:
                                     required:
                                     - secretRef
                                     - type
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
                                     type: object
+                                    x-kubernetes-validations:
+                                    - message: Ephemeral stores must have absolute
+                                        paths.
+                                      rule: '(!has(self.pvc) && has(self.path)) ?
+                                        self.path.startsWith(''/'') : true'
+                                    - message: PVC path must be a file name only,
+                                        with no slashes.
+                                      rule: '(has(self.pvc) && has(self.path)) ? !self.path.startsWith(''/'')
+                                        : true'
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection required between file or

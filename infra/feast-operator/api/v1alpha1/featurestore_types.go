@@ -92,7 +92,11 @@ type OfflineStorePersistence struct {
 
 // OfflineStoreFilePersistence configures the file-based persistence for the offline store service
 type OfflineStoreFilePersistence struct {
+<<<<<<< HEAD
 	// +kubebuilder:validation:Enum=file;dask;duckdb
+=======
+	// +kubebuilder:validation:Enum=dask;duckdb
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 	Type      string     `json:"type,omitempty"`
 	PvcConfig *PvcConfig `json:"pvc,omitempty"`
 }
@@ -146,6 +150,7 @@ type OnlineStorePersistence struct {
 // OnlineStoreFilePersistence configures the file-based persistence for the offline store service
 // +kubebuilder:validation:XValidation:rule="(!has(self.pvc) && has(self.path)) ? self.path.startsWith('/') : true",message="Ephemeral stores must have absolute paths."
 // +kubebuilder:validation:XValidation:rule="(has(self.pvc) && has(self.path)) ? !self.path.startsWith('/') : true",message="PVC path must be a file name only, with no slashes."
+<<<<<<< HEAD
 // +kubebuilder:validation:XValidation:rule="has(self.path) ? !(self.path.startsWith('s3://') || self.path.startsWith('gs://')) : true",message="Online store does not support S3 or GS buckets."
 type OnlineStoreFilePersistence struct {
 	Path      string     `json:"path,omitempty"`
@@ -179,6 +184,11 @@ var ValidOnlineStoreDBStorePersistenceTypes = []string{
 	"qdrant",
 	"couchbase",
 	"milvus",
+=======
+type OnlineStoreFilePersistence struct {
+	Path      string     `json:"path,omitempty"`
+	PvcConfig *PvcConfig `json:"pvc,omitempty"`
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 }
 
 // LocalRegistryConfig configures the deployed registry service
@@ -200,6 +210,7 @@ type RegistryPersistence struct {
 }
 
 // RegistryFilePersistence configures the file-based persistence for the registry service
+<<<<<<< HEAD
 // +kubebuilder:validation:XValidation:rule="(!has(self.pvc) && has(self.path)) ? (self.path.startsWith('/') || self.path.startsWith('s3://') || self.path.startsWith('gs://')) : true",message="Registry files must use absolute paths or be S3 ('s3://') or GS ('gs://') object store URIs."
 // +kubebuilder:validation:XValidation:rule="(has(self.pvc) && has(self.path)) ? !self.path.startsWith('/') : true",message="PVC path must be a file name only, with no slashes."
 // +kubebuilder:validation:XValidation:rule="(has(self.pvc) && has(self.path)) ? !(self.path.startsWith('s3://') || self.path.startsWith('gs://')) : true",message="PVC persistence does not support S3 or GS object store URIs."
@@ -223,6 +234,13 @@ type RegistryDBStorePersistence struct {
 var ValidRegistryDBStorePersistenceTypes = []string{
 	"snowflake.registry",
 	"sql",
+=======
+// +kubebuilder:validation:XValidation:rule="(!has(self.pvc) && has(self.path)) ? self.path.startsWith('/') : true",message="Ephemeral stores must have absolute paths."
+// +kubebuilder:validation:XValidation:rule="(has(self.pvc) && has(self.path)) ? !self.path.startsWith('/') : true",message="PVC path must be a file name only, with no slashes."
+type RegistryFilePersistence struct {
+	Path      string     `json:"path,omitempty"`
+	PvcConfig *PvcConfig `json:"pvc,omitempty"`
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 }
 
 // PvcConfig defines the settings for a persistent file store based on PVCs.
@@ -236,6 +254,7 @@ type PvcConfig struct {
 	Create *PvcCreate `json:"create,omitempty"`
 	// MountPath within the container at which the volume should be mounted.
 	// Must start by "/" and cannot contain ':'.
+<<<<<<< HEAD
 	MountPath string `json:"mountPath"`
 }
 
@@ -245,6 +264,15 @@ type PvcConfig struct {
 type PvcCreate struct {
 	// AccessModes k8s persistent volume access modes. Defaults to ["ReadWriteOnce"].
 	AccessModes []corev1.PersistentVolumeAccessMode `json:"accessModes,omitempty"`
+=======
+	MountPath string `json:"mountPath,omitempty"`
+}
+
+// PvcCreate defines the immutable settings to create a new PVC mounted at the given path.
+// The PVC name is the same as the associated deployment name.
+// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="PvcCreate is immutable"
+type PvcCreate struct {
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 	// StorageClassName is the name of an existing StorageClass to which this persistent volume belongs. Empty value
 	// means that this volume does not belong to any StorageClass and the cluster default will be used.
 	StorageClassName *string `json:"storageClassName,omitempty"`

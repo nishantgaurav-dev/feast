@@ -20,7 +20,10 @@ rules:
   resources:
   - configmaps
   - persistentvolumeclaims
+<<<<<<< HEAD
   - serviceaccounts
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
   - services
   verbs:
   - create

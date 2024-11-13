@@ -25,6 +25,7 @@ import (
 )
 
 const (
+<<<<<<< HEAD
 	TmpFeatureStoreYamlEnvVar = "TMP_FEATURE_STORE_YAML_BASE64"
 	FeatureStoreYamlCmKey     = "feature_store.yaml"
 	EphemeralPath             = "/feast-data"
@@ -38,6 +39,17 @@ const (
 	HttpsScheme   = "https"
 	tlsPath       = "/tls/"
 	tlsNameSuffix = "-tls"
+=======
+	FeastPrefix                     = "feast-"
+	FeatureStoreYamlEnvVar          = "FEATURE_STORE_YAML_BASE64"
+	FeatureStoreYamlCmKey           = "feature_store.yaml"
+	DefaultRegistryEphemeralPath    = "/tmp/registry.db"
+	DefaultRegistryPvcPath          = "registry.db"
+	DefaultOnlineStoreEphemeralPath = "/tmp/online_store.db"
+	DefaultOnlineStorePvcPath       = "online_store.db"
+	svcDomain                       = ".svc.cluster.local"
+	HttpPort                        = 80
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 
 	DefaultOfflineStorageRequest  = "20Gi"
 	DefaultOnlineStorageRequest   = "5Gi"

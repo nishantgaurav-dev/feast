@@ -39,7 +39,11 @@ var _ = Describe("Repo Config", func() {
 
 			expectedRegistryConfig := RegistryConfig{
 				RegistryType: "file",
+<<<<<<< HEAD
 				Path:         EphemeralPath + "/" + DefaultRegistryPath,
+=======
+				Path:         DefaultRegistryEphemeralPath,
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 			}
 			expectedOnlineConfig := OnlineStoreConfig{
 				Type: "sqlite",

@@ -56,9 +56,13 @@ type FeatureStoreReconciler struct {
 //+kubebuilder:rbac:groups=feast.dev,resources=featurestores/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=feast.dev,resources=featurestores/finalizers,verbs=update
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;create;update;watch;delete
+<<<<<<< HEAD
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims;serviceaccounts,verbs=get;list;create;update;watch;delete
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles;rolebindings,verbs=get;list;create;update;watch;delete
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list
+=======
+//+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims,verbs=get;list;create;update;watch;delete
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -159,9 +163,12 @@ func (r *FeatureStoreReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Owns(&appsv1.Deployment{}).
 		Owns(&corev1.Service{}).
 		Owns(&corev1.PersistentVolumeClaim{}).
+<<<<<<< HEAD
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&rbacv1.RoleBinding{}).
 		Owns(&rbacv1.Role{}).
+=======
+>>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		Watches(&feastdevv1alpha1.FeatureStore{}, handler.EnqueueRequestsFromMapFunc(r.mapFeastRefsToFeastRequests)).
 		Complete(r)
 }
