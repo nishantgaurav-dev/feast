@@ -184,7 +184,10 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+=======
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
 
 			svc := &corev1.Service{}
@@ -558,7 +561,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+=======
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 
 			svc := &corev1.Service{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
@@ -601,6 +608,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(saList.Items).To(HaveLen(1))
 
+			saList := corev1.ServiceAccountList{}
+			err = k8sClient.List(ctx, &saList, listOpts)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(saList.Items).To(HaveLen(3))
+
 			svcList := corev1.ServiceList{}
 			err = k8sClient.List(ctx, &svcList, listOpts)
 			Expect(err).NotTo(HaveOccurred())
@@ -629,10 +641,16 @@ var _ = Describe("FeatureStore Controller", func() {
 			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
 			registryContainer := services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(registryContainer.Env).To(HaveLen(1))
 			env := getFeatureStoreYamlEnvVar(registryContainer.Env)
+=======
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env := getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
@@ -662,10 +680,24 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(repoConfig).To(Equal(&testConfig))
 
 			// check offline config
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
 			offlineContainer := services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(offlineContainer.Env).To(HaveLen(1))
 			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
+=======
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 			Expect(env).NotTo(BeNil())
 
 			assertEnvFrom(*offlineContainer)
@@ -682,10 +714,25 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(repoConfigOffline).To(Equal(&testConfig))
 
 			// check online config
+<<<<<<< HEAD
 			onlineContainer := services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(onlineContainer.Env).To(HaveLen(3))
 			Expect(onlineContainer.ImagePullPolicy).To(Equal(corev1.PullAlways))
 			env = getFeatureStoreYamlEnvVar(onlineContainer.Env)
+=======
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
+			Expect(deploy.Spec.Template.Spec.Containers[0].ImagePullPolicy).To(Equal(corev1.PullAlways))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 			Expect(env).NotTo(BeNil())
 
 			assertEnvFrom(*onlineContainer)
@@ -850,11 +897,18 @@ var _ = Describe("FeatureStore Controller", func() {
 			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(deploy.Spec.Template.Spec.ServiceAccountName).To(Equal(deploy.Name))
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
 			onlineContainer := services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(onlineContainer.Env).To(HaveLen(3))
 			Expect(areEnvVarArraysEqual(onlineContainer.Env, []corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue}, {Name: services.TmpFeatureStoreYamlEnvVar, Value: fsYamlStr}, {Name: "fieldRefName", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{APIVersion: "v1", FieldPath: "metadata.namespace"}}}})).To(BeTrue())
 			Expect(onlineContainer.ImagePullPolicy).To(Equal(corev1.PullAlways))
+=======
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
+			Expect(areEnvVarArraysEqual(deploy.Spec.Template.Spec.Containers[0].Env, []corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue}, {Name: services.FeatureStoreYamlEnvVar, Value: fsYamlStr}, {Name: "fieldRefName", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{APIVersion: "v1", FieldPath: "metadata.namespace"}}}})).To(BeTrue())
+			Expect(deploy.Spec.Template.Spec.Containers[0].ImagePullPolicy).To(Equal(corev1.PullAlways))
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 
 			// change feast project and reconcile
 			resourceNew := resource.DeepCopy()

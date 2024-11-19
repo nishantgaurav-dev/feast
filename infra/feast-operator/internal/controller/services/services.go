@@ -119,6 +119,7 @@ func (feast *FeastServices) Deploy() error {
 	return nil
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) validateRegistryPersistence(registryPersistence *feastdevv1alpha1.RegistryPersistence) error {
 	if registryPersistence != nil {
 		dbPersistence := registryPersistence.DBPersistence
@@ -199,6 +200,9 @@ func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType)
 	if err := feast.createService(feastType); err != nil {
 		return feast.setFeastServiceCondition(err, feastType)
 	}
+=======
+func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType) error {
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	if pvcCreate, shouldCreate := shouldCreatePvc(feast.FeatureStore, feastType); shouldCreate {
 		if err := feast.createPVC(pvcCreate, feastType); err != nil {
 			return feast.setFeastServiceCondition(err, feastType)
@@ -206,14 +210,33 @@ func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType)
 	} else {
 		_ = feast.deleteOwnedFeastObj(feast.initPVC(feastType))
 	}
+	if err := feast.createServiceAccount(feastType); err != nil {
+		return feast.setFeastServiceCondition(err, feastType)
+	}
+	if err := feast.createDeployment(feastType); err != nil {
+		return feast.setFeastServiceCondition(err, feastType)
+	}
+	if err := feast.createService(feastType); err != nil {
+		return feast.setFeastServiceCondition(err, feastType)
+	}
 	return feast.setFeastServiceCondition(nil, feastType)
 }
 
 func (feast *FeastServices) removeFeastServiceByType(feastType FeastServiceType) error {
+<<<<<<< HEAD
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
 		return err
 	}
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType)); err != nil {
+=======
+	if err := feast.deleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
+		return err
+	}
+	if err := feast.deleteOwnedFeastObj(feast.initFeastDeploy(feastType)); err != nil {
+		return err
+	}
+	if err := feast.deleteOwnedFeastObj(feast.initFeastSA(feastType)); err != nil {
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 		return err
 	}
 <<<<<<< HEAD
@@ -240,11 +263,19 @@ func (feast *FeastServices) createService(feastType FeastServiceType) error {
 	return nil
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) createServiceAccount() error {
 	logger := log.FromContext(feast.Handler.Context)
 	sa := feast.initFeastSA()
 	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, sa, controllerutil.MutateFn(func() error {
 		return feast.setServiceAccount(sa)
+=======
+func (feast *FeastServices) createServiceAccount(feastType FeastServiceType) error {
+	logger := log.FromContext(feast.Context)
+	sa := feast.initFeastSA(feastType)
+	if op, err := controllerutil.CreateOrUpdate(feast.Context, feast.Client, sa, controllerutil.MutateFn(func() error {
+		return feast.setServiceAccount(sa, feastType)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	})); err != nil {
 		return err
 	} else if op == controllerutil.OperationResultCreated || op == controllerutil.OperationResultUpdated {
@@ -253,11 +284,19 @@ func (feast *FeastServices) createServiceAccount() error {
 	return nil
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) createDeployment() error {
 	logger := log.FromContext(feast.Handler.Context)
 	deploy := feast.initFeastDeploy()
 	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, deploy, controllerutil.MutateFn(func() error {
 		return feast.setDeployment(deploy)
+=======
+func (feast *FeastServices) createDeployment(feastType FeastServiceType) error {
+	logger := log.FromContext(feast.Context)
+	deploy := feast.initFeastDeploy(feastType)
+	if op, err := controllerutil.CreateOrUpdate(feast.Context, feast.Client, deploy, controllerutil.MutateFn(func() error {
+		return feast.setDeployment(deploy, feastType)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	})); err != nil {
 		return err
 	} else if op == controllerutil.OperationResultCreated || op == controllerutil.OperationResultUpdated {
@@ -296,6 +335,14 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment, feastType F
 	if err != nil {
 		return err
 	}
+<<<<<<< HEAD
+=======
+	deploy.Labels = feast.getLabels(feastType)
+	deploySettings := FeastServiceConstants[feastType]
+	serviceConfigs := feast.getServiceConfigs(feastType)
+	defaultServiceConfigs := serviceConfigs.DefaultConfigs
+	sa := feast.initFeastSA(feastType)
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 
 	// PVCs are immutable, so we only create... we don't update an existing one.
 	err = feast.Handler.Client.Get(feast.Handler.Context, client.ObjectKeyFromObject(pvc), pvc)
@@ -323,7 +370,41 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 				Labels: deploy.GetLabels(),
 			},
 			Spec: corev1.PodSpec{
+<<<<<<< HEAD
 				ServiceAccountName: feast.initFeastSA().Name,
+=======
+				ServiceAccountName: sa.Name,
+				Containers: []corev1.Container{
+					{
+						Name:    string(feastType),
+						Image:   *defaultServiceConfigs.Image,
+						Command: deploySettings.Command,
+						Ports: []corev1.ContainerPort{
+							{
+								Name:          string(feastType),
+								ContainerPort: deploySettings.TargetPort,
+								Protocol:      corev1.ProtocolTCP,
+							},
+						},
+						Env: []corev1.EnvVar{
+							{
+								Name:  FeatureStoreYamlEnvVar,
+								Value: fsYamlB64,
+							},
+						},
+						LivenessProbe: &corev1.Probe{
+							ProbeHandler:        probeHandler,
+							InitialDelaySeconds: 30,
+							PeriodSeconds:       30,
+						},
+						ReadinessProbe: &corev1.Probe{
+							ProbeHandler:        probeHandler,
+							InitialDelaySeconds: 20,
+							PeriodSeconds:       10,
+						},
+					},
+				},
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 			},
 		},
 	}
@@ -533,6 +614,11 @@ func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, 
 		pvc.Spec.StorageClassName = pvcCreate.StorageClassName
 	}
 	return pvc, controllerutil.SetControllerReference(feast.Handler.FeatureStore, pvc, feast.Handler.Scheme)
+}
+
+func (feast *FeastServices) setServiceAccount(sa *corev1.ServiceAccount, feastType FeastServiceType) error {
+	sa.Labels = feast.getLabels(feastType)
+	return controllerutil.SetControllerReference(feast.FeatureStore, sa, feast.Scheme)
 }
 
 func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, feastType FeastServiceType) (*corev1.PersistentVolumeClaim, error) {
@@ -769,18 +855,27 @@ func (feast *FeastServices) initFeastSvc(feastType FeastServiceType) *corev1.Ser
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) initFeastSA() *corev1.ServiceAccount {
 	sa := &corev1.ServiceAccount{
 		ObjectMeta: feast.GetObjectMeta(),
+=======
+func (feast *FeastServices) initFeastSA(feastType FeastServiceType) *corev1.ServiceAccount {
+	sa := &corev1.ServiceAccount{
+		ObjectMeta: feast.GetObjectMeta(feastType),
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	}
 	sa.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("ServiceAccount"))
 	return sa
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) initPVC(feastType FeastServiceType) *corev1.PersistentVolumeClaim {
 	pvc := &corev1.PersistentVolumeClaim{
 		ObjectMeta: feast.GetObjectMetaType(feastType),
 =======
+=======
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 func (feast *FeastServices) initPVC(feastType FeastServiceType) *corev1.PersistentVolumeClaim {
 	pvc := &corev1.PersistentVolumeClaim{
 		ObjectMeta: feast.GetObjectMeta(feastType),

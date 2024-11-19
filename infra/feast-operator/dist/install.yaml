@@ -3179,9 +3179,13 @@ rules:
   - configmaps
   - persistentvolumeclaims
 <<<<<<< HEAD
+<<<<<<< HEAD
   - serviceaccounts
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+  - serviceaccounts
+>>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
   - services
   verbs:
   - create
