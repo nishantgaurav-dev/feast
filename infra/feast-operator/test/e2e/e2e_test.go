@@ -123,8 +123,25 @@ var _ = Describe("controller", Ordered, func() {
 			_, cmdOutputerr := utils.Run(cmd)
 			ExpectWithOffset(1, cmdOutputerr).NotTo(HaveOccurred())
 
+<<<<<<< HEAD
 			featureStoreName := "simple-feast-setup"
 			validateTheFeatureStoreCustomResource(namespace, featureStoreName, timeout)
+=======
+			By("building the feast image")
+			cmd = exec.Command("make", "feast-image-build")
+			_, err = utils.Run(cmd)
+			ExpectWithOffset(1, err).NotTo(HaveOccurred())
+
+			var feastImage = "example.com/feature-transformation-server:operator.v0"
+			By("loading the the feast image on Kind")
+			err = utils.LoadImageToKindClusterWithName(feastImage)
+			ExpectWithOffset(1, err).NotTo(HaveOccurred())
+
+			By("installing CRDs")
+			cmd = exec.Command("make", "install")
+			_, err = utils.Run(cmd)
+			ExpectWithOffset(1, err).NotTo(HaveOccurred())
+>>>>>>> 779b25942 (feat: Building the feast image (#4775))
 
 			var remoteRegistryNs = "remote-registry"
 			By(fmt.Sprintf("Creating the remote registry namespace=%s", remoteRegistryNs))
