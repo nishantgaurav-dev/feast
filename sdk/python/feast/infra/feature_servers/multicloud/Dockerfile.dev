@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 FROM registry.access.redhat.com/ubi9/python-311:9.5
 
 COPY --chown=default . ${APP_ROOT}/src
@@ -9,5 +10,32 @@ RUN npm install -S yarn
 ENV PATH ${PATH}:${APP_ROOT}/src/node_modules/yarn/bin
 RUN make build-ui && yarn cache clean --all
 
+=======
+FROM python:3.11-slim-bullseye
+
+RUN pip install --no-cache-dir pip --upgrade
+RUN pip install --no-cache-dir pip-tools
+
+RUN apt update && apt install -y -V ca-certificates lsb-release wget make git curl gcc && \
+    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb && \
+    apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb && apt update && \
+    apt install -y \
+    jq \
+    nodejs \
+    libarrow-dev && \
+    npm install -g yarn && \
+    apt remove -y lsb-release wget && \
+    apt-get clean && rm -rf /var/cache/apt/lists
+
+COPY . /feast
+WORKDIR /feast
+RUN make install-python-ci-dependencies && pip cache purge
+ENV NPM_TOKEN '//registry.npmjs.org/:_authToken'
+RUN make build-ui && yarn cache clean
+
+WORKDIR /
+
+>>>>>>> 4c971f6a1 (fix: Reduce feast-server container image size & fix dev image build (#4781))
 # modify permissions to support running with a random uid
 RUN chmod g+w $(python -c "import feast.ui as ui; print(ui.__path__)" | tr -d "[']")/build/projects-list.json
