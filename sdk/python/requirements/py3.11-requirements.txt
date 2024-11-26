@@ -25,6 +25,7 @@ cloudpickle==3.1.0
     # via dask
 colorama==0.4.6
     # via feast (setup.py)
+<<<<<<< HEAD
 dask[dataframe]==2024.12.1
     # via
     #   feast (setup.py)
@@ -34,6 +35,17 @@ dask-expr==1.1.21
 dill==0.3.9
     # via feast (setup.py)
 fastapi==0.115.6
+=======
+dask[dataframe]==2024.11.2
+    # via
+    #   feast (setup.py)
+    #   dask-expr
+dask-expr==1.1.19
+    # via dask
+dill==0.3.9
+    # via feast (setup.py)
+fastapi==0.115.5
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via feast (setup.py)
 fsspec==2024.12.0
     # via dask
@@ -93,6 +105,7 @@ pyarrow==18.0.0
     # via
     #   feast (setup.py)
     #   dask-expr
+<<<<<<< HEAD
 pydantic==2.10.4
     # via
     #   feast (setup.py)
@@ -102,6 +115,17 @@ pydantic-core==2.27.2
 pygments==2.18.0
     # via feast (setup.py)
 pyjwt==2.10.1
+=======
+pydantic==2.10.1
+    # via
+    #   feast (setup.py)
+    #   fastapi
+pydantic-core==2.27.1
+    # via pydantic
+pygments==2.18.0
+    # via feast (setup.py)
+pyjwt==2.10.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via feast (setup.py)
 python-dateutil==2.9.0.post0
     # via pandas
@@ -120,7 +144,11 @@ referencing==0.35.1
     #   jsonschema-specifications
 requests==2.32.3
     # via feast (setup.py)
+<<<<<<< HEAD
 rpds-py==0.22.3
+=======
+rpds-py==0.21.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via
     #   jsonschema
     #   referencing
@@ -159,7 +187,11 @@ tzdata==2024.2
     # via pandas
 urllib3==2.2.3
     # via requests
+<<<<<<< HEAD
 uvicorn[standard]==0.34.0
+=======
+uvicorn[standard]==0.32.1
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via
     #   feast (setup.py)
     #   uvicorn-worker
@@ -167,7 +199,11 @@ uvicorn-worker==0.2.0
     # via feast (setup.py)
 uvloop==0.21.0
     # via uvicorn
+<<<<<<< HEAD
 watchfiles==1.0.3
+=======
+watchfiles==1.0.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via uvicorn
 websockets==14.1
     # via uvicorn

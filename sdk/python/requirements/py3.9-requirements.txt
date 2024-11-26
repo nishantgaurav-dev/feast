@@ -35,7 +35,11 @@ dill==0.3.9
     # via feast (setup.py)
 exceptiongroup==1.2.2
     # via anyio
+<<<<<<< HEAD
 fastapi==0.115.6
+=======
+fastapi==0.115.5
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via feast (setup.py)
 fsspec==2024.12.0
     # via dask
@@ -97,6 +101,7 @@ pyarrow==18.0.0
     # via
     #   feast (setup.py)
     #   dask-expr
+<<<<<<< HEAD
 pydantic==2.10.4
     # via
     #   feast (setup.py)
@@ -106,6 +111,17 @@ pydantic-core==2.27.2
 pygments==2.18.0
     # via feast (setup.py)
 pyjwt==2.10.1
+=======
+pydantic==2.10.1
+    # via
+    #   feast (setup.py)
+    #   fastapi
+pydantic-core==2.27.1
+    # via pydantic
+pygments==2.18.0
+    # via feast (setup.py)
+pyjwt==2.10.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via feast (setup.py)
 python-dateutil==2.9.0.post0
     # via pandas
@@ -124,7 +140,11 @@ referencing==0.35.1
     #   jsonschema-specifications
 requests==2.32.3
     # via feast (setup.py)
+<<<<<<< HEAD
 rpds-py==0.22.3
+=======
+rpds-py==0.21.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via
     #   jsonschema
     #   referencing
@@ -142,7 +162,11 @@ tenacity==8.5.0
     # via feast (setup.py)
 toml==0.10.2
     # via feast (setup.py)
+<<<<<<< HEAD
 tomli==2.2.1
+=======
+tomli==2.1.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via mypy
 toolz==1.0.0
     # via
@@ -167,7 +191,11 @@ tzdata==2024.2
     # via pandas
 urllib3==2.2.3
     # via requests
+<<<<<<< HEAD
 uvicorn[standard]==0.34.0
+=======
+uvicorn[standard]==0.32.1
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via
     #   feast (setup.py)
     #   uvicorn-worker
@@ -175,7 +203,11 @@ uvicorn-worker==0.2.0
     # via feast (setup.py)
 uvloop==0.21.0
     # via uvicorn
+<<<<<<< HEAD
 watchfiles==1.0.3
+=======
+watchfiles==1.0.0
+>>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
     # via uvicorn
 websockets==14.1
     # via uvicorn
