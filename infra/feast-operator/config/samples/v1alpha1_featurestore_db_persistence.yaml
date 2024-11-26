@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: v1
 kind: Secret
 metadata:
@@ -18,6 +19,8 @@ stringData:
     user: postgres
     password: mysecretpassword
 ---
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 apiVersion: feast.dev/v1alpha1
 kind: FeatureStore
 metadata:
@@ -31,6 +34,7 @@ spec:
         store:
           type: postgres
           secretRef:
+<<<<<<< HEAD
             name: postgres-secret
     registry:
       local:
@@ -40,3 +44,7 @@ spec:
             secretRef:
               name: postgres-secret
             secretKeyName: postgres-secret-parameters   # optional, will use store.type by default as the SecretKeyName if none is specified, in this case that's "sql"
+=======
+            name: my-secret
+          secretKeyName: mykey   # optional
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))

@@ -44,12 +44,17 @@ func attemptInvalidCreationAndAsserts(ctx context.Context, featurestore *feastde
 
 func onlineStoreWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 =======
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OnlineStore: &feastdevv1alpha1.OnlineStore{
 			Persistence: &feastdevv1alpha1.OnlineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{
@@ -60,6 +65,7 @@ func onlineStoreWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureSto
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
@@ -72,6 +78,13 @@ func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feat
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OnlineStore: &feastdevv1alpha1.OnlineStore{
 			Persistence: &feastdevv1alpha1.OnlineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{
@@ -81,6 +94,7 @@ func onlineStoreWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feat
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 
@@ -107,11 +121,14 @@ func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureSto
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 =======
 	return copy
+=======
+	return fsCopy
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 func onlineStoreWithObjectStoreBucketForPvc(path string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
-	copy := featureStore.DeepCopy()
-	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 		OnlineStore: &feastdevv1alpha1.OnlineStore{
 			Persistence: &feastdevv1alpha1.OnlineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{
@@ -124,13 +141,18 @@ func onlineStoreWithObjectStoreBucketForPvc(path string, featureStore *feastdevv
 			},
 		},
 	}
-	return copy
+	return fsCopy
 }
 
 func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+<<<<<<< HEAD
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -139,6 +161,7 @@ func offlineStoreWithUnmanagedFileType(featureStore *feastdevv1alpha1.FeatureSto
 			},
 		},
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 	return fsCopy
 }
@@ -154,6 +177,14 @@ func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore)
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+
+func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -165,6 +196,7 @@ func registryWithAbsolutePathForPvc(featureStore *feastdevv1alpha1.FeatureStore)
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
@@ -177,6 +209,13 @@ func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feature
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -188,6 +227,7 @@ func registryWithRelativePathForEphemeral(featureStore *feastdevv1alpha1.Feature
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 func registryWithObjectStoreBucketForPvc(path string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
@@ -247,10 +287,13 @@ func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStor
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 =======
 	return copy
+=======
+	return fsCopy
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 func registryWithObjectStoreBucketForPvc(path string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
-	copy := featureStore.DeepCopy()
-	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -265,11 +308,11 @@ func registryWithObjectStoreBucketForPvc(path string, featureStore *feastdevv1al
 			},
 		},
 	}
-	return copy
+	return fsCopy
 }
 func registryWithS3AdditionalKeywordsForFile(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
-	copy := featureStore.DeepCopy()
-	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -281,11 +324,11 @@ func registryWithS3AdditionalKeywordsForFile(featureStore *feastdevv1alpha1.Feat
 			},
 		},
 	}
-	return copy
+	return fsCopy
 }
 func registryWithS3AdditionalKeywordsForGsBucket(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
-	copy := featureStore.DeepCopy()
-	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 		Registry: &feastdevv1alpha1.Registry{
 			Local: &feastdevv1alpha1.LocalRegistryConfig{
 				Persistence: &feastdevv1alpha1.RegistryPersistence{
@@ -297,13 +340,18 @@ func registryWithS3AdditionalKeywordsForGsBucket(featureStore *feastdevv1alpha1.
 			},
 		},
 	}
-	return copy
+	return fsCopy
 }
 
 func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+<<<<<<< HEAD
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -312,6 +360,7 @@ func pvcConfigWithNeitherRefNorCreate(featureStore *feastdevv1alpha1.FeatureStor
 			},
 		},
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 	return fsCopy
 }
@@ -325,6 +374,13 @@ func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) 
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -339,6 +395,7 @@ func pvcConfigWithBothRefAndCreate(featureStore *feastdevv1alpha1.FeatureStore) 
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 
@@ -353,6 +410,14 @@ func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feas
 	copy := featureStore.DeepCopy()
 	copy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+
+func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := featureStore.DeepCopy()
+	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		OfflineStore: &feastdevv1alpha1.OfflineStore{
 			Persistence: &feastdevv1alpha1.OfflineStorePersistence{
 				FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
@@ -387,6 +452,7 @@ func pvcConfigWithNoResources(featureStore *feastdevv1alpha1.FeatureStore) *feas
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return fsCopy
 }
 
@@ -401,28 +467,45 @@ func pvcConfigWithResources(featureStore *feastdevv1alpha1.FeatureStore) *feastd
 	copy := pvcConfigWithNoResources(featureStore)
 	copy.Spec.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+}
+
+func pvcConfigWithResources(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
+	fsCopy := pvcConfigWithNoResources(featureStore)
+	fsCopy.Spec.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("10Gi"),
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fsCopy.Spec.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
 =======
 	copy.Spec.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	fsCopy.Spec.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("1Gi"),
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fsCopy.Spec.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
 =======
 	copy.Spec.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	fsCopy.Spec.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources = corev1.VolumeResourceRequirements{
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		Requests: corev1.ResourceList{
 			corev1.ResourceStorage: resource.MustParse("500Mi"),
 		},
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 	return fsCopy
 }
@@ -491,6 +574,9 @@ func registryStoreWithDBPersistenceType(dbPersistenceType string, featureStore *
 =======
 	return copy
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return fsCopy
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 const resourceName = "test-resource"

@@ -129,6 +129,24 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 	"mssql",
 }
 
+// OfflineStoreDBStorePersistence configures the DB store persistence for the offline store service
+type OfflineStoreDBStorePersistence struct {
+	// +kubebuilder:validation:Enum=snowflake.offline;bigquery;redshift;spark;postgres;feast_trino.trino.TrinoOfflineStore;redis
+	Type          string                       `json:"type,omitempty"`
+	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
+	SecretKeyName string                       `json:"secretKeyName,omitempty"`
+}
+
+var ValidOfflineStoreDBStorePersistenceTypes = []string{
+	"snowflake.offline",
+	"bigquery",
+	"redshift",
+	"spark",
+	"postgres",
+	"feast_trino.trino.TrinoOfflineStore",
+	"redis",
+}
+
 // OnlineStore configures the deployed online store service
 type OnlineStore struct {
 	ServiceConfigs `json:",inline"`
@@ -163,12 +181,19 @@ type OnlineStoreFilePersistence struct {
 
 // OnlineStoreDBStorePersistence configures the DB store persistence for the offline store service
 type OnlineStoreDBStorePersistence struct {
+<<<<<<< HEAD
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase;milvus
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
 	// By default, the selected store "type" is used as the SecretKeyName
 	SecretKeyName string `json:"secretKeyName,omitempty"`
+=======
+	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore
+	Type          string                       `json:"type,omitempty"`
+	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
+	SecretKeyName string                       `json:"secretKeyName,omitempty"`
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 var ValidOnlineStoreDBStorePersistenceTypes = []string{
@@ -183,6 +208,7 @@ var ValidOnlineStoreDBStorePersistenceTypes = []string{
 	"mysql",
 	"hazelcast",
 	"singlestore",
+<<<<<<< HEAD
 	"hbase",
 	"elasticsearch",
 	"qdrant",
@@ -193,6 +219,8 @@ type OnlineStoreFilePersistence struct {
 	Path      string     `json:"path,omitempty"`
 	PvcConfig *PvcConfig `json:"pvc,omitempty"`
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 // LocalRegistryConfig configures the deployed registry service
@@ -229,16 +257,23 @@ type RegistryFilePersistence struct {
 // RegistryDBStorePersistence configures the DB store persistence for the registry service
 type RegistryDBStorePersistence struct {
 	// +kubebuilder:validation:Enum=sql;snowflake.registry
+<<<<<<< HEAD
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
 	// By default, the selected store "type" is used as the SecretKeyName
 	SecretKeyName string `json:"secretKeyName,omitempty"`
+=======
+	Type          string                       `json:"type,omitempty"`
+	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
+	SecretKeyName string                       `json:"secretKeyName,omitempty"`
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 var ValidRegistryDBStorePersistenceTypes = []string{
 	"snowflake.registry",
 	"sql",
+<<<<<<< HEAD
 =======
 // +kubebuilder:validation:XValidation:rule="(!has(self.pvc) && has(self.path)) ? self.path.startsWith('/') : true",message="Ephemeral stores must have absolute paths."
 =======
@@ -257,6 +292,8 @@ type RegistryFilePersistence struct {
 	PvcConfig          *PvcConfig         `json:"pvc,omitempty"`
 	S3AdditionalKwargs *map[string]string `json:"s3_additional_kwargs,omitempty"`
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 // PvcConfig defines the settings for a persistent file store based on PVCs.

@@ -711,7 +711,24 @@ var _ = Describe("FeatureStore Controller", func() {
 			repoConfigOffline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(&testConfig))
+=======
+			regRemote := services.RegistryConfig{
+				RegistryType: services.RegistryRemoteConfigType,
+				Path:         "feast-services-registry.default.svc.cluster.local:80",
+			}
+			offlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore: services.OfflineStoreConfig{
+					Type: services.OfflineFilePersistenceDaskConfigType,
+				},
+				Registry: regRemote,
+			}
+			Expect(repoConfigOffline).To(Equal(offlineConfig))
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 
 			// check online config
 <<<<<<< HEAD

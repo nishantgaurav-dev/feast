@@ -23,7 +23,10 @@ import (
 	. "github.com/onsi/gomega"
 	"gopkg.in/yaml.v3"
 	corev1 "k8s.io/api/core/v1"
+<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 
 	feastdevv1alpha1 "github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 )
@@ -36,7 +39,27 @@ var _ = Describe("Repo Config", func() {
 			By("Having the minimal created resource")
 			featureStore := minimalFeatureStore()
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 
+=======
+			var repoConfig RepoConfig
+			repoConfig, err := getServiceRepoConfig(OfflineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			expectedRegistryConfig := RegistryConfig{
 				RegistryType: "file",
 <<<<<<< HEAD
@@ -71,7 +94,26 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 
+=======
+			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			expectedRegistryConfig = RegistryConfig{
 				RegistryType: "file",
 				Path:         "file.db",
@@ -96,13 +138,18 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 			repoConfig, err = getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
+=======
+			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
 			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig))
 			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
 			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig))
 
+<<<<<<< HEAD
 			By("Having an offlineStore with PVC")
 			mountPath := "/testing"
 			expectedOnlineConfig.Path = mountPath + "/" + DefaultOnlineStorePath
@@ -126,12 +173,24 @@ var _ = Describe("Repo Config", func() {
 			Expect(appliedServices.Registry.Local.Persistence.FilePersistence.Path).To(Equal(expectedRegistryConfig.Path))
 
 			repoConfig, err = getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
+=======
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(repoConfig.OfflineStore).To(Equal(defaultOfflineStoreConfig))
 			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
 			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
 			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
 
+<<<<<<< HEAD
+=======
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			By("Having the all the file services")
 			featureStore = minimalFeatureStore()
 			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -160,10 +219,36 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 
 			expectedOfflineConfig := OfflineStoreConfig{
 				Type: "duckdb",
 			}
+=======
+			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			expectedOfflineConfig := OfflineStoreConfig{
+				Type: "duckdb",
+			}
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			expectedOnlineConfig := OnlineStoreConfig{
+				Type: "sqlite",
+				Path: "/data/online.db",
+			}
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			expectedRegistryConfig = RegistryConfig{
 				RegistryType: "file",
 				Path:         "/data/registry.db",
@@ -301,6 +386,82 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
 			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
 			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
+
+			By("Having the all the db services")
+			featureStore = minimalFeatureStore()
+			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+				OfflineStore: &feastdevv1alpha1.OfflineStore{
+					Persistence: &feastdevv1alpha1.OfflineStorePersistence{
+						DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
+							Type: string(OfflineDBPersistenceSnowflakeConfigType),
+							SecretRef: &corev1.LocalObjectReference{
+								Name: "offline-test-secret",
+							},
+						},
+					},
+				},
+				OnlineStore: &feastdevv1alpha1.OnlineStore{
+					Persistence: &feastdevv1alpha1.OnlineStorePersistence{
+						DBPersistence: &feastdevv1alpha1.OnlineStoreDBStorePersistence{
+							Type: string(OnlineDBPersistenceSnowflakeConfigType),
+							SecretRef: &corev1.LocalObjectReference{
+								Name: "online-test-secret",
+							},
+						},
+					},
+				},
+				Registry: &feastdevv1alpha1.Registry{
+					Local: &feastdevv1alpha1.LocalRegistryConfig{
+						Persistence: &feastdevv1alpha1.RegistryPersistence{
+							DBPersistence: &feastdevv1alpha1.RegistryDBStorePersistence{
+								Type: string(RegistryDBPersistenceSnowflakeConfigType),
+								SecretRef: &corev1.LocalObjectReference{
+									Name: "registry-test-secret",
+								},
+							},
+						},
+					},
+				},
+			}
+			parameterMap := createParameterMap()
+			ApplyDefaultsToStatus(featureStore)
+			featureStore.Spec.Services.OfflineStore.Persistence.FilePersistence = nil
+			featureStore.Spec.Services.OnlineStore.Persistence.FilePersistence = nil
+			featureStore.Spec.Services.Registry.Local.Persistence.FilePersistence = nil
+			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, mockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			newMap := CopyMap(parameterMap)
+			port := parameterMap["port"].(int)
+			delete(newMap, "port")
+			expectedOfflineConfig = OfflineStoreConfig{
+				Type:         OfflineDBPersistenceSnowflakeConfigType,
+				Port:         port,
+				DBParameters: newMap,
+			}
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, mockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			newMap = CopyMap(parameterMap)
+			expectedOnlineConfig = OnlineStoreConfig{
+				Type:         OnlineDBPersistenceSnowflakeConfigType,
+				DBParameters: newMap,
+			}
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, mockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			expectedRegistryConfig = RegistryConfig{
+				RegistryType: RegistryDBPersistenceSnowflakeConfigType,
+				DBParameters: parameterMap,
+			}
+			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
 		})
 	})
 	It("should fail to create the repo configs", func() {
@@ -375,6 +536,7 @@ func minimalFeatureStore() *feastdevv1alpha1.FeatureStore {
 	}
 }
 
+<<<<<<< HEAD
 func minimalFeatureStoreWithAllServices() *feastdevv1alpha1.FeatureStore {
 	feast := minimalFeatureStore()
 	feast.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -400,6 +562,16 @@ func mockOidcConfigFromSecret(
 	}
 }
 
+=======
+func emptyMockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+	return map[string]interface{}{}, nil
+}
+
+func mockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+	return createParameterMap(), nil
+}
+
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 func createParameterMap() map[string]interface{} {
 	yamlString := `
 hosts:

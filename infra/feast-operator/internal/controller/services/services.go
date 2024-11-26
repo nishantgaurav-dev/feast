@@ -47,6 +47,7 @@ func (feast *FeastServices) ApplyDefaults() error {
 	return nil
 }
 
+<<<<<<< HEAD
 // Deploy the feast services
 func (feast *FeastServices) Deploy() error {
 	openshiftTls, err := feast.checkOpenshiftTls()
@@ -74,6 +75,59 @@ func (feast *FeastServices) Deploy() error {
 	} else {
 		if err := feast.removeFeastServiceByType(OfflineFeastType); err != nil {
 			return err
+=======
+	services := feast.FeatureStore.Status.Applied.Services
+	if services != nil {
+		if services.OfflineStore != nil {
+			offlinePersistence := services.OfflineStore.Persistence
+
+			err := feast.validateOfflineStorePersistence(offlinePersistence)
+			if err != nil {
+				return err
+			}
+
+			if err = feast.deployFeastServiceByType(OfflineFeastType); err != nil {
+				return err
+			}
+		} else {
+			if err := feast.removeFeastServiceByType(OfflineFeastType); err != nil {
+				return err
+			}
+		}
+
+		if services.OnlineStore != nil {
+			onlinePersistence := services.OnlineStore.Persistence
+
+			err := feast.validateOnlineStorePersistence(onlinePersistence)
+			if err != nil {
+				return err
+			}
+
+			if err = feast.deployFeastServiceByType(OnlineFeastType); err != nil {
+				return err
+			}
+		} else {
+			if err := feast.removeFeastServiceByType(OnlineFeastType); err != nil {
+				return err
+			}
+		}
+
+		if feast.isLocalRegistry() {
+			registryPersistence := services.Registry.Local.Persistence
+
+			err := feast.validateRegistryPersistence(registryPersistence)
+			if err != nil {
+				return err
+			}
+
+			if err = feast.deployFeastServiceByType(RegistryFeastType); err != nil {
+				return err
+			}
+		} else {
+			if err := feast.removeFeastServiceByType(RegistryFeastType); err != nil {
+				return err
+			}
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 		}
 	}
 
@@ -120,6 +174,9 @@ func (feast *FeastServices) Deploy() error {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 func (feast *FeastServices) validateRegistryPersistence(registryPersistence *feastdevv1alpha1.RegistryPersistence) error {
 	if registryPersistence != nil {
 		dbPersistence := registryPersistence.DBPersistence
@@ -129,7 +186,11 @@ func (feast *FeastServices) validateRegistryPersistence(registryPersistence *fea
 				return err
 			}
 
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
+=======
+			if dbPersistence.SecretRef != nil {
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err
@@ -150,7 +211,11 @@ func (feast *FeastServices) validateOnlineStorePersistence(onlinePersistence *fe
 				return err
 			}
 
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
+=======
+			if dbPersistence.SecretRef != nil {
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err
@@ -177,7 +242,11 @@ func (feast *FeastServices) validateOfflineStorePersistence(offlinePersistence *
 				return err
 			}
 
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
+=======
+			if dbPersistence.SecretRef != nil {
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err

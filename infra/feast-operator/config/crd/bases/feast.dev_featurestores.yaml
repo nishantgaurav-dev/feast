@@ -388,6 +388,7 @@ spec:
                               the DB store persistence for the offline store service
                             properties:
                               secretKeyName:
+<<<<<<< HEAD
                                 description: By default, the selected store "type"
                                   is used as the SecretKeyName
                                 type: string
@@ -395,6 +396,13 @@ spec:
                                 description: Data store parameters should be placed
                                   as-is from the "feature_store.yaml" under the secret
                                   key. "registry_type" & "type" fields should be removed.
+=======
+                                type: string
+                              secretRef:
+                                description: |-
+                                  LocalObjectReference contains enough information to let you locate the
+                                  referenced object inside the same namespace.
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
                                 properties:
                                   name:
                                     description: |-
@@ -411,6 +419,7 @@ spec:
                                 - redshift
                                 - spark
                                 - postgres
+<<<<<<< HEAD
                                 - trino
                                 - redis
                                 - athena
@@ -419,6 +428,11 @@ spec:
                             required:
                             - secretRef
                             - type
+=======
+                                - feast_trino.trino.TrinoOfflineStore
+                                - redis
+                                type: string
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
                             type: object
                         type: object
                         x-kubernetes-validations:
@@ -863,6 +877,40 @@ spec:
                             - message: Online store does not support S3 or GS buckets.
                               rule: has(self.path) && !self.path.startsWith('s3://')
                                 && !self.path.startsWith('gs://')
+                          store:
+                            description: OnlineStoreDBStorePersistence configures
+                              the DB store persistence for the offline store service
+                            properties:
+                              secretKeyName:
+                                type: string
+                              secretRef:
+                                description: |-
+                                  LocalObjectReference contains enough information to let you locate the
+                                  referenced object inside the same namespace.
+                                properties:
+                                  name:
+                                    description: |-
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                    type: string
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              type:
+                                enum:
+                                - snowflake.online
+                                - redis
+                                - ikv
+                                - datastore
+                                - dynamodb
+                                - bigtable
+                                - postgres
+                                - cassandra
+                                - mysql
+                                - hazelcast
+                                - singlestore
+                                type: string
+                            type: object
                         type: object
                         x-kubernetes-validations:
                         - message: One selection required between file or store.
@@ -1324,6 +1372,31 @@ spec:
                                     for S3 object store URIs.
                                   rule: '(has(self.s3_additional_kwargs) && has(self.path))
                                     ? self.path.startsWith(''s3://'') : true'
+                              store:
+                                description: RegistryDBStorePersistence configures
+                                  the DB store persistence for the registry service
+                                properties:
+                                  secretKeyName:
+                                    type: string
+                                  secretRef:
+                                    description: |-
+                                      LocalObjectReference contains enough information to let you locate the
+                                      referenced object inside the same namespace.
+                                    properties:
+                                      name:
+                                        description: |-
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                        type: string
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type:
+                                    enum:
+                                    - sql
+                                    - snowflake.registry
+                                    type: string
+                                type: object
                             type: object
                             x-kubernetes-validations:
                             - message: One selection required between file or store.
@@ -1836,6 +1909,7 @@ spec:
                                   the DB store persistence for the offline store service
                                 properties:
                                   secretKeyName:
+<<<<<<< HEAD
                                     description: By default, the selected store "type"
                                       is used as the SecretKeyName
                                     type: string
@@ -1844,6 +1918,13 @@ spec:
                                       as-is from the "feature_store.yaml" under the
                                       secret key. "registry_type" & "type" fields
                                       should be removed.
+=======
+                                    type: string
+                                  secretRef:
+                                    description: |-
+                                      LocalObjectReference contains enough information to let you locate the
+                                      referenced object inside the same namespace.
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
                                     properties:
                                       name:
                                         description: |-
@@ -1860,6 +1941,7 @@ spec:
                                     - redshift
                                     - spark
                                     - postgres
+<<<<<<< HEAD
                                     - trino
                                     - redis
                                     - athena
@@ -1868,6 +1950,11 @@ spec:
                                 required:
                                 - secretRef
                                 - type
+=======
+                                    - feast_trino.trino.TrinoOfflineStore
+                                    - redis
+                                    type: string
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
                                 type: object
                             type: object
                             x-kubernetes-validations:
@@ -2319,6 +2406,40 @@ spec:
                                     buckets.
                                   rule: has(self.path) && !self.path.startsWith('s3://')
                                     && !self.path.startsWith('gs://')
+                              store:
+                                description: OnlineStoreDBStorePersistence configures
+                                  the DB store persistence for the offline store service
+                                properties:
+                                  secretKeyName:
+                                    type: string
+                                  secretRef:
+                                    description: |-
+                                      LocalObjectReference contains enough information to let you locate the
+                                      referenced object inside the same namespace.
+                                    properties:
+                                      name:
+                                        description: |-
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                        type: string
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type:
+                                    enum:
+                                    - snowflake.online
+                                    - redis
+                                    - ikv
+                                    - datastore
+                                    - dynamodb
+                                    - bigtable
+                                    - postgres
+                                    - cassandra
+                                    - mysql
+                                    - hazelcast
+                                    - singlestore
+                                    type: string
+                                type: object
                             type: object
                             x-kubernetes-validations:
                             - message: One selection required between file or store.
@@ -2789,6 +2910,31 @@ spec:
                                         only for S3 object store URIs.
                                       rule: '(has(self.s3_additional_kwargs) && has(self.path))
                                         ? self.path.startsWith(''s3://'') : true'
+                                  store:
+                                    description: RegistryDBStorePersistence configures
+                                      the DB store persistence for the registry service
+                                    properties:
+                                      secretKeyName:
+                                        type: string
+                                      secretRef:
+                                        description: |-
+                                          LocalObjectReference contains enough information to let you locate the
+                                          referenced object inside the same namespace.
+                                        properties:
+                                          name:
+                                            description: |-
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                            type: string
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      type:
+                                        enum:
+                                        - sql
+                                        - snowflake.registry
+                                        type: string
+                                    type: object
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection required between file or

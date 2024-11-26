@@ -59,6 +59,7 @@ type FeatureStoreReconciler struct {
 <<<<<<< HEAD
 <<<<<<< HEAD
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims;serviceaccounts,verbs=get;list;create;update;watch;delete
+<<<<<<< HEAD
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles;rolebindings,verbs=get;list;create;update;watch;delete
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list
 =======
@@ -67,6 +68,9 @@ type FeatureStoreReconciler struct {
 =======
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims;serviceaccounts,verbs=get;list;create;update;watch;delete
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
+=======
+//+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.

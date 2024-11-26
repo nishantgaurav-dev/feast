@@ -225,8 +225,11 @@ type OfflineStoreConfig struct {
 	Host         string                 `yaml:"host,omitempty"`
 	Type         OfflineConfigType      `yaml:"type,omitempty"`
 	Port         int                    `yaml:"port,omitempty"`
+<<<<<<< HEAD
 	Scheme       string                 `yaml:"scheme,omitempty"`
 	Cert         string                 `yaml:"cert,omitempty"`
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 	DBParameters map[string]interface{} `yaml:",inline,omitempty"`
 }
 
@@ -234,12 +237,16 @@ type OfflineStoreConfig struct {
 type OnlineStoreConfig struct {
 	Path         string                 `yaml:"path,omitempty"`
 	Type         OnlineConfigType       `yaml:"type,omitempty"`
+<<<<<<< HEAD
 	Cert         string                 `yaml:"cert,omitempty"`
+=======
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 	DBParameters map[string]interface{} `yaml:",inline,omitempty"`
 }
 
 // RegistryConfig is the configuration that relates to reading from and writing to the Feast registry.
 type RegistryConfig struct {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	Path               string                 `yaml:"path,omitempty"`
 	RegistryType       RegistryConfigType     `yaml:"registry_type,omitempty"`
@@ -257,6 +264,12 @@ type AuthzConfig struct {
 	RegistryType       RegistryConfigType `yaml:"registry_type,omitempty"`
 	S3AdditionalKwargs *map[string]string `json:"s3_additional_kwargs,omitempty"`
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
+=======
+	Path               string                 `yaml:"path,omitempty"`
+	RegistryType       RegistryConfigType     `yaml:"registry_type,omitempty"`
+	S3AdditionalKwargs *map[string]string     `yaml:"s3_additional_kwargs,omitempty"`
+	DBParameters       map[string]interface{} `yaml:",inline,omitempty"`
+>>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
 type deploymentSettings struct {
