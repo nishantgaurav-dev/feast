@@ -187,10 +187,14 @@ func (feast *FeastServices) validateRegistryPersistence(registryPersistence *fea
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
 =======
 			if dbPersistence.SecretRef != nil {
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+			if len(dbPersistence.SecretRef.Name) > 0 {
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err
@@ -212,10 +216,14 @@ func (feast *FeastServices) validateOnlineStorePersistence(onlinePersistence *fe
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
 =======
 			if dbPersistence.SecretRef != nil {
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+			if len(dbPersistence.SecretRef.Name) > 0 {
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err
@@ -243,10 +251,14 @@ func (feast *FeastServices) validateOfflineStorePersistence(offlinePersistence *
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if len(dbPersistence.SecretRef.Name) > 0 {
 =======
 			if dbPersistence.SecretRef != nil {
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+			if len(dbPersistence.SecretRef.Name) > 0 {
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
 				secretRef := dbPersistence.SecretRef.Name
 				if _, err := feast.getSecret(secretRef); err != nil {
 					return err

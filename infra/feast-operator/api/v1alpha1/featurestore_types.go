@@ -132,9 +132,9 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 // OfflineStoreDBStorePersistence configures the DB store persistence for the offline store service
 type OfflineStoreDBStorePersistence struct {
 	// +kubebuilder:validation:Enum=snowflake.offline;bigquery;redshift;spark;postgres;feast_trino.trino.TrinoOfflineStore;redis
-	Type          string                       `json:"type,omitempty"`
-	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
-	SecretKeyName string                       `json:"secretKeyName,omitempty"`
+	Type          string                      `json:"type"`
+	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
+	SecretKeyName string                      `json:"secretKeyName,omitempty"`
 }
 
 var ValidOfflineStoreDBStorePersistenceTypes = []string{
@@ -190,10 +190,16 @@ type OnlineStoreDBStorePersistence struct {
 	SecretKeyName string `json:"secretKeyName,omitempty"`
 =======
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore
+<<<<<<< HEAD
 	Type          string                       `json:"type,omitempty"`
 	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
 	SecretKeyName string                       `json:"secretKeyName,omitempty"`
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	Type          string                      `json:"type"`
+	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
+	SecretKeyName string                      `json:"secretKeyName,omitempty"`
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
 }
 
 var ValidOnlineStoreDBStorePersistenceTypes = []string{
@@ -258,6 +264,7 @@ type RegistryFilePersistence struct {
 type RegistryDBStorePersistence struct {
 	// +kubebuilder:validation:Enum=sql;snowflake.registry
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
@@ -268,6 +275,11 @@ type RegistryDBStorePersistence struct {
 	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
 	SecretKeyName string                       `json:"secretKeyName,omitempty"`
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	Type          string                      `json:"type"`
+	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
+	SecretKeyName string                      `json:"secretKeyName,omitempty"`
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
 }
 
 var ValidRegistryDBStorePersistenceTypes = []string{

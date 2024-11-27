@@ -432,7 +432,13 @@ spec:
                                 - feast_trino.trino.TrinoOfflineStore
                                 - redis
                                 type: string
+<<<<<<< HEAD
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+                            required:
+                            - secretRef
+                            - type
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
                             type: object
                         type: object
                         x-kubernetes-validations:
@@ -910,6 +916,9 @@ spec:
                                 - hazelcast
                                 - singlestore
                                 type: string
+                            required:
+                            - secretRef
+                            - type
                             type: object
                         type: object
                         x-kubernetes-validations:
@@ -1396,6 +1405,9 @@ spec:
                                     - sql
                                     - snowflake.registry
                                     type: string
+                                required:
+                                - secretRef
+                                - type
                                 type: object
                             type: object
                             x-kubernetes-validations:
@@ -1954,7 +1966,13 @@ spec:
                                     - feast_trino.trino.TrinoOfflineStore
                                     - redis
                                     type: string
+<<<<<<< HEAD
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+                                required:
+                                - secretRef
+                                - type
+>>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
                                 type: object
                             type: object
                             x-kubernetes-validations:
@@ -2439,6 +2457,9 @@ spec:
                                     - hazelcast
                                     - singlestore
                                     type: string
+                                required:
+                                - secretRef
+                                - type
                                 type: object
                             type: object
                             x-kubernetes-validations:
@@ -2934,6 +2955,9 @@ spec:
                                         - sql
                                         - snowflake.registry
                                         type: string
+                                    required:
+                                    - secretRef
+                                    - type
                                     type: object
                                 type: object
                                 x-kubernetes-validations:
