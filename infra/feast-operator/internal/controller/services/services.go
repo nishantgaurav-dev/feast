@@ -48,6 +48,7 @@ func (feast *FeastServices) ApplyDefaults() error {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Deploy the feast services
 func (feast *FeastServices) Deploy() error {
 	openshiftTls, err := feast.checkOpenshiftTls()
@@ -77,6 +78,9 @@ func (feast *FeastServices) Deploy() error {
 			return err
 =======
 	services := feast.FeatureStore.Status.Applied.Services
+=======
+	services := feast.Handler.FeatureStore.Status.Applied.Services
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	if services != nil {
 		if services.OfflineStore != nil {
 			offlinePersistence := services.OfflineStore.Persistence
@@ -272,6 +276,7 @@ func (feast *FeastServices) validateOfflineStorePersistence(offlinePersistence *
 
 func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType) error {
 	if pvcCreate, shouldCreate := shouldCreatePvc(feast.Handler.FeatureStore, feastType); shouldCreate {
+<<<<<<< HEAD
 		if err := feast.createPVC(pvcCreate, feastType); err != nil {
 			return feast.setFeastServiceCondition(err, feastType)
 		}
@@ -285,11 +290,13 @@ func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType)
 func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType) error {
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	if pvcCreate, shouldCreate := shouldCreatePvc(feast.FeatureStore, feastType); shouldCreate {
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		if err := feast.createPVC(pvcCreate, feastType); err != nil {
 			return feast.setFeastServiceCondition(err, feastType)
 		}
 	} else {
-		_ = feast.deleteOwnedFeastObj(feast.initPVC(feastType))
+		_ = feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType))
 	}
 	if err := feast.createServiceAccount(feastType); err != nil {
 		return feast.setFeastServiceCondition(err, feastType)
@@ -305,17 +312,22 @@ func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType)
 
 func (feast *FeastServices) removeFeastServiceByType(feastType FeastServiceType) error {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
 		return err
 	}
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType)); err != nil {
 =======
 	if err := feast.deleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
+=======
+	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		return err
 	}
-	if err := feast.deleteOwnedFeastObj(feast.initFeastDeploy(feastType)); err != nil {
+	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastDeploy(feastType)); err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if err := feast.deleteOwnedFeastObj(feast.initFeastSA(feastType)); err != nil {
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 		return err
@@ -328,6 +340,15 @@ func (feast *FeastServices) removeFeastServiceByType(feastType FeastServiceType)
 	}
 	apimeta.RemoveStatusCondition(&feast.FeatureStore.Status.Conditions, FeastServiceConditions[feastType][metav1.ConditionTrue].Type)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSA(feastType)); err != nil {
+		return err
+	}
+	if err := feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType)); err != nil {
+		return err
+	}
+	apimeta.RemoveStatusCondition(&feast.Handler.FeatureStore.Status.Conditions, FeastServiceConditions[feastType][metav1.ConditionTrue].Type)
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	return nil
 }
 
@@ -352,9 +373,9 @@ func (feast *FeastServices) createServiceAccount() error {
 		return feast.setServiceAccount(sa)
 =======
 func (feast *FeastServices) createServiceAccount(feastType FeastServiceType) error {
-	logger := log.FromContext(feast.Context)
+	logger := log.FromContext(feast.Handler.Context)
 	sa := feast.initFeastSA(feastType)
-	if op, err := controllerutil.CreateOrUpdate(feast.Context, feast.Client, sa, controllerutil.MutateFn(func() error {
+	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, sa, controllerutil.MutateFn(func() error {
 		return feast.setServiceAccount(sa, feastType)
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	})); err != nil {
@@ -373,9 +394,9 @@ func (feast *FeastServices) createDeployment() error {
 		return feast.setDeployment(deploy)
 =======
 func (feast *FeastServices) createDeployment(feastType FeastServiceType) error {
-	logger := log.FromContext(feast.Context)
+	logger := log.FromContext(feast.Handler.Context)
 	deploy := feast.initFeastDeploy(feastType)
-	if op, err := controllerutil.CreateOrUpdate(feast.Context, feast.Client, deploy, controllerutil.MutateFn(func() error {
+	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, deploy, controllerutil.MutateFn(func() error {
 		return feast.setDeployment(deploy, feastType)
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 	})); err != nil {
@@ -389,18 +410,22 @@ func (feast *FeastServices) createDeployment(feastType FeastServiceType) error {
 
 func (feast *FeastServices) createPVC(pvcCreate *feastdevv1alpha1.PvcCreate, feastType FeastServiceType) error {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	logger := log.FromContext(feast.Handler.Context)
 	pvc, err := feast.createNewPVC(pvcCreate, feastType)
 =======
 	logger := log.FromContext(feast.Context)
+=======
+	logger := log.FromContext(feast.Handler.Context)
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	pvc, err := feast.createNewPVC(pvcCreate, feastType)
 	if err != nil {
 		return err
 	}
 
-	err = feast.Client.Get(feast.Context, client.ObjectKeyFromObject(pvc), pvc)
+	err = feast.Handler.Client.Get(feast.Handler.Context, client.ObjectKeyFromObject(pvc), pvc)
 	if err != nil && apierrors.IsNotFound(err) {
-		err = feast.Client.Create(feast.Context, pvc)
+		err = feast.Handler.Client.Create(feast.Handler.Context, pvc)
 		if err != nil {
 			return err
 		}
@@ -499,12 +524,16 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 	// configs are applied here
 	container := &deploy.Spec.Template.Spec.Containers[0]
 	applyOptionalContainerConfigs(container, serviceConfigs.OptionalConfigs)
-	if pvcConfig, hasPvcConfig := hasPvcConfig(feast.FeatureStore, feastType); hasPvcConfig {
+	if pvcConfig, hasPvcConfig := hasPvcConfig(feast.Handler.FeatureStore, feastType); hasPvcConfig {
 		mountPvcConfig(&deploy.Spec.Template.Spec, pvcConfig, deploy.Name)
 	}
 
+<<<<<<< HEAD
 	return controllerutil.SetControllerReference(feast.FeatureStore, deploy, feast.Scheme)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, deploy, feast.Handler.Scheme)
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 func (feast *FeastServices) setPod(podSpec *corev1.PodSpec) error {
@@ -677,6 +706,7 @@ func (feast *FeastServices) setService(svc *corev1.Service, feastType FeastServi
 	}
 
 	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, svc, feast.Handler.Scheme)
+<<<<<<< HEAD
 }
 
 func (feast *FeastServices) setServiceAccount(sa *corev1.ServiceAccount) error {
@@ -695,11 +725,13 @@ func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, 
 		pvc.Spec.StorageClassName = pvcCreate.StorageClassName
 	}
 	return pvc, controllerutil.SetControllerReference(feast.Handler.FeatureStore, pvc, feast.Handler.Scheme)
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 func (feast *FeastServices) setServiceAccount(sa *corev1.ServiceAccount, feastType FeastServiceType) error {
 	sa.Labels = feast.getLabels(feastType)
-	return controllerutil.SetControllerReference(feast.FeatureStore, sa, feast.Scheme)
+	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, sa, feast.Handler.Scheme)
 }
 
 func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, feastType FeastServiceType) (*corev1.PersistentVolumeClaim, error) {
@@ -712,10 +744,11 @@ func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, 
 	if pvcCreate.StorageClassName != nil {
 		pvc.Spec.StorageClassName = pvcCreate.StorageClassName
 	}
-	return pvc, controllerutil.SetControllerReference(feast.FeatureStore, pvc, feast.Scheme)
+	return pvc, controllerutil.SetControllerReference(feast.Handler.FeatureStore, pvc, feast.Handler.Scheme)
 }
 
 func (feast *FeastServices) getServiceConfigs(feastType FeastServiceType) feastdevv1alpha1.ServiceConfigs {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	appliedServices := feast.Handler.FeatureStore.Status.Applied.Services
 	switch feastType {
@@ -732,6 +765,9 @@ func (feast *FeastServices) getServiceConfigs(feastType FeastServiceType) feastd
 			return appliedServices.Registry.Local.ServiceConfigs
 =======
 	appliedSpec := feast.FeatureStore.Status.Applied
+=======
+	appliedSpec := feast.Handler.FeatureStore.Status.Applied
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	switch feastType {
 	case OfflineFeastType:
 		if appliedSpec.Services.OfflineStore != nil {
@@ -752,6 +788,7 @@ func (feast *FeastServices) getServiceConfigs(feastType FeastServiceType) feastd
 	return feastdevv1alpha1.ServiceConfigs{}
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) getLogLevelForType(feastType FeastServiceType) *string {
 	services := feast.Handler.FeatureStore.Status.Applied.Services
 	switch feastType {
@@ -778,6 +815,10 @@ func (feast *FeastServices) GetObjectMeta() metav1.ObjectMeta {
 
 // GetObjectMeta returns the feast k8s object metadata with type
 func (feast *FeastServices) GetObjectMetaType(feastType FeastServiceType) metav1.ObjectMeta {
+=======
+// GetObjectMeta returns the feast k8s object metadata
+func (feast *FeastServices) GetObjectMeta(feastType FeastServiceType) metav1.ObjectMeta {
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	return metav1.ObjectMeta{Name: feast.GetFeastServiceName(feastType), Namespace: feast.Handler.FeatureStore.Namespace}
 }
 
@@ -802,12 +843,18 @@ func (feast *FeastServices) getFeastTypeLabels(feastType FeastServiceType) map[s
 
 func (feast *FeastServices) getLabels() map[string]string {
 	return map[string]string{
+<<<<<<< HEAD
 		NameLabelKey: feast.Handler.FeatureStore.Name,
+=======
+		NameLabelKey:        feast.Handler.FeatureStore.Name,
+		ServiceTypeLabelKey: string(feastType),
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	}
 }
 
 func (feast *FeastServices) setServiceHostnames() error {
 	feast.Handler.FeatureStore.Status.ServiceHostnames = feastdevv1alpha1.ServiceHostnames{}
+<<<<<<< HEAD
 	domain := svcDomain + ":"
 	if feast.isOfflinStore() {
 		objMeta := feast.initFeastSvc(OfflineFeastType)
@@ -825,6 +872,25 @@ func (feast *FeastServices) setServiceHostnames() error {
 			getPortStr(feast.Handler.FeatureStore.Status.Applied.Services.Registry.Local.TLS)
 	} else if feast.isRemoteRegistry() {
 		return feast.setRemoteRegistryURL()
+=======
+	services := feast.Handler.FeatureStore.Status.Applied.Services
+	if services != nil {
+		domain := svcDomain + ":" + strconv.Itoa(HttpPort)
+		if services.OfflineStore != nil {
+			objMeta := feast.GetObjectMeta(OfflineFeastType)
+			feast.Handler.FeatureStore.Status.ServiceHostnames.OfflineStore = objMeta.Name + "." + objMeta.Namespace + domain
+		}
+		if services.OnlineStore != nil {
+			objMeta := feast.GetObjectMeta(OnlineFeastType)
+			feast.Handler.FeatureStore.Status.ServiceHostnames.OnlineStore = objMeta.Name + "." + objMeta.Namespace + domain
+		}
+		if feast.isLocalRegistry() {
+			objMeta := feast.GetObjectMeta(RegistryFeastType)
+			feast.Handler.FeatureStore.Status.ServiceHostnames.Registry = objMeta.Name + "." + objMeta.Namespace + domain
+		} else if feast.isRemoteRegistry() {
+			return feast.setRemoteRegistryURL()
+		}
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	}
 	return nil
 }
@@ -848,6 +914,7 @@ func (feast *FeastServices) setRemoteRegistryURL() error {
 	if feast.isRemoteHostnameRegistry() {
 		feast.Handler.FeatureStore.Status.ServiceHostnames.Registry = *feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.Hostname
 	} else if feast.IsRemoteRefRegistry() {
+<<<<<<< HEAD
 		remoteFeast, err := feast.getRemoteRegistryFeastHandler()
 		if err != nil {
 			return err
@@ -857,6 +924,39 @@ func (feast *FeastServices) setRemoteRegistryURL() error {
 			remoteFeast.isLocalRegistry() &&
 			apimeta.IsStatusConditionTrue(remoteFeast.Handler.FeatureStore.Status.Conditions, feastdevv1alpha1.RegistryReadyType) {
 			feast.Handler.FeatureStore.Status.ServiceHostnames.Registry = remoteFeast.Handler.FeatureStore.Status.ServiceHostnames.Registry
+=======
+		feastRemoteRef := feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.FeastRef
+		// default to FeatureStore namespace if not set
+		if len(feastRemoteRef.Namespace) == 0 {
+			feastRemoteRef.Namespace = feast.Handler.FeatureStore.Namespace
+		}
+
+		nsName := types.NamespacedName{Name: feastRemoteRef.Name, Namespace: feastRemoteRef.Namespace}
+		crNsName := client.ObjectKeyFromObject(feast.Handler.FeatureStore)
+		if nsName == crNsName {
+			return errors.New("FeatureStore '" + crNsName.Name + "' can't reference itself in `spec.services.registry.remote.feastRef`")
+		}
+
+		remoteFeastObj := &feastdevv1alpha1.FeatureStore{}
+		if err := feast.Handler.Client.Get(feast.Handler.Context, nsName, remoteFeastObj); err != nil {
+			if apierrors.IsNotFound(err) {
+				return errors.New("Referenced FeatureStore '" + feastRemoteRef.Name + "' was not found")
+			}
+			return err
+		}
+
+		remoteFeast := FeastServices{
+			Handler: handler.FeastHandler{
+				Client:       feast.Handler.Client,
+				Context:      feast.Handler.Context,
+				FeatureStore: remoteFeastObj,
+				Scheme:       feast.Handler.Scheme,
+			},
+		}
+		// referenced/remote registry must use the local install option and be in a 'Ready' state.
+		if remoteFeast.isLocalRegistry() && apimeta.IsStatusConditionTrue(remoteFeastObj.Status.Conditions, feastdevv1alpha1.RegistryReadyType) {
+			feast.Handler.FeatureStore.Status.ServiceHostnames.Registry = remoteFeastObj.Status.ServiceHostnames.Registry
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		} else {
 			return errors.New("Remote feast registry of referenced FeatureStore '" + remoteFeast.Handler.FeatureStore.Name + "' is not ready")
 		}
@@ -896,6 +996,7 @@ func (feast *FeastServices) isLocalRegistry() bool {
 }
 
 func (feast *FeastServices) isRemoteRegistry() bool {
+<<<<<<< HEAD
 	return isRemoteRegistry(feast.Handler.FeatureStore)
 }
 
@@ -907,6 +1008,26 @@ func (feast *FeastServices) IsRemoteRefRegistry() bool {
 func (feast *FeastServices) isRemoteHostnameRegistry() bool {
 	return feast.isRemoteRegistry() &&
 		feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.Hostname != nil
+=======
+	appliedServices := feast.Handler.FeatureStore.Status.Applied.Services
+	return appliedServices != nil && appliedServices.Registry != nil && appliedServices.Registry.Remote != nil
+}
+
+func (feast *FeastServices) IsRemoteRefRegistry() bool {
+	if feast.isRemoteRegistry() {
+		remote := feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote
+		return remote != nil && remote.FeastRef != nil
+	}
+	return false
+}
+
+func (feast *FeastServices) isRemoteHostnameRegistry() bool {
+	if feast.isRemoteRegistry() {
+		remote := feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote
+		return remote != nil && remote.Hostname != nil
+	}
+	return false
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 func (feast *FeastServices) isOfflinStore() bool {
@@ -965,6 +1086,7 @@ func (feast *FeastServices) initPVC(feastType FeastServiceType) *corev1.Persiste
 	return pvc
 }
 
+<<<<<<< HEAD
 // delete an object if the FeatureStore is set as the object's controller/owner
 func (feast *FeastServices) deleteOwnedFeastObj(obj client.Object) error {
 	name := obj.GetName()
@@ -988,6 +1110,8 @@ func (feast *FeastServices) deleteOwnedFeastObj(obj client.Object) error {
 	return pvc
 }
 
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 func applyOptionalContainerConfigs(container *corev1.Container, optionalConfigs feastdevv1alpha1.OptionalConfigs) {
 	if optionalConfigs.Env != nil {
 		container.Env = envOverride(container.Env, *optionalConfigs.Env)

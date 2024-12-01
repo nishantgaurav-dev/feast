@@ -54,6 +54,7 @@ func (feast *FeastServices) setClientConfigMap(cm *corev1.ConfigMap) error {
 	cm.Data = map[string]string{FeatureStoreYamlCmKey: string(clientYaml)}
 	feast.Handler.FeatureStore.Status.ClientConfigMap = cm.Name
 	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, cm, feast.Handler.Scheme)
+<<<<<<< HEAD
 }
 
 func (feast *FeastServices) createCaConfigMap() error {
@@ -85,4 +86,6 @@ func (feast *FeastServices) initCaConfigMap() *corev1.ConfigMap {
 	}
 	cm.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("ConfigMap"))
 	return cm
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }

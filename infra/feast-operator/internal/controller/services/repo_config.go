@@ -87,14 +87,14 @@ func getServiceRepoConfig(
 =======
 =======
 func (feast *FeastServices) getServiceRepoConfig(feastType FeastServiceType) (RepoConfig, error) {
-	return getServiceRepoConfig(feastType, feast.FeatureStore, feast.extractConfigFromSecret)
+	return getServiceRepoConfig(feastType, feast.Handler.FeatureStore, feast.extractConfigFromSecret)
 }
 
 func getServiceRepoConfig(feastType FeastServiceType, featureStore *feastdevv1alpha1.FeatureStore, secretExtractionFunc func(secretRef string, secretKeyName string) (map[string]interface{}, error)) (RepoConfig, error) {
 	appliedSpec := featureStore.Status.Applied
 
 	repoConfig := getClientRepoConfig(featureStore)
-	isLocalReg := isLocalRegistry(featureStore)
+	isLocalRegistry := IsLocalRegistry(featureStore)
 	if appliedSpec.Services != nil {
 		services := appliedSpec.Services
 
@@ -118,7 +118,7 @@ func getServiceRepoConfig(feastType FeastServiceType, featureStore *feastdevv1al
 			}
 		case RegistryFeastType:
 			// Registry server only has a `registry` section
-			if isLocalReg {
+			if isLocalRegistry {
 				err := setRepoConfigRegistry(services, secretExtractionFunc, &repoConfig)
 				if err != nil {
 					return repoConfig, err
@@ -282,8 +282,12 @@ func setRepoConfigOffline(services *feastdevv1alpha1.FeatureStoreServices, secre
 }
 
 func (feast *FeastServices) getClientFeatureStoreYaml() ([]byte, error) {
+<<<<<<< HEAD
 	return yaml.Marshal(getClientRepoConfig(feast.FeatureStore))
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	return yaml.Marshal(getClientRepoConfig(feast.Handler.FeatureStore))
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 func setRepoConfigRegistry(services *feastdevv1alpha1.FeatureStoreServices, secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error), repoConfig *RepoConfig) error {
@@ -438,6 +442,7 @@ func getClientRepoConfig(
 		}
 	}
 
+<<<<<<< HEAD
 	return clientRepoConfig, nil
 }
 
@@ -582,6 +587,20 @@ var defaultOfflineStoreConfig = OfflineStoreConfig{
 
 var defaultAuthzConfig = AuthzConfig{
 	Type: NoAuthAuthType,
+=======
+	if status.Applied.AuthzConfig.KubernetesAuthz == nil {
+		clientRepoConfig.AuthzConfig = AuthzConfig{
+			Type: NoAuthAuthType,
+		}
+	} else {
+		if status.Applied.AuthzConfig.KubernetesAuthz != nil {
+			clientRepoConfig.AuthzConfig = AuthzConfig{
+				Type: KubernetesAuthType,
+			}
+		}
+	}
+	return clientRepoConfig
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 func getActualPath(filePath string, pvcConfig *feastdevv1alpha1.PvcConfig) string {

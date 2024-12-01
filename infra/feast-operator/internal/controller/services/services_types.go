@@ -20,11 +20,15 @@ import (
 	"github.com/feast-dev/feast/infra/feast-operator/api/feastversion"
 	feastdevv1alpha1 "github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 	handler "github.com/feast-dev/feast/infra/feast-operator/internal/controller/handler"
+<<<<<<< HEAD
 	corev1 "k8s.io/api/core/v1"
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
+<<<<<<< HEAD
 <<<<<<< HEAD
 	TmpFeatureStoreYamlEnvVar = "TMP_FEATURE_STORE_YAML_BASE64"
 	FeatureStoreYamlCmKey     = "feature_store.yaml"
@@ -41,6 +45,8 @@ const (
 	tlsNameSuffix = "-tls"
 =======
 	FeastPrefix                     = "feast-"
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	FeatureStoreYamlEnvVar          = "FEATURE_STORE_YAML_BASE64"
 	FeatureStoreYamlCmKey           = "feature_store.yaml"
 	DefaultRegistryEphemeralPath    = "/tmp/registry.db"
@@ -80,6 +86,7 @@ const (
 
 	NoAuthAuthType     AuthzType = "no_auth"
 	KubernetesAuthType AuthzType = "kubernetes"
+<<<<<<< HEAD
 	OidcAuthType       AuthzType = "oidc"
 
 	OidcClientId         OidcPropertyType = "client_id"
@@ -89,6 +96,8 @@ const (
 	OidcPassword         OidcPropertyType = "password"
 
 	OidcMissingSecretError string = "missing OIDC secret: %s"
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 )
 
 var (
@@ -175,6 +184,7 @@ var (
 	OidcClientProperties = []OidcPropertyType{OidcClientSecret, OidcUsername, OidcPassword}
 )
 
+<<<<<<< HEAD
 // feast server types, not the client types
 var feastServerTypes = []FeastServiceType{
 	RegistryFeastType,
@@ -188,6 +198,11 @@ type AuthzType string
 // OidcPropertyType defines the OIDC property type
 type OidcPropertyType string
 
+=======
+// AuthzType defines the authorization type
+type AuthzType string
+
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 // FeastServiceType is the type of feast service
 type FeastServiceType string
 
@@ -257,6 +272,7 @@ type RegistryConfig struct {
 
 // AuthzConfig is the RBAC authorization configuration.
 type AuthzConfig struct {
+<<<<<<< HEAD
 	Type           AuthzType              `yaml:"type,omitempty"`
 	OidcParameters map[string]interface{} `yaml:",inline,omitempty"`
 =======
@@ -276,4 +292,12 @@ type deploymentSettings struct {
 	Args            []string
 	TargetHttpPort  int32
 	TargetHttpsPort int32
+=======
+	Type AuthzType `yaml:"type,omitempty"`
+}
+
+type deploymentSettings struct {
+	Command    []string
+	TargetPort int32
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }

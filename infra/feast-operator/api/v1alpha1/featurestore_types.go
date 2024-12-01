@@ -33,7 +33,11 @@ const (
 	OnlineStoreReadyType   = "OnlineStore"
 	RegistryReadyType      = "Registry"
 	ReadyType              = "FeatureStore"
+<<<<<<< HEAD
 	AuthorizationReadyType = "Authorization"
+=======
+	AuthorizationReadyType = "AuthorizationReadyType"
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 
 	// Feast condition reasons:
 	ReadyReason                 = "Ready"
@@ -395,10 +399,15 @@ type OptionalConfigs struct {
 }
 
 // AuthzConfig defines the authorization settings for the deployed Feast services.
+<<<<<<< HEAD
 // +kubebuilder:validation:XValidation:rule="[has(self.kubernetes), has(self.oidc)].exists_one(c, c)",message="One selection required between kubernetes or oidc."
 type AuthzConfig struct {
 	KubernetesAuthz *KubernetesAuthz `json:"kubernetes,omitempty"`
 	OidcAuthz       *OidcAuthz       `json:"oidc,omitempty"`
+=======
+type AuthzConfig struct {
+	KubernetesAuthz *KubernetesAuthz `json:"kubernetes,omitempty"`
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 // KubernetesAuthz provides a way to define the authorization settings using Kubernetes RBAC resources.
@@ -413,6 +422,7 @@ type KubernetesAuthz struct {
 	Roles []string `json:"roles,omitempty"`
 }
 
+<<<<<<< HEAD
 // OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
 // https://auth0.com/docs/authenticate/protocols/openid-connect-protocol
 type OidcAuthz struct {
@@ -458,6 +468,8 @@ type SecretKeyNames struct {
 	TlsKey string `json:"tlsKey,omitempty"`
 }
 
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 // FeatureStoreStatus defines the observed state of FeatureStore
 type FeatureStoreStatus struct {
 	// Shows the currently applied feast configuration, including any pertinent defaults

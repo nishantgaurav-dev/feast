@@ -72,7 +72,10 @@ rules:
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
+<<<<<<< HEAD
   - rolebindings
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
   - roles
   verbs:
   - create

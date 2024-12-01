@@ -60,7 +60,11 @@ type FeatureStoreReconciler struct {
 <<<<<<< HEAD
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims;serviceaccounts,verbs=get;list;create;update;watch;delete
 <<<<<<< HEAD
+<<<<<<< HEAD
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles;rolebindings,verbs=get;list;create;update;watch;delete
+=======
+//+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;update;watch;delete
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list
 =======
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims,verbs=get;list;create;update;watch;delete
@@ -120,7 +124,12 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 		Reason:  feastdevv1alpha1.ReadyReason,
 		Message: feastdevv1alpha1.ReadyMessage,
 	}
+<<<<<<< HEAD
 	feast := services.FeastServices{
+=======
+
+	authz := authz.FeastAuthorization{
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		Handler: feasthandler.FeastHandler{
 			Client:       r.Client,
 			Context:      ctx,
@@ -128,6 +137,7 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 			Scheme:       r.Scheme,
 		},
 	}
+<<<<<<< HEAD
 	authz := authz.FeastAuthorization{
 		Handler: feast.Handler,
 	}
@@ -142,12 +152,36 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 		result = errResult
 	}
 	if err != nil {
+=======
+	if err = authz.Deploy(); err != nil {
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		condition = metav1.Condition{
 			Type:    feastdevv1alpha1.ReadyType,
 			Status:  metav1.ConditionFalse,
 			Reason:  feastdevv1alpha1.FailedReason,
 			Message: "Error: " + err.Error(),
 		}
+<<<<<<< HEAD
+=======
+		result = ctrl.Result{Requeue: true, RequeueAfter: RequeueDelayError}
+	} else {
+		feast := services.FeastServices{
+			Handler: feasthandler.FeastHandler{
+				Client:       r.Client,
+				Context:      ctx,
+				FeatureStore: cr,
+				Scheme:       r.Scheme,
+			}}
+		if err = feast.Deploy(); err != nil {
+			condition = metav1.Condition{
+				Type:    feastdevv1alpha1.ReadyType,
+				Status:  metav1.ConditionFalse,
+				Reason:  feastdevv1alpha1.FailedReason,
+				Message: "Error: " + err.Error(),
+			}
+			result = ctrl.Result{Requeue: true, RequeueAfter: RequeueDelayError}
+		}
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	}
 
 	logger.Info(condition.Message)
@@ -176,11 +210,14 @@ func (r *FeatureStoreReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Owns(&corev1.ServiceAccount{}).
 		Owns(&rbacv1.RoleBinding{}).
 		Owns(&rbacv1.Role{}).
+<<<<<<< HEAD
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 		Owns(&corev1.ServiceAccount{}).
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 		Watches(&feastdevv1alpha1.FeatureStore{}, handler.EnqueueRequestsFromMapFunc(r.mapFeastRefsToFeastRequests)).
 		Complete(r)
 }

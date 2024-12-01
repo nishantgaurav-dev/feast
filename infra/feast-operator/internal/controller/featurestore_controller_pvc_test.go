@@ -43,9 +43,13 @@ import (
 	"github.com/feast-dev/feast/infra/feast-operator/api/feastversion"
 	feastdevv1alpha1 "github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"github.com/feast-dev/feast/infra/feast-operator/internal/controller/handler"
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	"github.com/feast-dev/feast/infra/feast-operator/internal/controller/handler"
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 	"github.com/feast-dev/feast/infra/feast-operator/internal/controller/services"
 )
 
@@ -168,27 +172,37 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			feast := services.FeastServices{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 				Handler: handler.FeastHandler{
 					Client:       controllerReconciler.Client,
 					Context:      ctx,
 					Scheme:       controllerReconciler.Scheme,
 					FeatureStore: resource,
 				},
+<<<<<<< HEAD
 =======
 				Client:       controllerReconciler.Client,
 				Context:      ctx,
 				Scheme:       controllerReconciler.Scheme,
 				FeatureStore: resource,
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 			Expect(resource.Status).NotTo(BeNil())
 			Expect(resource.Status.FeastVersion).To(Equal(feastversion.FeastVersion))
 			Expect(resource.Status.ClientConfigMap).To(Equal(feast.GetFeastServiceName(services.ClientFeastType)))
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence).NotTo(BeNil())
@@ -273,11 +287,17 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(cond.Message).To(Equal(feastdevv1alpha1.ReadyMessage))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
 			Expect(cond).To(BeNil())
 
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
+			Expect(cond).To(BeNil())
+
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.RegistryReadyType)
 			Expect(cond).ToNot(BeNil())
 			Expect(cond.Status).To(Equal(metav1.ConditionTrue))
@@ -498,10 +518,14 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err = k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			feast.Handler.FeatureStore = resource
 =======
 			feast.FeatureStore = resource
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			feast.Handler.FeatureStore = resource
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig).To(BeNil())
 
 			// check online deployment
@@ -530,7 +554,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(deploy.Spec.Template.Spec.Containers[0].VolumeMounts).To(HaveLen(0))
 
 			// check online pvc is deleted
-			log.FromContext(feast.Context).Info("Checking deletion of", "PersistentVolumeClaim", deploy.Name)
+			log.FromContext(feast.Handler.Context).Info("Checking deletion of", "PersistentVolumeClaim", deploy.Name)
 			pvc = &corev1.PersistentVolumeClaim{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      deploy.Name,
@@ -586,12 +610,16 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			feast := services.FeastServices{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 				Handler: handler.FeastHandler{
 					Client:       controllerReconciler.Client,
 					Context:      ctx,
 					Scheme:       controllerReconciler.Scheme,
 					FeatureStore: resource,
 				},
+<<<<<<< HEAD
 			}
 
 			// check deployment
@@ -615,6 +643,8 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 				Context:      ctx,
 				Scheme:       controllerReconciler.Scheme,
 				FeatureStore: resource,
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 
 			// check registry deployment
@@ -650,6 +680,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 					Path:         registryMountedPath,
 				},
 <<<<<<< HEAD
+<<<<<<< HEAD
 				OfflineStore: services.OfflineStoreConfig{
 					Type: services.OfflineFilePersistenceDuckDbConfigType,
 				},
@@ -669,6 +700,9 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			// check offline config
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
 =======
+=======
+				AuthzConfig: noAuthzConfig(),
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 			Expect(repoConfig).To(Equal(testConfig))
 
@@ -719,7 +753,8 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 				OfflineStore: services.OfflineStoreConfig{
 					Type: services.OfflineFilePersistenceDuckDbConfigType,
 				},
-				Registry: regRemote,
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOffline).To(Equal(offlineConfig))
 
@@ -764,7 +799,8 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 					Path: onlineStoreMountedPath,
 					Type: services.OnlineSqliteConfigType,
 				},
-				Registry: regRemote,
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
@@ -804,11 +840,16 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 					Type: services.OnlineRemoteConfigType,
 				},
 <<<<<<< HEAD
+<<<<<<< HEAD
 				Registry:    regRemote,
 				AuthzConfig: noAuthzConfig(),
 =======
 				Registry: regRemote,
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 			Expect(repoConfigClient).To(Equal(clientConfig))
 
@@ -833,10 +874,14 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err = k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			feast.Handler.FeatureStore = resource
 =======
 			feast.FeatureStore = resource
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			feast.Handler.FeatureStore = resource
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 
 			// check registry config
 			deploy = &appsv1.Deployment{}

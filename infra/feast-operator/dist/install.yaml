@@ -77,6 +77,7 @@ spec:
                           type: string
                         type: array
                     type: object
+<<<<<<< HEAD
                   oidc:
                     description: |-
                       OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
@@ -102,6 +103,9 @@ spec:
                 x-kubernetes-validations:
                 - message: One selection required between kubernetes or oidc.
                   rule: '[has(self.kubernetes), has(self.oidc)].exists_one(c, c)'
+=======
+                type: object
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
               feastProject:
                 description: FeastProject is the Feast project id. This can be any
                   alphanumeric string with underscores, but it cannot start with an
@@ -1607,6 +1611,7 @@ spec:
                               type: string
                             type: array
                         type: object
+<<<<<<< HEAD
                       oidc:
                         description: |-
                           OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
@@ -1633,6 +1638,9 @@ spec:
                     - message: One selection required between kubernetes or oidc.
                       rule: '[has(self.kubernetes), has(self.oidc)].exists_one(c,
                         c)'
+=======
+                    type: object
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
                   feastProject:
                     description: FeastProject is the Feast project id. This can be
                       any alphanumeric string with underscores, but it cannot start
@@ -3400,7 +3408,10 @@ rules:
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
+<<<<<<< HEAD
   - rolebindings
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
   - roles
   verbs:
   - create

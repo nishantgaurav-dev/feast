@@ -137,7 +137,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.ServiceHostnames.OnlineStore).To(BeEmpty())
 			Expect(resource.Status.ServiceHostnames.Registry).To(Equal(feast.GetFeastServiceName(services.RegistryFeastType) + "." + resource.Namespace + ".svc.cluster.local:80"))
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).To(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore).To(BeNil())
@@ -260,6 +264,7 @@ var _ = Describe("FeatureStore Controller", func() {
 					RegistryType: services.RegistryFileConfigType,
 					Path:         services.DefaultRegistryEphemeralPath,
 				},
+				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfig).To(Equal(testConfig))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
@@ -276,10 +281,22 @@ var _ = Describe("FeatureStore Controller", func() {
 			repoConfigClient := &services.RepoConfig{}
 			err = yaml.Unmarshal([]byte(cm.Data[services.FeatureStoreYamlCmKey]), repoConfigClient)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			clientConfig := feast.GetInitRepoConfig()
 			clientConfig.Registry = services.RegistryConfig{
 				RegistryType: services.RegistryRemoteConfigType,
 				Path:         "feast-test-resource-registry.default.svc.cluster.local:80",
+=======
+			clientConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				Registry: services.RegistryConfig{
+					RegistryType: services.RegistryRemoteConfigType,
+					Path:         "feast-test-resource-registry.default.svc.cluster.local:80",
+				},
+				AuthzConfig: noAuthzConfig(),
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 			Expect(repoConfigClient).To(Equal(&clientConfig))
 
@@ -389,6 +406,9 @@ var _ = Describe("FeatureStore Controller", func() {
 			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
 			Expect(cond).To(BeNil())
 
+			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
+			Expect(cond).To(BeNil())
+
 			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.RegistryReadyType)
 			Expect(cond).ToNot(BeNil())
 			Expect(cond.Status).To(Equal(metav1.ConditionTrue))
@@ -471,7 +491,11 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.FeastVersion).To(Equal(feastversion.FeastVersion))
 			Expect(resource.Status.ClientConfigMap).To(Equal(feast.GetFeastServiceName(services.ClientFeastType)))
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence).NotTo(BeNil())
@@ -675,7 +699,11 @@ var _ = Describe("FeatureStore Controller", func() {
 					RegistryType: services.RegistryFileConfigType,
 					Path:         services.DefaultRegistryEphemeralPath,
 				},
+<<<<<<< HEAD
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+				AuthzConfig: noAuthzConfig(),
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 			Expect(repoConfig).To(Equal(&testConfig))
 
@@ -725,7 +753,8 @@ var _ = Describe("FeatureStore Controller", func() {
 				OfflineStore: services.OfflineStoreConfig{
 					Type: services.OfflineFilePersistenceDaskConfigType,
 				},
-				Registry: regRemote,
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOffline).To(Equal(offlineConfig))
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
@@ -780,7 +809,8 @@ var _ = Describe("FeatureStore Controller", func() {
 					Path: services.DefaultOnlineStoreEphemeralPath,
 					Type: services.OnlineSqliteConfigType,
 				},
-				Registry: regRemote,
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
@@ -1068,7 +1098,10 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(err).To(HaveOccurred())
 			err = k8sClient.Get(ctx, nsName, resource)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.Registry.Remote.FeastRef.Namespace).NotTo(BeEmpty())
+=======
+>>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			Expect(apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)).To(BeNil())
 			Expect(apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.RegistryReadyType)).To(BeNil())
 			Expect(apimeta.IsStatusConditionTrue(resource.Status.Conditions, feastdevv1alpha1.ReadyType)).To(BeFalse())
@@ -1259,6 +1292,9 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(cond.Status).To(Equal(metav1.ConditionFalse))
 			Expect(cond.Reason).To(Equal(feastdevv1alpha1.FailedReason))
 			Expect(cond.Message).To(Equal("Error: Object " + resource.Namespace + "/" + deploy.Name + " is already owned by another Service controller " + name))
+
+			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
+			Expect(cond).To(BeNil())
 
 			cond = apimeta.FindStatusCondition(resource.Status.Conditions, feastdevv1alpha1.AuthorizationReadyType)
 			Expect(cond).To(BeNil())
