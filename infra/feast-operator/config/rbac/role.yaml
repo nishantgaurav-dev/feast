@@ -73,9 +73,13 @@ rules:
   - rbac.authorization.k8s.io
   resources:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - rolebindings
 =======
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+  - rolebindings
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
   - roles
   verbs:
   - create

@@ -27,6 +27,10 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+<<<<<<< HEAD
+=======
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	apimeta "k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -55,7 +59,11 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 		}
 		featurestore := &feastdevv1alpha1.FeatureStore{}
 		localRef := corev1.LocalObjectReference{Name: "test"}
+<<<<<<< HEAD
 		tlsConfigs := &feastdevv1alpha1.TlsConfigs{
+=======
+		tlsConfigs := feastdevv1alpha1.TlsConfigs{
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			SecretRef: &localRef,
 		}
 		BeforeEach(func() {
@@ -71,6 +79,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 						FeastProject: feastProject,
 						Services: &feastdevv1alpha1.FeatureStoreServices{
 							OnlineStore: &feastdevv1alpha1.OnlineStore{
+<<<<<<< HEAD
 								TLS: tlsConfigs,
 							},
 							OfflineStore: &feastdevv1alpha1.OfflineStore{
@@ -79,6 +88,18 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 							Registry: &feastdevv1alpha1.Registry{
 								Local: &feastdevv1alpha1.LocalRegistryConfig{
 									TLS: tlsConfigs,
+=======
+								TLS: &tlsConfigs,
+							},
+							OfflineStore: &feastdevv1alpha1.OfflineStore{
+								TLS: &feastdevv1alpha1.OfflineTlsConfigs{
+									TlsConfigs: tlsConfigs,
+								},
+							},
+							Registry: &feastdevv1alpha1.Registry{
+								Local: &feastdevv1alpha1.LocalRegistryConfig{
+									TLS: &tlsConfigs,
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 								},
 							},
 						},
@@ -171,6 +192,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 
 			Expect(resource.Status.Phase).To(Equal(feastdevv1alpha1.ReadyPhase))
 
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -182,6 +204,18 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+=======
+			deploy := &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
+			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 			svc := &corev1.Service{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
@@ -225,7 +259,11 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			deployList := appsv1.DeploymentList{}
 			err = k8sClient.List(ctx, &deployList, listOpts)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(deployList.Items).To(HaveLen(1))
+=======
+			Expect(deployList.Items).To(HaveLen(3))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 			svcList := corev1.ServiceList{}
 			err = k8sClient.List(ctx, &svcList, listOpts)
@@ -237,6 +275,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(cmList.Items).To(HaveLen(1))
 
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -252,6 +291,22 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
+=======
+			// check registry config
+			deploy := &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env := getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64(services.RegistryFeastType)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -260,6 +315,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			repoConfig := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfig)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			testConfig := feast.GetDefaultRepoConfig()
 			testConfig.OfflineStore = services.OfflineStoreConfig{
 				Type: services.OfflineFilePersistenceDaskConfigType,
@@ -273,6 +329,34 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			testConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				Registry: services.RegistryConfig{
+					RegistryType: services.RegistryFileConfigType,
+					Path:         services.DefaultRegistryEphemeralPath,
+				},
+				AuthzConfig: noAuthzConfig(),
+			}
+			Expect(repoConfig).To(Equal(testConfig))
+
+			// check offline config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -281,6 +365,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			repoConfigOffline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(&testConfig))
 
 			// check online config
@@ -290,6 +375,39 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			regRemote := services.RegistryConfig{
+				RegistryType: services.RegistryRemoteConfigType,
+				Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:443", resourceName),
+				Cert:         services.GetTlsPath(services.RegistryFeastType) + "tls.crt",
+			}
+			offlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore: services.OfflineStoreConfig{
+					Type: services.OfflineFilePersistenceDaskConfigType,
+				},
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
+			}
+			Expect(repoConfigOffline).To(Equal(offlineConfig))
+
+			// check online config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -298,7 +416,30 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			repoConfigOnline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOnline).To(Equal(&testConfig))
+=======
+			offlineRemote := services.OfflineStoreConfig{
+				Host:   fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
+				Type:   services.OfflineRemoteConfigType,
+				Port:   services.HttpsPort,
+				Scheme: services.HttpsScheme,
+				Cert:   services.GetTlsPath(services.OfflineFeastType) + "tls.crt",
+			}
+			onlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore:                  offlineRemote,
+				OnlineStore: services.OnlineStoreConfig{
+					Path: services.DefaultOnlineStoreEphemeralPath,
+					Type: services.OnlineSqliteConfigType,
+				},
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
+			}
+			Expect(repoConfigOnline).To(Equal(onlineConfig))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
 
 			// check client config
@@ -313,6 +454,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			repoConfigClient := &services.RepoConfig{}
 			err = yaml.Unmarshal([]byte(cm.Data[services.FeatureStoreYamlCmKey]), repoConfigClient)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			offlineRemote := services.OfflineStoreConfig{
 				Host:   fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
 				Type:   services.OfflineRemoteConfigType,
@@ -325,6 +467,8 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 				Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:443", resourceName),
 				Cert:         services.GetTlsPath(services.RegistryFeastType) + "tls.crt",
 			}
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			clientConfig := &services.RepoConfig{
 				Project:                       feastProject,
 				Provider:                      services.LocalProviderType,
@@ -353,7 +497,13 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 						},
 					},
 					OfflineStore: &feastdevv1alpha1.OfflineStore{
+<<<<<<< HEAD
 						TLS: tlsConfigs,
+=======
+						TLS: &feastdevv1alpha1.OfflineTlsConfigs{
+							TlsConfigs: tlsConfigs,
+						},
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 					},
 					Registry: &feastdevv1alpha1.Registry{
 						Remote: &feastdevv1alpha1.RemoteRegistryConfig{
@@ -381,6 +531,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			// check registry
 			deploy = &appsv1.Deployment{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
+<<<<<<< HEAD
 				Name:      objMeta.Name,
 				Namespace: objMeta.Namespace,
 			}, deploy)
@@ -393,6 +544,27 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).To(HaveOccurred())
+			Expect(apierrors.IsNotFound(err)).To(BeTrue())
+
+			// check offline config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -406,6 +578,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 				Path:         remoteRegHost,
 				Cert:         services.GetTlsPath(services.RegistryFeastType) + "remote.crt",
 			}
+<<<<<<< HEAD
 			testConfig.Registry = regRemote
 			Expect(repoConfigOffline).To(Equal(&testConfig))
 
@@ -415,6 +588,23 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			offlineConfig.Registry = regRemote
+			Expect(repoConfigOffline).To(Equal(offlineConfig))
+
+			// check online config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -424,8 +614,13 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 			repoConfigOnline = &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			testConfig.Registry = regRemote
 			Expect(repoConfigOnline).To(Equal(&testConfig))
+=======
+			onlineConfig.Registry = regRemote
+			Expect(repoConfigOnline).To(Equal(onlineConfig))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		})
 	})
 })

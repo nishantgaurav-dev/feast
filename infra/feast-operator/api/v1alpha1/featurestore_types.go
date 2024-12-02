@@ -34,10 +34,14 @@ const (
 	RegistryReadyType      = "Registry"
 	ReadyType              = "FeatureStore"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	AuthorizationReadyType = "Authorization"
 =======
 	AuthorizationReadyType = "AuthorizationReadyType"
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+	AuthorizationReadyType = "Authorization"
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 	// Feast condition reasons:
 	ReadyReason                 = "Ready"
@@ -80,11 +84,22 @@ type FeatureStoreServices struct {
 type OfflineStore struct {
 	ServiceConfigs `json:",inline"`
 	Persistence    *OfflineStorePersistence `json:"persistence,omitempty"`
+<<<<<<< HEAD
 	TLS            *TlsConfigs              `json:"tls,omitempty"`
 	// LogLevel sets the logging level for the offline store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
+=======
+	TLS            *OfflineTlsConfigs       `json:"tls,omitempty"`
+}
+
+// OfflineTlsConfigs configures server TLS for the offline feast service. in an openshift cluster, this is configured by default using service serving certificates.
+type OfflineTlsConfigs struct {
+	TlsConfigs `json:",inline"`
+	// verify the client TLS certificate.
+	VerifyClient *bool `json:"verifyClient,omitempty"`
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 }
 
 // OfflineStorePersistence configures the persistence settings for the offline store service
@@ -156,10 +171,13 @@ type OnlineStore struct {
 	ServiceConfigs `json:",inline"`
 	Persistence    *OnlineStorePersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs             `json:"tls,omitempty"`
+<<<<<<< HEAD
 	// LogLevel sets the logging level for the online store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 }
 
 // OnlineStorePersistence configures the persistence settings for the online store service
@@ -238,10 +256,13 @@ type LocalRegistryConfig struct {
 	ServiceConfigs `json:",inline"`
 	Persistence    *RegistryPersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs          `json:"tls,omitempty"`
+<<<<<<< HEAD
 	// LogLevel sets the logging level for the registry service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 }
 
 // RegistryPersistence configures the persistence settings for the registry service
@@ -423,12 +444,15 @@ type KubernetesAuthz struct {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
 // https://auth0.com/docs/authenticate/protocols/openid-connect-protocol
 type OidcAuthz struct {
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
 }
 
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 // TlsConfigs configures server TLS for a feast service. in an openshift cluster, this is configured by default using service serving certificates.
 // +kubebuilder:validation:XValidation:rule="(!has(self.disable) || !self.disable) ? has(self.secretRef) : true",message="`secretRef` required if `disable` is false."
 type TlsConfigs struct {
@@ -468,8 +492,11 @@ type SecretKeyNames struct {
 	TlsKey string `json:"tlsKey,omitempty"`
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 // FeatureStoreStatus defines the observed state of FeatureStore
 type FeatureStoreStatus struct {
 	// Shows the currently applied feast configuration, including any pertinent defaults

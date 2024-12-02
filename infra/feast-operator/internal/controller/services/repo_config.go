@@ -94,7 +94,6 @@ func getServiceRepoConfig(feastType FeastServiceType, featureStore *feastdevv1al
 	appliedSpec := featureStore.Status.Applied
 
 	repoConfig := getClientRepoConfig(featureStore)
-	isLocalRegistry := IsLocalRegistry(featureStore)
 	if appliedSpec.Services != nil {
 		services := appliedSpec.Services
 
@@ -118,7 +117,7 @@ func getServiceRepoConfig(feastType FeastServiceType, featureStore *feastdevv1al
 			}
 		case RegistryFeastType:
 			// Registry server only has a `registry` section
-			if isLocalRegistry {
+			if IsLocalRegistry(featureStore) {
 				err := setRepoConfigRegistry(services, secretExtractionFunc, &repoConfig)
 				if err != nil {
 					return repoConfig, err
@@ -403,9 +402,16 @@ func getClientRepoConfig(
 	secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error)) (RepoConfig, error) {
 	status := featureStore.Status
 	appliedServices := status.Applied.Services
+<<<<<<< HEAD
 	clientRepoConfig, err := getRepoConfig(featureStore, secretExtractionFunc)
 	if err != nil {
 		return clientRepoConfig, err
+=======
+	clientRepoConfig := RepoConfig{
+		Project:                       status.Applied.FeastProject,
+		Provider:                      LocalProviderType,
+		EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	}
 	if len(status.ServiceHostnames.OfflineStore) > 0 {
 		clientRepoConfig.OfflineStore = OfflineStoreConfig{
@@ -413,8 +419,14 @@ func getClientRepoConfig(
 			Host: strings.Split(status.ServiceHostnames.OfflineStore, ":")[0],
 			Port: HttpPort,
 		}
+<<<<<<< HEAD
 		if appliedServices.OfflineStore != nil && appliedServices.OfflineStore.TLS.IsTLS() {
 			clientRepoConfig.OfflineStore.Cert = GetTlsPath(OfflineFeastType) + appliedServices.OfflineStore.TLS.SecretKeyNames.TlsCrt
+=======
+		if appliedServices.OfflineStore != nil && appliedServices.OfflineStore.TLS != nil &&
+			(&appliedServices.OfflineStore.TLS.TlsConfigs).IsTLS() {
+			clientRepoConfig.OfflineStore.Cert = GetTlsPath(OfflineFeastType) + appliedServices.OfflineStore.TLS.TlsConfigs.SecretKeyNames.TlsCrt
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			clientRepoConfig.OfflineStore.Port = HttpsPort
 			clientRepoConfig.OfflineStore.Scheme = HttpsScheme
 		}
@@ -442,6 +454,7 @@ func getClientRepoConfig(
 		}
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	return clientRepoConfig, nil
 }
@@ -598,6 +611,13 @@ var defaultAuthzConfig = AuthzConfig{
 				Type: KubernetesAuthType,
 			}
 		}
+=======
+	clientRepoConfig.AuthzConfig = AuthzConfig{
+		Type: NoAuthAuthType,
+	}
+	if status.Applied.AuthzConfig != nil && status.Applied.AuthzConfig.KubernetesAuthz != nil {
+		clientRepoConfig.AuthzConfig.Type = KubernetesAuthType
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	}
 	return clientRepoConfig
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))

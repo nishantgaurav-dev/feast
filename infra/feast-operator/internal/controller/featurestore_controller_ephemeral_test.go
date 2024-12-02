@@ -54,9 +54,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 	Context("When deploying a resource with all ephemeral services", func() {
 		const resourceName = "services-ephemeral"
 <<<<<<< HEAD
+<<<<<<< HEAD
 		const offlineType = "duckdb"
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+		const offlineType = "duckdb"
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		var pullPolicy = corev1.PullAlways
 		var testEnvVarName = "testEnvVarName"
 		var testEnvVarValue = "testEnvVarValue"
@@ -71,11 +75,14 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 		onlineStorePath := "/data/online.db"
 		registryPath := "/data/registry.db"
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		BeforeEach(func() {
 			createEnvFromSecretAndConfigMap()
 =======
 		offlineType := "duckdb"
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 		BeforeEach(func() {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
@@ -168,12 +175,16 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence).NotTo(BeNil())
@@ -291,10 +302,14 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(controllerutil.HasControllerReference(svc)).To(BeTrue())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(svc.Spec.Ports[0].TargetPort).To(Equal(intstr.FromInt(int(services.FeastServiceConstants[services.RegistryFeastType].TargetHttpPort))))
 =======
 			Expect(svc.Spec.Ports[0].TargetPort).To(Equal(intstr.FromInt(int(services.FeastServiceConstants[services.RegistryFeastType].TargetPort))))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(svc.Spec.Ports[0].TargetPort).To(Equal(intstr.FromInt(int(services.FeastServiceConstants[services.RegistryFeastType].TargetHttpPort))))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		})
 
 		It("should properly encode a feature_store.yaml config", func() {

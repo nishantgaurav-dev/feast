@@ -54,8 +54,18 @@ const (
 	DefaultOnlineStoreEphemeralPath = "/tmp/online_store.db"
 	DefaultOnlineStorePvcPath       = "online_store.db"
 	svcDomain                       = ".svc.cluster.local"
+<<<<<<< HEAD
 	HttpPort                        = 80
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+
+	HttpPort      = 80
+	HttpsPort     = 443
+	HttpScheme    = "http"
+	HttpsScheme   = "https"
+	tlsPath       = "/tls/"
+	tlsNameSuffix = "-tls"
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 	DefaultOfflineStorageRequest  = "20Gi"
 	DefaultOnlineStorageRequest   = "5Gi"
@@ -109,17 +119,29 @@ var (
 
 	FeastServiceConstants = map[FeastServiceType]deploymentSettings{
 		OfflineFeastType: {
+<<<<<<< HEAD
 			Args:            []string{"serve_offline", "-h", "0.0.0.0"},
+=======
+			Command:         []string{"feast", "serve_offline", "-h", "0.0.0.0"},
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			TargetHttpPort:  8815,
 			TargetHttpsPort: 8816,
 		},
 		OnlineFeastType: {
+<<<<<<< HEAD
 			Args:            []string{"serve", "-h", "0.0.0.0"},
+=======
+			Command:         []string{"feast", "serve", "-h", "0.0.0.0"},
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			TargetHttpPort:  6566,
 			TargetHttpsPort: 6567,
 		},
 		RegistryFeastType: {
+<<<<<<< HEAD
 			Args:            []string{"serve_registry"},
+=======
+			Command:         []string{"feast", "serve_registry"},
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			TargetHttpPort:  6570,
 			TargetHttpsPort: 6571,
 		},
@@ -241,10 +263,15 @@ type OfflineStoreConfig struct {
 	Type         OfflineConfigType      `yaml:"type,omitempty"`
 	Port         int                    `yaml:"port,omitempty"`
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Scheme       string                 `yaml:"scheme,omitempty"`
 	Cert         string                 `yaml:"cert,omitempty"`
 =======
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	Scheme       string                 `yaml:"scheme,omitempty"`
+	Cert         string                 `yaml:"cert,omitempty"`
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	DBParameters map[string]interface{} `yaml:",inline,omitempty"`
 }
 
@@ -253,9 +280,13 @@ type OnlineStoreConfig struct {
 	Path         string                 `yaml:"path,omitempty"`
 	Type         OnlineConfigType       `yaml:"type,omitempty"`
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Cert         string                 `yaml:"cert,omitempty"`
 =======
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	Cert         string                 `yaml:"cert,omitempty"`
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	DBParameters map[string]interface{} `yaml:",inline,omitempty"`
 }
 
@@ -297,7 +328,13 @@ type deploymentSettings struct {
 }
 
 type deploymentSettings struct {
+<<<<<<< HEAD
 	Command    []string
 	TargetPort int32
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+	Command         []string
+	TargetHttpPort  int32
+	TargetHttpsPort int32
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 }

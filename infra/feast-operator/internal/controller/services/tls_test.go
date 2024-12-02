@@ -58,6 +58,10 @@ var _ = Describe("TLS Config", func() {
 			Expect(tls.IsTLS()).To(BeFalse())
 			Expect(getPortStr(tls)).To(Equal("80"))
 
+<<<<<<< HEAD
+=======
+			Expect(feast.offlineTls()).To(BeFalse())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeFalse())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -86,6 +90,10 @@ var _ = Describe("TLS Config", func() {
 			Expect(getPortStr(tls)).To(Equal("443"))
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
+<<<<<<< HEAD
+=======
+			Expect(feast.offlineTls()).To(BeFalse())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -100,8 +108,12 @@ var _ = Describe("TLS Config", func() {
 			err = feast.ApplyDefaults()
 			Expect(err).To(BeNil())
 
+<<<<<<< HEAD
 			repoConfig, err := getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
+=======
+			repoConfig := getClientRepoConfig(feast.Handler.FeatureStore)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(repoConfig.OfflineStore.Port).To(Equal(HttpsPort))
 			Expect(repoConfig.OfflineStore.Scheme).To(Equal(HttpsScheme))
 			Expect(repoConfig.OfflineStore.Cert).To(ContainSubstring(string(OfflineFeastType)))
@@ -111,6 +123,7 @@ var _ = Describe("TLS Config", func() {
 			tls = feast.getTlsConfigs(OfflineFeastType)
 			Expect(tls).NotTo(BeNil())
 			Expect(tls.IsTLS()).To(BeTrue())
+<<<<<<< HEAD
 			Expect(tls.SecretRef).NotTo(BeNil())
 			Expect(tls.SecretRef.Name).To(Equal("feast-test-offline-tls"))
 			tls = feast.getTlsConfigs(OnlineFeastType)
@@ -125,6 +138,17 @@ var _ = Describe("TLS Config", func() {
 			Expect(tls.SecretKeyNames).To(Equal(secretKeyNames))
 			Expect(tls.IsTLS()).To(BeTrue())
 
+=======
+			tls = feast.getTlsConfigs(OnlineFeastType)
+			Expect(tls).NotTo(BeNil())
+			Expect(tls.IsTLS()).To(BeTrue())
+			tls = feast.getTlsConfigs(RegistryFeastType)
+			Expect(tls).NotTo(BeNil())
+			Expect(tls.SecretKeyNames).To(Equal(secretKeyNames))
+			Expect(tls.IsTLS()).To(BeTrue())
+
+			Expect(feast.offlineTls()).To(BeTrue())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeTrue())
@@ -135,6 +159,7 @@ var _ = Describe("TLS Config", func() {
 			Expect(openshiftTls).To(BeTrue())
 
 			// check k8s deployment objects
+<<<<<<< HEAD
 			feastDeploy := feast.initFeastDeploy()
 			err = feast.setDeployment(feastDeploy)
 			Expect(err).To(BeNil())
@@ -144,6 +169,25 @@ var _ = Describe("TLS Config", func() {
 			Expect(feastDeploy.Spec.Template.Spec.Containers[1].Command).To(ContainElements(ContainSubstring("--key")))
 			Expect(feastDeploy.Spec.Template.Spec.Containers[2].Command).To(ContainElements(ContainSubstring("--key")))
 			Expect(feastDeploy.Spec.Template.Spec.Volumes).To(HaveLen(4))
+=======
+			offlineDeploy := feast.initFeastDeploy(OfflineFeastType)
+			err = feast.setDeployment(offlineDeploy, OfflineFeastType)
+			Expect(err).To(BeNil())
+			Expect(offlineDeploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+			Expect(offlineDeploy.Spec.Template.Spec.InitContainers[0].Command).To(ContainElements(ContainSubstring("-insecure")))
+			Expect(offlineDeploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(offlineDeploy.Spec.Template.Spec.Containers[0].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(offlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(2))
+			onlineDeploy := feast.initFeastDeploy(OnlineFeastType)
+			err = feast.setDeployment(onlineDeploy, OnlineFeastType)
+			Expect(err).To(BeNil())
+			Expect(onlineDeploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+			Expect(onlineDeploy.Spec.Template.Spec.InitContainers[0].Command).To(ContainElements(ContainSubstring("-insecure")))
+			Expect(onlineDeploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(onlineDeploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(onlineDeploy.Spec.Template.Spec.Containers[0].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(onlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(3))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 			// registry service w/ tls and in an openshift cluster
 			feast.Handler.FeatureStore = minimalFeatureStore()
@@ -178,6 +222,10 @@ var _ = Describe("TLS Config", func() {
 			Expect(getPortStr(tls)).To(Equal("443"))
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
+<<<<<<< HEAD
+=======
+			Expect(feast.offlineTls()).To(BeFalse())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -203,8 +251,12 @@ var _ = Describe("TLS Config", func() {
 			err = feast.ApplyDefaults()
 			Expect(err).To(BeNil())
 
+<<<<<<< HEAD
 			repoConfig, err = getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
+=======
+			repoConfig = getClientRepoConfig(feast.Handler.FeatureStore)
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(repoConfig.OfflineStore.Port).To(Equal(HttpsPort))
 			Expect(repoConfig.OfflineStore.Scheme).To(Equal(HttpsScheme))
 			Expect(repoConfig.OfflineStore.Cert).To(ContainSubstring(string(OfflineFeastType)))
@@ -226,6 +278,10 @@ var _ = Describe("TLS Config", func() {
 			Expect(getPortStr(tls)).To(Equal("80"))
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
+<<<<<<< HEAD
+=======
+			Expect(feast.offlineTls()).To(BeTrue())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeFalse())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeTrue())
@@ -250,6 +306,7 @@ var _ = Describe("TLS Config", func() {
 			Expect(onlineSvc.Spec.Ports[0].Name).To(Equal(HttpScheme))
 
 			// check k8s deployment objects
+<<<<<<< HEAD
 			feastDeploy = feast.initFeastDeploy()
 			err = feast.setDeployment(feastDeploy)
 			Expect(err).To(BeNil())
@@ -263,6 +320,24 @@ var _ = Describe("TLS Config", func() {
 			Expect(GetOfflineContainer(feastDeploy.Spec.Template.Spec.Containers).VolumeMounts).To(HaveLen(2))
 			Expect(GetOnlineContainer(feastDeploy.Spec.Template.Spec.Containers).Command).NotTo(ContainElements(ContainSubstring("--key")))
 			Expect(GetOnlineContainer(feastDeploy.Spec.Template.Spec.Containers).VolumeMounts).To(HaveLen(1))
+=======
+			offlineDeploy = feast.initFeastDeploy(OfflineFeastType)
+			err = feast.setDeployment(offlineDeploy, OfflineFeastType)
+			Expect(err).To(BeNil())
+			Expect(offlineDeploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+			Expect(offlineDeploy.Spec.Template.Spec.InitContainers[0].Command).To(ContainElements(ContainSubstring("-plaintext")))
+			Expect(offlineDeploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(offlineDeploy.Spec.Template.Spec.Containers[0].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(offlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(1))
+			onlineDeploy = feast.initFeastDeploy(OnlineFeastType)
+			err = feast.setDeployment(onlineDeploy, OnlineFeastType)
+			Expect(err).To(BeNil())
+			Expect(onlineDeploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+			Expect(onlineDeploy.Spec.Template.Spec.InitContainers[0].Command).To(ContainElements(ContainSubstring("-plaintext")))
+			Expect(onlineDeploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(onlineDeploy.Spec.Template.Spec.Containers[0].Command).NotTo(ContainElements(ContainSubstring("--key")))
+			Expect(onlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(1))
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		})
 	})
 })

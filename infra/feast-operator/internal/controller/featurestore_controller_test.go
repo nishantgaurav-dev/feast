@@ -46,9 +46,13 @@ import (
 const feastProject = "test_project"
 const domain = ".svc.cluster.local:80"
 <<<<<<< HEAD
+<<<<<<< HEAD
 const domainTls = ".svc.cluster.local:443"
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+const domainTls = ".svc.cluster.local:443"
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 
 var image = "test:latest"
 
@@ -138,10 +142,14 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.ServiceHostnames.Registry).To(Equal(feast.GetFeastServiceName(services.RegistryFeastType) + "." + resource.Namespace + ".svc.cluster.local:80"))
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 =======
 			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).To(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore).To(BeNil())
@@ -492,10 +500,14 @@ var _ = Describe("FeatureStore Controller", func() {
 			Expect(resource.Status.ClientConfigMap).To(Equal(feast.GetFeastServiceName(services.ClientFeastType)))
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 =======
 			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence).NotTo(BeNil())
@@ -1075,6 +1087,7 @@ var _ = Describe("FeatureStore Controller", func() {
 				},
 				Spec: feastdevv1alpha1.FeatureStoreSpec{
 					FeastProject: referencedRegistry.Spec.FeastProject,
+					AuthzConfig:  &feastdevv1alpha1.AuthzConfig{},
 					Services: &feastdevv1alpha1.FeatureStoreServices{
 						OnlineStore:  &feastdevv1alpha1.OnlineStore{},
 						OfflineStore: &feastdevv1alpha1.OfflineStore{},

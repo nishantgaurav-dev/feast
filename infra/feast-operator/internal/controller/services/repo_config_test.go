@@ -617,6 +617,9 @@ func minimalFeatureStore() *feastdevv1alpha1.FeatureStore {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func minimalFeatureStoreWithAllServices() *feastdevv1alpha1.FeatureStore {
 	feast := minimalFeatureStore()
 	feast.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -627,6 +630,7 @@ func minimalFeatureStoreWithAllServices() *feastdevv1alpha1.FeatureStore {
 	return feast
 }
 
+<<<<<<< HEAD
 func emptyMockExtractConfigFromSecret(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
 	return map[string]interface{}{}, nil
 }
@@ -643,6 +647,8 @@ func mockOidcConfigFromSecret(
 }
 
 =======
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func emptyMockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[string]interface{}, error) {
 	return map[string]interface{}{}, nil
 }

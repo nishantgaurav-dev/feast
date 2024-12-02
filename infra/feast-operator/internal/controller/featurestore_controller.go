@@ -61,10 +61,14 @@ type FeatureStoreReconciler struct {
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims;serviceaccounts,verbs=get;list;create;update;watch;delete
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles;rolebindings,verbs=get;list;create;update;watch;delete
 =======
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;update;watch;delete
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+//+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles;rolebindings,verbs=get;list;create;update;watch;delete
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 //+kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list
 =======
 //+kubebuilder:rbac:groups=core,resources=services;configmaps;persistentvolumeclaims,verbs=get;list;create;update;watch;delete
@@ -125,11 +129,15 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 		Message: feastdevv1alpha1.ReadyMessage,
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	feast := services.FeastServices{
 =======
 
 	authz := authz.FeastAuthorization{
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+	feast := services.FeastServices{
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		Handler: feasthandler.FeastHandler{
 			Client:       r.Client,
 			Context:      ctx,
@@ -138,6 +146,9 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	authz := authz.FeastAuthorization{
 		Handler: feast.Handler,
 	}
@@ -152,15 +163,19 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 		result = errResult
 	}
 	if err != nil {
+<<<<<<< HEAD
 =======
 	if err = authz.Deploy(); err != nil {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		condition = metav1.Condition{
 			Type:    feastdevv1alpha1.ReadyType,
 			Status:  metav1.ConditionFalse,
 			Reason:  feastdevv1alpha1.FailedReason,
 			Message: "Error: " + err.Error(),
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 		result = ctrl.Result{Requeue: true, RequeueAfter: RequeueDelayError}
@@ -182,6 +197,8 @@ func (r *FeatureStoreReconciler) deployFeast(ctx context.Context, cr *feastdevv1
 			result = ctrl.Result{Requeue: true, RequeueAfter: RequeueDelayError}
 		}
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	}
 
 	logger.Info(condition.Message)

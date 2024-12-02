@@ -18,6 +18,7 @@ import (
 // Deploy the feast authorization
 func (authz *FeastAuthorization) Deploy() error {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if authz.isKubernetesAuth() {
 		return authz.deployKubernetesAuth()
 	}
@@ -61,26 +62,46 @@ func (authz *FeastAuthorization) deployKubernetesAuth() error {
 			authz.removeOrphanedRoles()
 			_ = authz.Handler.DeleteOwnedFeastObj(authz.initFeastRole())
 			_ = authz.Handler.DeleteOwnedFeastObj(authz.initFeastRoleBinding())
+=======
+	if authz.isKubernetesAuth() {
+		if err := authz.deployKubernetesAuth(); err != nil {
+			return err
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		}
+	} else {
+		authz.removeOrphanedRoles()
+		_ = authz.Handler.DeleteOwnedFeastObj(authz.initFeastRole())
+		_ = authz.Handler.DeleteOwnedFeastObj(authz.initFeastRoleBinding())
+		apimeta.RemoveStatusCondition(&authz.Handler.FeatureStore.Status.Conditions, feastKubernetesAuthConditions[metav1.ConditionTrue].Type)
 	}
 	return nil
 }
 
-func (authz *FeastAuthorization) deployKubernetesAuth(kubernetesAuth *feastdevv1alpha1.KubernetesAuthz) error {
-	authz.removeOrphanedRoles()
+func (authz *FeastAuthorization) isKubernetesAuth() bool {
+	authzConfig := authz.Handler.FeatureStore.Status.Applied.AuthzConfig
+	return authzConfig != nil && authzConfig.KubernetesAuthz != nil
+}
 
-	if err := authz.createFeastRole(); err != nil {
-		return authz.setFeastKubernetesAuthCondition(err)
-	}
-	if err := authz.createFeastRoleBinding(); err != nil {
-		return authz.setFeastKubernetesAuthCondition(err)
-	}
+func (authz *FeastAuthorization) deployKubernetesAuth() error {
+	if authz.isKubernetesAuth() {
+		authz.removeOrphanedRoles()
 
-	for _, roleName := range kubernetesAuth.Roles {
-		if err := authz.createAuthRole(roleName); err != nil {
+		if err := authz.createFeastRole(); err != nil {
 			return authz.setFeastKubernetesAuthCondition(err)
 		}
+<<<<<<< HEAD
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+		if err := authz.createFeastRoleBinding(); err != nil {
+			return authz.setFeastKubernetesAuthCondition(err)
+		}
+
+		for _, roleName := range authz.Handler.FeatureStore.Status.Applied.AuthzConfig.KubernetesAuthz.Roles {
+			if err := authz.createAuthRole(roleName); err != nil {
+				return authz.setFeastKubernetesAuthCondition(err)
+			}
+		}
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	}
 	return authz.setFeastKubernetesAuthCondition(nil)
 }
@@ -97,10 +118,14 @@ func (authz *FeastAuthorization) removeOrphanedRoles() {
 
 	desiredRoles := []string{}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if authz.isKubernetesAuth() {
 =======
 	if authz.Handler.FeatureStore.Status.Applied.AuthzConfig.KubernetesAuthz != nil {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+	if authz.isKubernetesAuth() {
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		desiredRoles = authz.Handler.FeatureStore.Status.Applied.AuthzConfig.KubernetesAuthz.Roles
 	}
 	for _, role := range roleList.Items {

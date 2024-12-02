@@ -505,9 +505,15 @@ spec:
                             type: object
                         type: object
                       tls:
+<<<<<<< HEAD
                         description: TlsConfigs configures server TLS for a feast
                           service. in an openshift cluster, this is configured by
                           default using service serving certificates.
+=======
+                        description: OfflineTlsConfigs configures server TLS for the
+                          offline feast service. in an openshift cluster, this is
+                          configured by default using service serving certificates.
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
                         properties:
                           disable:
                             description: will disable TLS for the feast service. useful
@@ -537,6 +543,12 @@ spec:
                                 type: string
                             type: object
                             x-kubernetes-map-type: atomic
+<<<<<<< HEAD
+=======
+                          verifyClient:
+                            description: verify the client TLS certificate.
+                            type: boolean
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
                         type: object
                         x-kubernetes-validations:
                         - message: '`secretRef` required if `disable` is false.'
@@ -2045,9 +2057,16 @@ spec:
                                 type: object
                             type: object
                           tls:
+<<<<<<< HEAD
                             description: TlsConfigs configures server TLS for a feast
                               service. in an openshift cluster, this is configured
                               by default using service serving certificates.
+=======
+                            description: OfflineTlsConfigs configures server TLS for
+                              the offline feast service. in an openshift cluster,
+                              this is configured by default using service serving
+                              certificates.
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
                             properties:
                               disable:
                                 description: will disable TLS for the feast service.
@@ -2077,6 +2096,12 @@ spec:
                                     type: string
                                 type: object
                                 x-kubernetes-map-type: atomic
+<<<<<<< HEAD
+=======
+                              verifyClient:
+                                description: verify the client TLS certificate.
+                                type: boolean
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
                             type: object
                             x-kubernetes-validations:
                             - message: '`secretRef` required if `disable` is false.'

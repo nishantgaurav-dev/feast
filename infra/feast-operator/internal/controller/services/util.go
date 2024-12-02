@@ -36,21 +36,30 @@ import (
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var isOpenShift = false
 
 =======
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+var isOpenShift = false
+
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func IsLocalRegistry(featureStore *feastdevv1alpha1.FeatureStore) bool {
 	appliedServices := featureStore.Status.Applied.Services
 	return appliedServices != nil && appliedServices.Registry != nil && appliedServices.Registry.Local != nil
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func isRemoteRegistry(featureStore *feastdevv1alpha1.FeatureStore) bool {
 	appliedServices := featureStore.Status.Applied.Services
 	return appliedServices != nil && appliedServices.Registry != nil && appliedServices.Registry.Remote != nil
 }
 
+<<<<<<< HEAD
 func hasPvcConfig(featureStore *feastdevv1alpha1.FeatureStore, feastType FeastServiceType) (*feastdevv1alpha1.PvcConfig, bool) {
 	var pvcConfig *feastdevv1alpha1.PvcConfig
 	services := featureStore.Status.Applied.Services
@@ -72,6 +81,8 @@ func hasPvcConfig(featureStore *feastdevv1alpha1.FeatureStore, feastType FeastSe
 				pvcConfig = services.Registry.Local.Persistence.FilePersistence.PvcConfig
 			}
 =======
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func hasPvcConfig(featureStore *feastdevv1alpha1.FeatureStore, feastType FeastServiceType) (*feastdevv1alpha1.PvcConfig, bool) {
 	services := featureStore.Status.Applied.Services
 	var pvcConfig *feastdevv1alpha1.PvcConfig = nil
@@ -125,11 +136,14 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 =======
 	applied := cr.Spec.DeepCopy()
 
+<<<<<<< HEAD
 	if applied.AuthzConfig == nil {
 		applied.AuthzConfig = &feastdevv1alpha1.AuthzConfig{}
 	}
 
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	if applied.Services == nil {
 		applied.Services = &feastdevv1alpha1.FeatureStoreServices{}
 	}
@@ -676,4 +690,33 @@ func CopyMap(original map[string]interface{}) map[string]interface{} {
 	}
 
 	return newCopy
+}
+
+// IsOpenShift is a global flag that can be safely called across reconciliation cycles, defined at the controller manager start.
+func IsOpenShift() bool {
+	return isOpenShift
+}
+
+// SetIsOpenShift sets the global flag isOpenShift by the controller manager.
+// We don't need to keep fetching the API every reconciliation cycle that we need to know about the platform.
+func SetIsOpenShift(cfg *rest.Config) {
+	if cfg == nil {
+		panic("Rest Config struct is nil, impossible to get cluster information")
+	}
+	// adapted from https://github.com/RHsyseng/operator-utils/blob/a226fabb2226a313dd3a16591c5579ebcd8a74b0/internal/platform/platform_versioner.go#L95
+	client, err := discovery.NewDiscoveryClientForConfig(cfg)
+	if err != nil {
+		panic(fmt.Sprintf("Impossible to get new client for config when fetching cluster information: %s", err))
+	}
+	apiList, err := client.ServerGroups()
+	if err != nil {
+		panic(fmt.Sprintf("issue occurred while fetching ServerGroups: %s", err))
+	}
+
+	for _, v := range apiList.Groups {
+		if v.Name == "route.openshift.io" {
+			isOpenShift = true
+			break
+		}
+	}
 }

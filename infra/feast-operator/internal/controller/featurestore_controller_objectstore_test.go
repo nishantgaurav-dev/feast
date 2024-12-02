@@ -161,12 +161,16 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Applied.FeastProject).To(Equal(resource.Spec.FeastProject))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 =======
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
 =======
 			Expect(resource.Status.Applied.AuthzConfig).To(Equal(&feastdevv1alpha1.AuthzConfig{}))
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
+>>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 			Expect(resource.Status.Applied.Services).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore).To(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore).To(BeNil())
