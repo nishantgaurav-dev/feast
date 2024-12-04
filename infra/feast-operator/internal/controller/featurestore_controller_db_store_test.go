@@ -78,7 +78,11 @@ sqlalchemy_config_kwargs:
   pool_pre_ping: true
 `
 
+<<<<<<< HEAD
 var secretContainingValidTypeYamlString = `
+=======
+var invalidSecretContainingTypeYamlString = `
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 type: cassandra
 hosts:
   - 192.168.1.1
@@ -202,12 +206,19 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				Expect(k8sClient.Create(ctx, secret)).To(Succeed())
 			}
 
+<<<<<<< HEAD
 			createEnvFromSecretAndConfigMap()
 
 			By("creating the custom resource for the Kind FeatureStore")
 			err = k8sClient.Get(ctx, typeNamespacedName, featurestore)
 			if err != nil && errors.IsNotFound(err) {
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{}, withEnvFrom())
+=======
+			By("creating the custom resource for the Kind FeatureStore")
+			err = k8sClient.Get(ctx, typeNamespacedName, featurestore)
+			if err != nil && errors.IsNotFound(err) {
+				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{})
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 				resource.Spec.Services.OfflineStore.Persistence = &feastdevv1alpha1.OfflineStorePersistence{
 					DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
 						Type: string(offlineType),
@@ -258,8 +269,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			err = k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
+<<<<<<< HEAD
 			deleteEnvFromSecretAndConfigMap()
 
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			By("Cleanup the secrets")
 			Expect(k8sClient.Delete(ctx, onlineSecret)).To(Succeed())
 			Expect(k8sClient.Delete(ctx, offlineSecret)).To(Succeed())
@@ -309,7 +323,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			Expect(err.Error()).To(Equal("secret key invalid.secret.key doesn't exist in secret online-store-secret"))
 
+<<<<<<< HEAD
 			By("Referring to a secret that contains parameter named type with invalid value")
+=======
+			By("Referring to a secret that contains parameter named type")
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			resource = &feastdevv1alpha1.FeatureStore{}
 			err = k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
@@ -317,6 +335,34 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			secret := &corev1.Secret{}
 			err = k8sClient.Get(ctx, onlineSecretNamespacedName, secret)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
+=======
+			secret.Data[string(services.OnlineDBPersistenceCassandraConfigType)] = []byte(invalidSecretContainingTypeYamlString)
+			Expect(k8sClient.Update(ctx, secret)).To(Succeed())
+
+			resource.Spec.Services.OnlineStore.Persistence.DBPersistence.SecretRef = corev1.LocalObjectReference{Name: "online-store-secret"}
+			resource.Spec.Services.OnlineStore.Persistence.DBPersistence.SecretKeyName = ""
+			Expect(k8sClient.Update(ctx, resource)).To(Succeed())
+			resource = &feastdevv1alpha1.FeatureStore{}
+			err = k8sClient.Get(ctx, typeNamespacedName, resource)
+			Expect(err).NotTo(HaveOccurred())
+
+			_, err = controllerReconciler.Reconcile(ctx, reconcile.Request{
+				NamespacedName: typeNamespacedName,
+			})
+			Expect(err).To(HaveOccurred())
+
+			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains invalid tag named type"))
+
+			By("Referring to a secret that contains parameter named type with invalid value")
+			resource = &feastdevv1alpha1.FeatureStore{}
+			err = k8sClient.Get(ctx, typeNamespacedName, resource)
+			Expect(err).NotTo(HaveOccurred())
+
+			secret = &corev1.Secret{}
+			err = k8sClient.Get(ctx, onlineSecretNamespacedName, secret)
+			Expect(err).NotTo(HaveOccurred())
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			secret.Data[string(services.OnlineDBPersistenceCassandraConfigType)] = []byte(invalidSecretTypeYamlString)
 			Expect(k8sClient.Update(ctx, secret)).To(Succeed())
 
@@ -332,7 +378,43 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			})
 			Expect(err).To(HaveOccurred())
 
+<<<<<<< HEAD
 			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains tag named type with value wrong"))
+=======
+			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains invalid tag named type"))
+
+			By("Referring to a secret that contains parameter named registry_type")
+			resource = &feastdevv1alpha1.FeatureStore{}
+			err = k8sClient.Get(ctx, typeNamespacedName, resource)
+			Expect(err).NotTo(HaveOccurred())
+
+			secret = &corev1.Secret{}
+			err = k8sClient.Get(ctx, onlineSecretNamespacedName, secret)
+			Expect(err).NotTo(HaveOccurred())
+			secret.Data[string(services.OnlineDBPersistenceCassandraConfigType)] = []byte(cassandraYamlString)
+			Expect(k8sClient.Update(ctx, secret)).To(Succeed())
+
+			secret = &corev1.Secret{}
+			err = k8sClient.Get(ctx, registrySecretNamespacedName, secret)
+			Expect(err).NotTo(HaveOccurred())
+			secret.Data["sql_custom_registry_key"] = nil
+			secret.Data[string(services.RegistryDBPersistenceSQLConfigType)] = []byte(invalidSecretRegistryTypeYamlString)
+			Expect(k8sClient.Update(ctx, secret)).To(Succeed())
+
+			resource.Spec.Services.Registry.Local.Persistence.DBPersistence.SecretRef = corev1.LocalObjectReference{Name: "registry-store-secret"}
+			resource.Spec.Services.Registry.Local.Persistence.DBPersistence.SecretKeyName = ""
+			Expect(k8sClient.Update(ctx, resource)).To(Succeed())
+			resource = &feastdevv1alpha1.FeatureStore{}
+			err = k8sClient.Get(ctx, typeNamespacedName, resource)
+			Expect(err).NotTo(HaveOccurred())
+
+			_, err = controllerReconciler.Reconcile(ctx, reconcile.Request{
+				NamespacedName: typeNamespacedName,
+			})
+			Expect(err).To(HaveOccurred())
+
+			Expect(err.Error()).To(Equal("secret key sql in secret registry-store-secret contains invalid tag named registry_type"))
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 		})
 
 		It("should successfully reconcile the resource", func() {
@@ -433,6 +515,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			Expect(resource.Status.Phase).To(Equal(feastdevv1alpha1.ReadyPhase))
 
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -444,6 +527,18 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+=======
+			deploy := &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
+			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 
 			svc := &corev1.Service{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
@@ -454,6 +549,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(controllerutil.HasControllerReference(svc)).To(BeTrue())
 			Expect(svc.Spec.Ports[0].TargetPort).To(Equal(intstr.FromInt(int(services.FeastServiceConstants[services.RegistryFeastType].TargetHttpPort))))
+<<<<<<< HEAD
 
 			By("Referring to a secret that contains parameter named type")
 			resource = &feastdevv1alpha1.FeatureStore{}
@@ -508,6 +604,8 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				NamespacedName: typeNamespacedName,
 			})
 			Expect(err).To(Not(HaveOccurred()))
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 		})
 
 		It("should properly encode a feature_store.yaml config", func() {
@@ -533,7 +631,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			deployList := appsv1.DeploymentList{}
 			err = k8sClient.List(ctx, &deployList, listOpts)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(deployList.Items).To(HaveLen(1))
+=======
+			Expect(deployList.Items).To(HaveLen(3))
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 
 			svcList := corev1.ServiceList{}
 			err = k8sClient.List(ctx, &svcList, listOpts)
@@ -554,6 +656,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				},
 			}
 
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -568,6 +671,22 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
+=======
+			// check registry config
+			deploy := &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env := getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64(services.RegistryFeastType)
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -583,23 +702,30 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				Project:                       feastProject,
 				Provider:                      services.LocalProviderType,
 				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+<<<<<<< HEAD
 				OfflineStore: services.OfflineStoreConfig{
 					Type:         services.OfflineDBPersistenceSnowflakeConfigType,
 					DBParameters: unmarshallYamlString(snowflakeYamlString),
 				},
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 				Registry: services.RegistryConfig{
 					Path:         copyMap["path"].(string),
 					RegistryType: services.RegistryDBPersistenceSQLConfigType,
 					DBParameters: dbParametersMap,
 				},
+<<<<<<< HEAD
 				OnlineStore: services.OnlineStoreConfig{
 					Type:         onlineType,
 					DBParameters: unmarshallYamlString(cassandraYamlString),
 				},
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfig).To(Equal(testConfig))
 
+<<<<<<< HEAD
 			offlineContainer := services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(offlineContainer.Env).To(HaveLen(1))
 			assertEnvFrom(*offlineContainer)
@@ -607,6 +733,22 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			// check offline config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -615,6 +757,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigOffline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(testConfig))
 
 			onlineContainer := services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
@@ -626,6 +769,40 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			regRemote := services.RegistryConfig{
+				RegistryType: services.RegistryRemoteConfigType,
+				Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:80", resourceName),
+			}
+			offlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore: services.OfflineStoreConfig{
+					Type:         services.OfflineDBPersistenceSnowflakeConfigType,
+					DBParameters: unmarshallYamlString(snowflakeYamlString),
+				},
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
+			}
+			Expect(repoConfigOffline).To(Equal(offlineConfig))
+
+			// check online config
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+			Expect(deploy.Spec.Template.Spec.Containers[0].ImagePullPolicy).To(Equal(corev1.PullAlways))
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -634,9 +811,31 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigOnline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			Expect(repoConfigOnline).To(Equal(testConfig))
 			onlineContainer = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(onlineContainer.Env).To(HaveLen(1))
+=======
+			offlineRemote := services.OfflineStoreConfig{
+				Host: fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
+				Type: services.OfflineRemoteConfigType,
+				Port: services.HttpPort,
+			}
+			onlineConfig := &services.RepoConfig{
+				Project:                       feastProject,
+				Provider:                      services.LocalProviderType,
+				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+				OfflineStore:                  offlineRemote,
+				OnlineStore: services.OnlineStoreConfig{
+					Type:         onlineType,
+					DBParameters: unmarshallYamlString(cassandraYamlString),
+				},
+				Registry:    regRemote,
+				AuthzConfig: noAuthzConfig(),
+			}
+			Expect(repoConfigOnline).To(Equal(onlineConfig))
+			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 
 			// check client config
 			cm := &corev1.ConfigMap{}
@@ -650,6 +849,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigClient := &services.RepoConfig{}
 			err = yaml.Unmarshal([]byte(cm.Data[services.FeatureStoreYamlCmKey]), repoConfigClient)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			offlineRemote := services.OfflineStoreConfig{
 				Host: fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
 				Type: services.OfflineRemoteConfigType,
@@ -659,6 +859,8 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				RegistryType: services.RegistryRemoteConfigType,
 				Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:80", resourceName),
 			}
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			clientConfig := &services.RepoConfig{
 				Project:                       feastProject,
 				Provider:                      services.LocalProviderType,
@@ -693,6 +895,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			feast.Handler.FeatureStore = resource
 
 			// check online config
+<<<<<<< HEAD
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      objMeta.Name,
 				Namespace: objMeta.Namespace,
@@ -703,6 +906,19 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(env).NotTo(BeNil())
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+=======
+			deploy = &appsv1.Deployment{}
+			err = k8sClient.Get(ctx, types.NamespacedName{
+				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
+				Namespace: resource.Namespace,
+			},
+				deploy)
+			Expect(err).NotTo(HaveOccurred())
+			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -712,9 +928,15 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigOnline = &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 			testConfig.OnlineStore.Type = services.OnlineDBPersistenceSnowflakeConfigType
 			testConfig.OnlineStore.DBParameters = unmarshallYamlString(snowflakeYamlString)
 			Expect(repoConfigOnline).To(Equal(testConfig))
+=======
+			onlineConfig.OnlineStore.Type = services.OnlineDBPersistenceSnowflakeConfigType
+			onlineConfig.OnlineStore.DBParameters = unmarshallYamlString(snowflakeYamlString)
+			Expect(repoConfigOnline).To(Equal(onlineConfig))
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 		})
 	})
 })

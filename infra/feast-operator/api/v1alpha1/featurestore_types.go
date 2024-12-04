@@ -151,9 +151,11 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 // OfflineStoreDBStorePersistence configures the DB store persistence for the offline store service
 type OfflineStoreDBStorePersistence struct {
 	// +kubebuilder:validation:Enum=snowflake.offline;bigquery;redshift;spark;postgres;feast_trino.trino.TrinoOfflineStore;redis
-	Type          string                      `json:"type"`
-	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
-	SecretKeyName string                      `json:"secretKeyName,omitempty"`
+	Type string `json:"type"`
+	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
+	SecretRef corev1.LocalObjectReference `json:"secretRef"`
+	// By default, the selected store "type" is used as the SecretKeyName
+	SecretKeyName string `json:"secretKeyName,omitempty"`
 }
 
 var ValidOfflineStoreDBStorePersistenceTypes = []string{
@@ -213,6 +215,7 @@ type OnlineStoreDBStorePersistence struct {
 =======
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Type          string                       `json:"type,omitempty"`
 	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
 	SecretKeyName string                       `json:"secretKeyName,omitempty"`
@@ -222,6 +225,13 @@ type OnlineStoreDBStorePersistence struct {
 	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
 	SecretKeyName string                      `json:"secretKeyName,omitempty"`
 >>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
+=======
+	Type string `json:"type"`
+	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
+	SecretRef corev1.LocalObjectReference `json:"secretRef"`
+	// By default, the selected store "type" is used as the SecretKeyName
+	SecretKeyName string `json:"secretKeyName,omitempty"`
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 }
 
 var ValidOnlineStoreDBStorePersistenceTypes = []string{
@@ -290,11 +300,15 @@ type RegistryDBStorePersistence struct {
 	// +kubebuilder:validation:Enum=sql;snowflake.registry
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
 	// By default, the selected store "type" is used as the SecretKeyName
 	SecretKeyName string `json:"secretKeyName,omitempty"`
+<<<<<<< HEAD
 =======
 	Type          string                       `json:"type,omitempty"`
 	SecretRef     *corev1.LocalObjectReference `json:"secretRef,omitempty"`
@@ -305,6 +319,8 @@ type RegistryDBStorePersistence struct {
 	SecretRef     corev1.LocalObjectReference `json:"secretRef"`
 	SecretKeyName string                      `json:"secretKeyName,omitempty"`
 >>>>>>> cac619cfa (fix: Fix db store types in Operator CRD (#4798))
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 }
 
 var ValidRegistryDBStorePersistenceTypes = []string{

@@ -407,6 +407,7 @@ spec:
                             properties:
                               secretKeyName:
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 description: By default, the selected store "type"
                                   is used as the SecretKeyName
                                 type: string
@@ -421,6 +422,15 @@ spec:
                                   LocalObjectReference contains enough information to let you locate the
                                   referenced object inside the same namespace.
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+                                description: By default, the selected store "type"
+                                  is used as the SecretKeyName
+                                type: string
+                              secretRef:
+                                description: Data store parameters should be placed
+                                  as-is from the "feature_store.yaml" under the secret
+                                  key. "registry_type" & "type" fields should be removed.
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
                                 properties:
                                   name:
                                     description: |-
@@ -918,11 +928,13 @@ spec:
                               the DB store persistence for the offline store service
                             properties:
                               secretKeyName:
+                                description: By default, the selected store "type"
+                                  is used as the SecretKeyName
                                 type: string
                               secretRef:
-                                description: |-
-                                  LocalObjectReference contains enough information to let you locate the
-                                  referenced object inside the same namespace.
+                                description: Data store parameters should be placed
+                                  as-is from the "feature_store.yaml" under the secret
+                                  key. "registry_type" & "type" fields should be removed.
                                 properties:
                                   name:
                                     description: |-
@@ -1416,11 +1428,14 @@ spec:
                                   the DB store persistence for the registry service
                                 properties:
                                   secretKeyName:
+                                    description: By default, the selected store "type"
+                                      is used as the SecretKeyName
                                     type: string
                                   secretRef:
-                                    description: |-
-                                      LocalObjectReference contains enough information to let you locate the
-                                      referenced object inside the same namespace.
+                                    description: Data store parameters should be placed
+                                      as-is from the "feature_store.yaml" under the
+                                      secret key. "registry_type" & "type" fields
+                                      should be removed.
                                     properties:
                                       name:
                                         description: |-
@@ -1962,6 +1977,7 @@ spec:
                                 properties:
                                   secretKeyName:
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     description: By default, the selected store "type"
                                       is used as the SecretKeyName
                                     type: string
@@ -1977,6 +1993,16 @@ spec:
                                       LocalObjectReference contains enough information to let you locate the
                                       referenced object inside the same namespace.
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+                                    description: By default, the selected store "type"
+                                      is used as the SecretKeyName
+                                    type: string
+                                  secretRef:
+                                    description: Data store parameters should be placed
+                                      as-is from the "feature_store.yaml" under the
+                                      secret key. "registry_type" & "type" fields
+                                      should be removed.
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
                                     properties:
                                       name:
                                         description: |-
@@ -2482,11 +2508,14 @@ spec:
                                   the DB store persistence for the offline store service
                                 properties:
                                   secretKeyName:
+                                    description: By default, the selected store "type"
+                                      is used as the SecretKeyName
                                     type: string
                                   secretRef:
-                                    description: |-
-                                      LocalObjectReference contains enough information to let you locate the
-                                      referenced object inside the same namespace.
+                                    description: Data store parameters should be placed
+                                      as-is from the "feature_store.yaml" under the
+                                      secret key. "registry_type" & "type" fields
+                                      should be removed.
                                     properties:
                                       name:
                                         description: |-
@@ -2989,11 +3018,14 @@ spec:
                                       the DB store persistence for the registry service
                                     properties:
                                       secretKeyName:
+                                        description: By default, the selected store
+                                          "type" is used as the SecretKeyName
                                         type: string
                                       secretRef:
-                                        description: |-
-                                          LocalObjectReference contains enough information to let you locate the
-                                          referenced object inside the same namespace.
+                                        description: Data store parameters should
+                                          be placed as-is from the "feature_store.yaml"
+                                          under the secret key. "registry_type" &
+                                          "type" fields should be removed.
                                         properties:
                                           name:
                                             description: |-

@@ -533,6 +533,9 @@ func authzConfigWithOidc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 func onlineStoreWithDBPersistenceType(dbPersistenceType string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -575,6 +578,7 @@ func registryStoreWithDBPersistenceType(dbPersistenceType string, featureStore *
 		},
 	}
 	return fsCopy
+<<<<<<< HEAD
 =======
 	return copy
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
@@ -585,6 +589,10 @@ func registryStoreWithDBPersistenceType(dbPersistenceType string, featureStore *
 
 =======
 >>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
+=======
+}
+
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 const resourceName = "test-resource"
 const namespaceName = "default"
 
@@ -631,6 +639,7 @@ var _ = Describe("FeatureStore API", func() {
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithObjectStoreBucketForPvc("gs://bucket/online_store.db", featurestore), "Online store does not support S3 or GS")
 		})
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		It("should fail when db persistence type is invalid", func() {
 			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.online\", \"redis\", \"ikv\", \"datastore\", \"dynamodb\", \"bigtable\", \"postgres\", \"cassandra\", \"mysql\", \"hazelcast\", \"singlestore\", \"hbase\", \"elasticsearch\", \"qdrant\", \"couchbase\"")
@@ -639,6 +648,12 @@ var _ = Describe("FeatureStore API", func() {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
+=======
+
+		It("should fail when db persistence type is invalid", func() {
+			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.online\", \"redis\", \"ikv\", \"datastore\", \"dynamodb\", \"bigtable\", \"postgres\", \"cassandra\", \"mysql\", \"hazelcast\", \"singlestore\"")
+		})
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 	})
 
 	Context("When creating an invalid Offline Store", func() {
@@ -648,11 +663,17 @@ var _ = Describe("FeatureStore API", func() {
 			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithUnmanagedFileType(featurestore), "Unsupported value")
 		})
 <<<<<<< HEAD
+<<<<<<< HEAD
 		It("should fail when db persistence type is invalid", func() {
 			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.offline\", \"bigquery\", \"redshift\", \"spark\", \"postgres\", \"trino\", \"redis\", \"athena\", \"mssql\"")
 		})
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+		It("should fail when db persistence type is invalid", func() {
+			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.offline\", \"bigquery\", \"redshift\", \"spark\", \"postgres\", \"feast_trino.trino.TrinoOfflineStore\", \"redis\"")
+		})
+>>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 	})
 
 	Context("When creating an invalid Registry", func() {
@@ -684,6 +705,9 @@ var _ = Describe("FeatureStore API", func() {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
+		})
+		It("should fail when db persistence type is invalid", func() {
+			attemptInvalidCreationAndAsserts(ctx, registryStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"sql\", \"snowflake.registry\"")
 		})
 	})
 
