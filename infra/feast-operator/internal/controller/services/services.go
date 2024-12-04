@@ -1270,9 +1270,12 @@ func (feast *FeastServices) deleteOwnedFeastObj(obj client.Object) error {
 func applyOptionalContainerConfigs(container *corev1.Container, optionalConfigs feastdevv1alpha1.OptionalConfigs) {
 	if optionalConfigs.Env != nil {
 		container.Env = envOverride(container.Env, *optionalConfigs.Env)
+<<<<<<< HEAD
 	}
 	if optionalConfigs.EnvFrom != nil {
 		container.EnvFrom = *optionalConfigs.EnvFrom
+=======
+>>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 	}
 	if optionalConfigs.ImagePullPolicy != nil {
 		container.ImagePullPolicy = *optionalConfigs.ImagePullPolicy
@@ -1282,6 +1285,7 @@ func applyOptionalContainerConfigs(container *corev1.Container, optionalConfigs 
 	}
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) mountPvcConfigs(podSpec *corev1.PodSpec) {
 	for _, feastType := range feastServerTypes {
 		if pvcConfig, hasPvcConfig := hasPvcConfig(feast.Handler.FeatureStore, feastType); hasPvcConfig {
@@ -1380,6 +1384,8 @@ func getProbeHandler(feastType FeastServiceType, tls *feastdevv1alpha1.TlsConfig
 	}
 }
 
+=======
+>>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 func mountPvcConfig(podSpec *corev1.PodSpec, pvcConfig *feastdevv1alpha1.PvcConfig, deployName string) {
 	if podSpec != nil && pvcConfig != nil {
 		container := &podSpec.Containers[0]

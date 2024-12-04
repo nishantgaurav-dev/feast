@@ -129,6 +129,7 @@ var _ = Describe("TLS Config", func() {
 			Expect(tls).NotTo(BeNil())
 			Expect(tls.IsTLS()).To(BeTrue())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(tls.SecretRef).NotTo(BeNil())
 			Expect(tls.SecretRef.Name).To(Equal("feast-test-offline-tls"))
 			tls = feast.getTlsConfigs(OnlineFeastType)
@@ -144,11 +145,19 @@ var _ = Describe("TLS Config", func() {
 			Expect(tls.IsTLS()).To(BeTrue())
 
 =======
+=======
+			Expect(tls.SecretRef).NotTo(BeNil())
+			Expect(tls.SecretRef.Name).To(Equal("feast-test-offline-tls"))
+>>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 			tls = feast.getTlsConfigs(OnlineFeastType)
 			Expect(tls).NotTo(BeNil())
 			Expect(tls.IsTLS()).To(BeTrue())
+			Expect(tls.SecretRef).NotTo(BeNil())
+			Expect(tls.SecretRef.Name).To(Equal("feast-test-online-tls"))
 			tls = feast.getTlsConfigs(RegistryFeastType)
 			Expect(tls).NotTo(BeNil())
+			Expect(tls.SecretRef).NotTo(BeNil())
+			Expect(tls.SecretRef.Name).To(Equal("feast-test-registry-tls"))
 			Expect(tls.SecretKeyNames).To(Equal(secretKeyNames))
 			Expect(tls.IsTLS()).To(BeTrue())
 

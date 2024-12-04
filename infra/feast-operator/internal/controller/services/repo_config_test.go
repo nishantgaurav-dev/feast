@@ -24,9 +24,13 @@ import (
 	"gopkg.in/yaml.v3"
 	corev1 "k8s.io/api/core/v1"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 =======
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+>>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 
 	feastdevv1alpha1 "github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 )
