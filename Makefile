@@ -586,6 +586,7 @@ build-ui:
 
 
 # Go SDK & embedded
+<<<<<<< HEAD
 PB_REL = https://github.com/protocolbuffers/protobuf/releases
 PB_VERSION = 3.11.2
 PB_ARCH := $(shell uname -m)
@@ -613,10 +614,20 @@ compile-protos-go: install-go-proto-dependencies
 			--go-grpc_out=$(ROOT_DIR)/go/protos \
 			--go-grpc_opt=module=github.com/feast-dev/feast/go/protos $(ROOT_DIR)/protos/feast/$(folder)/*.proto; ) true
 
+=======
+install-protoc-dependencies:
+	pip install "protobuf>=4.24.0,<5.0.0" "grpcio-tools>=1.56.2,<2" "mypy-protobuf>=3.1"
+
+install-go-proto-dependencies:
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.31.0
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+
+>>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
 #install-go-ci-dependencies:
 	# go install golang.org/x/tools/cmd/goimports
 	# python -m pip install "pybindgen==0.22.1" "grpcio-tools>=1.56.2,<2" "mypy-protobuf>=3.1"
 
+<<<<<<< HEAD
 .PHONY: build-go
 build-go: compile-protos-go 
 	go build -o feast ./go/main.go
@@ -638,8 +649,37 @@ lint-go: compile-protos-go
 	go vet ./go/internal/feast
 
 .PHONY: build-go-docker-dev
+=======
+build-go: 
+	compile-protos-go 
+	go build -o feast ./go/main.go
+
+install-feast-ci-locally:
+	pip install -e ".[ci]"
+
+test-go: 
+	compile-protos-go 
+	compile-protos-python 
+	install-feast-ci-locally
+	CGO_ENABLED=1 go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html
+
+format-go:
+	gofmt -s -w go/
+
+lint-go: 
+	compile-protos-go
+	go vet ./go/internal/feast
+
+>>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
 build-go-docker-dev:
 	docker buildx build --build-arg VERSION=dev \
 		-t feastdev/feature-server-go:dev \
 		-f go/infra/docker/feature-server/Dockerfile --load .
 
+<<<<<<< HEAD
+=======
+compile-protos-go: 
+	install-go-proto-dependencies 
+	install-protoc-dependencies
+	python setup.py build_go_protos
+>>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
