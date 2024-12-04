@@ -467,6 +467,71 @@ var _ = Describe("Repo Config", func() {
 			}
 			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
 
+			By("Having oidc authorization")
+			featureStore.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{
+				OidcAuthz: &feastdevv1alpha1.OidcAuthz{
+					SecretRef: corev1.LocalObjectReference{
+						Name: "oidc-secret",
+					},
+				},
+			}
+			ApplyDefaultsToStatus(featureStore)
+
+			secretExtractionFunc := mockOidcConfigFromSecret(map[string]interface{}{
+				string(OidcAuthDiscoveryUrl): "discovery-url",
+				string(OidcClientId):         "client-id",
+				string(OidcClientSecret):     "client-secret",
+				string(OidcUsername):         "username",
+				string(OidcPassword):         "password"})
+			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
+			expectedOfflineConfig = OfflineStoreConfig{
+				Type: "dask",
+			}
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			expectedOnlineConfig = OnlineStoreConfig{
+				Type: "sqlite",
+				Path: DefaultOnlineStoreEphemeralPath,
+			}
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+
+			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
+			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
+			expectedRegistryConfig = RegistryConfig{
+				RegistryType: "file",
+				Path:         DefaultRegistryEphemeralPath,
+			}
+			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
+
+			repoConfig, err = getClientRepoConfig(featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(3))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientSecret)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcUsername)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcPassword)))
+
 			By("Having the all the db services")
 			featureStore = minimalFeatureStore()
 			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -562,6 +627,7 @@ var _ = Describe("Repo Config", func() {
 			string(OidcClientSecret): "client-secret",
 			string(OidcUsername):     "username",
 			string(OidcPassword):     "password"})
+<<<<<<< HEAD
 		_, err := getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
@@ -569,6 +635,15 @@ var _ = Describe("Repo Config", func() {
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+=======
+		_, err := getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+		_, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+		_, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getClientRepoConfig(featureStore, secretExtractionFunc)
@@ -589,6 +664,7 @@ var _ = Describe("Repo Config", func() {
 			string(OidcClientId):         "client-id",
 			string(OidcUsername):         "username",
 			string(OidcPassword):         "password"})
+<<<<<<< HEAD
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
@@ -596,6 +672,15 @@ var _ = Describe("Repo Config", func() {
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+=======
+		_, err = getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+		_, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+		_, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getClientRepoConfig(featureStore, secretExtractionFunc)
@@ -657,7 +742,17 @@ func mockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[st
 	return createParameterMap(), nil
 }
 
+<<<<<<< HEAD
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+func mockOidcConfigFromSecret(
+	oidcProperties map[string]interface{}) func(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+	return func(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+		return oidcProperties, nil
+	}
+}
+
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 func createParameterMap() map[string]interface{} {
 	yamlString := `
 hosts:

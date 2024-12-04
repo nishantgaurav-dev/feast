@@ -78,6 +78,9 @@ spec:
                         type: array
                     type: object
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
                   oidc:
                     description: |-
                       OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
@@ -103,9 +106,12 @@ spec:
                 x-kubernetes-validations:
                 - message: One selection required between kubernetes or oidc.
                   rule: '[has(self.kubernetes), has(self.oidc)].exists_one(c, c)'
+<<<<<<< HEAD
 =======
                 type: object
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
               feastProject:
                 description: FeastProject is the Feast project id. This can be any
                   alphanumeric string with underscores, but it cannot start with an
@@ -1624,6 +1630,9 @@ spec:
                             type: array
                         type: object
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
                       oidc:
                         description: |-
                           OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
@@ -1650,9 +1659,12 @@ spec:
                     - message: One selection required between kubernetes or oidc.
                       rule: '[has(self.kubernetes), has(self.oidc)].exists_one(c,
                         c)'
+<<<<<<< HEAD
 =======
                     type: object
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
                   feastProject:
                     description: FeastProject is the Feast project id. This can be
                       any alphanumeric string with underscores, but it cannot start

@@ -421,14 +421,20 @@ type OptionalConfigs struct {
 
 // AuthzConfig defines the authorization settings for the deployed Feast services.
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 // +kubebuilder:validation:XValidation:rule="[has(self.kubernetes), has(self.oidc)].exists_one(c, c)",message="One selection required between kubernetes or oidc."
 type AuthzConfig struct {
 	KubernetesAuthz *KubernetesAuthz `json:"kubernetes,omitempty"`
 	OidcAuthz       *OidcAuthz       `json:"oidc,omitempty"`
+<<<<<<< HEAD
 =======
 type AuthzConfig struct {
 	KubernetesAuthz *KubernetesAuthz `json:"kubernetes,omitempty"`
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 }
 
 // KubernetesAuthz provides a way to define the authorization settings using Kubernetes RBAC resources.
@@ -445,14 +451,20 @@ type KubernetesAuthz struct {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 // OidcAuthz defines the authorization settings for deployments using an Open ID Connect identity provider.
 // https://auth0.com/docs/authenticate/protocols/openid-connect-protocol
 type OidcAuthz struct {
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 // TlsConfigs configures server TLS for a feast service. in an openshift cluster, this is configured by default using service serving certificates.
 // +kubebuilder:validation:XValidation:rule="(!has(self.disable) || !self.disable) ? has(self.secretRef) : true",message="`secretRef` required if `disable` is false."
 type TlsConfigs struct {

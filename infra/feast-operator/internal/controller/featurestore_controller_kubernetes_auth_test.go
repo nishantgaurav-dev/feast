@@ -392,6 +392,7 @@ var _ = Describe("FeatureStore Controller-Kubernetes authorization", func() {
 			Expect(errors.IsNotFound(err)).To(BeTrue())
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			By("Clearing the kubernetes authorization and reconciling")
 			resourceNew = resource.DeepCopy()
 			resourceNew.Spec.AuthzConfig = nil
@@ -400,6 +401,11 @@ var _ = Describe("FeatureStore Controller-Kubernetes authorization", func() {
 			resourceNew = resource.DeepCopy()
 			resourceNew.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{}
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+			By("Clearing the kubernetes authorization and reconciling")
+			resourceNew = resource.DeepCopy()
+			resourceNew.Spec.AuthzConfig = nil
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 			err = k8sClient.Update(ctx, resourceNew)
 			Expect(err).NotTo(HaveOccurred())
 			_, err = controllerReconciler.Reconcile(ctx, reconcile.Request{

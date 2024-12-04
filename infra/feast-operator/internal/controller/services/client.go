@@ -46,7 +46,11 @@ func (feast *FeastServices) createClientConfigMap() error {
 }
 
 func (feast *FeastServices) setClientConfigMap(cm *corev1.ConfigMap) error {
+<<<<<<< HEAD
 	cm.Labels = feast.getFeastTypeLabels(ClientFeastType)
+=======
+	cm.Labels = feast.getLabels(ClientFeastType)
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 	clientYaml, err := feast.getClientFeatureStoreYaml(feast.extractConfigFromSecret)
 	if err != nil {
 		return err

@@ -97,6 +97,9 @@ const (
 	NoAuthAuthType     AuthzType = "no_auth"
 	KubernetesAuthType AuthzType = "kubernetes"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 	OidcAuthType       AuthzType = "oidc"
 
 	OidcClientId         OidcPropertyType = "client_id"
@@ -106,8 +109,11 @@ const (
 	OidcPassword         OidcPropertyType = "password"
 
 	OidcMissingSecretError string = "missing OIDC secret: %s"
+<<<<<<< HEAD
 =======
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 )
 
 var (
@@ -220,11 +226,14 @@ type AuthzType string
 // OidcPropertyType defines the OIDC property type
 type OidcPropertyType string
 
+<<<<<<< HEAD
 =======
 // AuthzType defines the authorization type
 type AuthzType string
 
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 // FeastServiceType is the type of feast service
 type FeastServiceType string
 
@@ -304,6 +313,7 @@ type RegistryConfig struct {
 // AuthzConfig is the RBAC authorization configuration.
 type AuthzConfig struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Type           AuthzType              `yaml:"type,omitempty"`
 	OidcParameters map[string]interface{} `yaml:",inline,omitempty"`
 =======
@@ -325,6 +335,10 @@ type deploymentSettings struct {
 	TargetHttpsPort int32
 =======
 	Type AuthzType `yaml:"type,omitempty"`
+=======
+	Type           AuthzType              `yaml:"type,omitempty"`
+	OidcParameters map[string]interface{} `yaml:",inline,omitempty"`
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 }
 
 type deploymentSettings struct {

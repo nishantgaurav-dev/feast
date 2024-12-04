@@ -720,3 +720,7 @@ func SetIsOpenShift(cfg *rest.Config) {
 		}
 	}
 }
+
+func missingOidcSecretProperty(property OidcPropertyType) error {
+	return fmt.Errorf(OidcMissingSecretError, property)
+}

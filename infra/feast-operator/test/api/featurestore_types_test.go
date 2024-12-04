@@ -17,9 +17,12 @@ import (
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // Function to create invalid OnlineStore resource
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 func createFeatureStore() *feastdevv1alpha1.FeatureStore {
 	return &feastdevv1alpha1.FeatureStore{
 		ObjectMeta: metav1.ObjectMeta{
@@ -529,6 +532,7 @@ func authzConfigWithOidc(featureStore *feastdevv1alpha1.FeatureStore) *feastdevv
 	return fsCopy
 }
 
+<<<<<<< HEAD
 func onlineStoreWithDBPersistenceType(dbPersistenceType string, featureStore *feastdevv1alpha1.FeatureStore) *feastdevv1alpha1.FeatureStore {
 	fsCopy := featureStore.DeepCopy()
 	fsCopy.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
@@ -579,6 +583,8 @@ func registryStoreWithDBPersistenceType(dbPersistenceType string, featureStore *
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 }
 
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 const resourceName = "test-resource"
 const namespaceName = "default"
 
@@ -716,12 +722,16 @@ var _ = Describe("FeatureStore API", func() {
 			storage = resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.Resources.Requests.Storage().String()
 			Expect(storage).To(Equal("500Mi"))
 		})
-		It("should set the default AuthzConfig", func() {
+	})
+	Context("When omitting the AuthzConfig PvcConfig", func() {
+		_, featurestore := initContext()
+		It("should keep an empty AuthzConfig", func() {
 			resource := featurestore
 			services.ApplyDefaultsToStatus(resource)
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 		})
 	})
+<<<<<<< HEAD
 <<<<<<< HEAD
 	Context("When omitting the AuthzConfig PvcConfig", func() {
 		_, featurestore := initContext()
@@ -731,12 +741,17 @@ var _ = Describe("FeatureStore API", func() {
 			Expect(resource.Status.Applied.AuthzConfig).To(BeNil())
 		})
 	})
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 	Context("When configuring the AuthzConfig", func() {
 		ctx, featurestore := initContext()
 		It("should fail when both kubernetes and oidc settings are given", func() {
 			attemptInvalidCreationAndAsserts(ctx, authzConfigWithOidc(authzConfigWithKubernetes(featurestore)), "One selection required between kubernetes or oidc")
 		})
 	})
+<<<<<<< HEAD
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 })

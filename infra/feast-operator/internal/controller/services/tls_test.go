@@ -109,11 +109,16 @@ var _ = Describe("TLS Config", func() {
 			Expect(err).To(BeNil())
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			repoConfig, err := getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
 =======
 			repoConfig := getClientRepoConfig(feast.Handler.FeatureStore)
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			repoConfig, err := getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 			Expect(repoConfig.OfflineStore.Port).To(Equal(HttpsPort))
 			Expect(repoConfig.OfflineStore.Scheme).To(Equal(HttpsScheme))
 			Expect(repoConfig.OfflineStore.Cert).To(ContainSubstring(string(OfflineFeastType)))
@@ -252,11 +257,16 @@ var _ = Describe("TLS Config", func() {
 			Expect(err).To(BeNil())
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			repoConfig, err = getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
 =======
 			repoConfig = getClientRepoConfig(feast.Handler.FeatureStore)
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			repoConfig, err = getClientRepoConfig(feast.Handler.FeatureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+>>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
 			Expect(repoConfig.OfflineStore.Port).To(Equal(HttpsPort))
 			Expect(repoConfig.OfflineStore.Scheme).To(Equal(HttpsScheme))
 			Expect(repoConfig.OfflineStore.Cert).To(ContainSubstring(string(OfflineFeastType)))
