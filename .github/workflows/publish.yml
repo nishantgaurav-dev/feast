@@ -48,6 +48,7 @@ jobs:
             fi
             echo "Validated custom version: ${{ github.event.inputs.custom_version }}"
           fi
+
       - name: Get release version
         id: get_release_version
         run: |
@@ -175,7 +176,12 @@ jobs:
 
   build_wheels:
     uses: ./.github/workflows/build_wheels.yml
+<<<<<<< HEAD
 >>>>>>> 8e109fb36 (chore: Update publish to allow for manual trigger (#4820))
+=======
+    with:
+      release_version: ${{ github.event.inputs.custom_version }}
+>>>>>>> b4b4b153f (chore: Updating build_wheels to accept input from publish workflow)
 
   publish-python-sdk:
     uses: ./.github/workflows/publish_python_sdk.yaml
