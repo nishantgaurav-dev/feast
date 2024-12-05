@@ -92,6 +92,10 @@ type OfflineStore struct {
 	LogLevel string `json:"logLevel,omitempty"`
 =======
 	TLS            *OfflineTlsConfigs       `json:"tls,omitempty"`
+	// LogLevel sets the logging level for the offline store service
+	// Allowed values: "debug", "info", "warning", "error", "critical".
+	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
+	LogLevel string `json:"logLevel,omitempty"`
 }
 
 // OfflineTlsConfigs configures server TLS for the offline feast service. in an openshift cluster, this is configured by default using service serving certificates.
@@ -174,12 +178,18 @@ type OnlineStore struct {
 	Persistence    *OnlineStorePersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs             `json:"tls,omitempty"`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 	// LogLevel sets the logging level for the online store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
+<<<<<<< HEAD
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 }
 
 // OnlineStorePersistence configures the persistence settings for the online store service
@@ -267,12 +277,18 @@ type LocalRegistryConfig struct {
 	Persistence    *RegistryPersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs          `json:"tls,omitempty"`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 	// LogLevel sets the logging level for the registry service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
+<<<<<<< HEAD
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 }
 
 // RegistryPersistence configures the persistence settings for the registry service

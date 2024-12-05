@@ -126,28 +126,40 @@ var (
 	FeastServiceConstants = map[FeastServiceType]deploymentSettings{
 		OfflineFeastType: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Args:            []string{"serve_offline", "-h", "0.0.0.0"},
 =======
 			Command:         []string{"feast", "serve_offline", "-h", "0.0.0.0"},
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			Args:            []string{"serve_offline", "-h", "0.0.0.0"},
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 			TargetHttpPort:  8815,
 			TargetHttpsPort: 8816,
 		},
 		OnlineFeastType: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Args:            []string{"serve", "-h", "0.0.0.0"},
 =======
 			Command:         []string{"feast", "serve", "-h", "0.0.0.0"},
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			Args:            []string{"serve", "-h", "0.0.0.0"},
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 			TargetHttpPort:  6566,
 			TargetHttpsPort: 6567,
 		},
 		RegistryFeastType: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Args:            []string{"serve_registry"},
 =======
 			Command:         []string{"feast", "serve_registry"},
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			Args:            []string{"serve_registry"},
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 			TargetHttpPort:  6570,
 			TargetHttpsPort: 6571,
 		},
@@ -331,6 +343,7 @@ type AuthzConfig struct {
 
 type deploymentSettings struct {
 	Args            []string
+<<<<<<< HEAD
 	TargetHttpPort  int32
 	TargetHttpsPort int32
 =======
@@ -348,6 +361,8 @@ type deploymentSettings struct {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 =======
 	Command         []string
+=======
+>>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 	TargetHttpPort  int32
 	TargetHttpsPort int32
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
