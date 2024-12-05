@@ -146,6 +146,7 @@ docker-build: ## Build docker image with the manager.
 
 ## Build feast docker image.
 <<<<<<< HEAD
+<<<<<<< HEAD
 .PHONY: feast-ci-dev-docker-img
 feast-ci-dev-docker-img:
 	cd ./../.. && make build-feature-server-dev
@@ -154,6 +155,11 @@ feast-ci-dev-docker-img:
 feast-image-build:
 	cd ./../.. && VERSION=operator.v0 REGISTRY=example.com make build-feature-transformation-server-docker
 >>>>>>> 779b25942 (feat: Building the feast image (#4775))
+=======
+.PHONY: feast-ci-dev-docker-img
+feast-ci-dev-docker-img:
+	cd ./../.. && make build-feature-server-dev
+>>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
 
 
 .PHONY: docker-push
