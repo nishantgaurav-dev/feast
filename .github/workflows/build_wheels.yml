@@ -14,10 +14,14 @@ on:
         required: true
         type: string
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db61dd138 (adding input)
       highest_semver_tag:
         description: 'The highest semantic version tag without the "v" prefix (e.g., 1.2.3)'
         required: true
         type: string
+<<<<<<< HEAD
 
 jobs:
   get-version:
@@ -26,6 +30,8 @@ jobs:
       custom_version: ${{ github.event.inputs.custom_version }}
       token: ${{ github.event.inputs.token }}
 =======
+=======
+>>>>>>> db61dd138 (adding input)
 
 jobs:
   get-version:
