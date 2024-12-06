@@ -227,9 +227,13 @@ jobs:
       - name: Validate Feast Version
         run: |
 <<<<<<< HEAD
+<<<<<<< HEAD
           feast version
 =======
 >>>>>>> ff97a8914 (chore: Adding exceptiong handling to build_wheels and additional logging)
+=======
+          feast version
+>>>>>>> 502f65d94 (chore: Adding feast version earlier in workflow)
           if ! VERSION_OUTPUT=$(feast version); then
             echo "Error: Failed to get Feast version."
             exit 1
