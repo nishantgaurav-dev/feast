@@ -138,10 +138,14 @@ jobs:
         run: |
           git fetch --tags
 <<<<<<< HEAD
+<<<<<<< HEAD
           git checkout v0.42.0
 =======
           git checkout ${{ needs.get-version.outputs.release_version }}
 >>>>>>> 27b4b2af0 (chore: Updating build wheels to checkout latest tag)
+=======
+          git checkout v0.42.0
+>>>>>>> 66a221ae8 (chore: Hardcoding 0.42.0 to push to PyPI)
           pip install -U pip setuptools wheel twine
           make build-ui
           git status
