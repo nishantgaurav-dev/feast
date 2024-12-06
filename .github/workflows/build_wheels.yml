@@ -226,7 +226,10 @@ jobs:
       # Validate that the feast version installed is not development and is the correct version of the tag we ran it off of.
       - name: Validate Feast Version
         run: |
+<<<<<<< HEAD
           feast version
+=======
+>>>>>>> ff97a8914 (chore: Adding exceptiong handling to build_wheels and additional logging)
           if ! VERSION_OUTPUT=$(feast version); then
             echo "Error: Failed to get Feast version."
             exit 1
