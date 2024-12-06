@@ -177,6 +177,7 @@ jobs:
   build_wheels:
     uses: ./.github/workflows/build_wheels.yml
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 8e109fb36 (chore: Update publish to allow for manual trigger (#4820))
 =======
     with:
@@ -190,6 +191,12 @@ jobs:
 =======
       highest_semver_tag: ${{ steps.get_highest_semver.outputs.highest_semver_tag }}
 >>>>>>> 101acb4b2 (chore: Updating workflow to use custom version for get highest semver step)
+=======
+    needs: get-version
+    with:
+        release_version: ${{ needs.get-version.outputs.release_version }}
+        highest_semver_tag: ${{ needs.get-version.outputs.highest_semver_tag }}
+>>>>>>> 084cb5eff (chore: Consolidating more of Publish and adding checks to pass input args in build wheels workflows)
 
   publish-python-sdk:
     uses: ./.github/workflows/publish_python_sdk.yaml
