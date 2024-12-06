@@ -137,7 +137,11 @@ jobs:
         # There's a `git restore` in here because `make install-go-ci-dependencies` is actually messing up go.mod & go.sum.
         run: |
           git fetch --tags
+<<<<<<< HEAD
           git checkout v0.42.0
+=======
+          git checkout ${{ needs.get-version.outputs.release_version }}
+>>>>>>> 27b4b2af0 (chore: Updating build wheels to checkout latest tag)
           pip install -U pip setuptools wheel twine
           make build-ui
           git status
