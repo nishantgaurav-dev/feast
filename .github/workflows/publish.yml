@@ -199,6 +199,7 @@ jobs:
 >>>>>>> 084cb5eff (chore: Consolidating more of Publish and adding checks to pass input args in build wheels workflows)
 
   publish-python-sdk:
+<<<<<<< HEAD
     uses: ./.github/workflows/publish_python_sdk.yaml
     with:
       custom_version: ${{ github.event.inputs.custom_version }}
@@ -217,6 +218,20 @@ jobs:
     with:
       custom_version: ${{ github.event.inputs.custom_version }}
       token: ${{ github.event.inputs.token }}
+=======
+    if: github.repository == 'feast-dev/feast'
+    runs-on: ubuntu-latest
+    needs: [build_wheels]
+    steps:
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          name: python-wheels
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PASSWORD }}
+>>>>>>> cc3ac5b5d (chore: Rename artifact for downloading to publish python sdk)
 
   publish-java-sdk:
     uses: ./.github/workflows/publish_java_sdk.yml
