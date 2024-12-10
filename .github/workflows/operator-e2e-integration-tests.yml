@@ -19,11 +19,14 @@ on:
 jobs:
   operator-e2e-tests:
     timeout-minutes: 40
+<<<<<<< HEAD
 =======
 
 jobs:
   operator-e2e-tests:
 >>>>>>> 92081089e (feat: Adding github action to run the operator end-to-end tests. (#4762))
+=======
+>>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
     if:
       ((github.event.action == 'labeled' && (github.event.label.name == 'approved' || github.event.label.name == 'lgtm' || github.event.label.name == 'ok-to-test')) ||
       (github.event.action != 'labeled' && (contains(github.event.pull_request.labels.*.name, 'ok-to-test') || contains(github.event.pull_request.labels.*.name, 'approved') || contains(github.event.pull_request.labels.*.name, 'lgtm')))) &&
@@ -50,10 +53,14 @@ jobs:
       - name: Create KIND cluster
         run: |
 <<<<<<< HEAD
+<<<<<<< HEAD
           kind create cluster --name $KIND_CLUSTER --wait 10m
 =======
           kind create cluster --name $KIND_CLUSTER --wait 5m
 >>>>>>> 92081089e (feat: Adding github action to run the operator end-to-end tests. (#4762))
+=======
+          kind create cluster --name $KIND_CLUSTER --wait 10m
+>>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
 
       - name: Set up kubernetes context
         run: |
@@ -67,21 +74,32 @@ jobs:
           make test-e2e
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
       - name: Debug KIND Cluster when there is a failure
         if: failure()
         run: |
           kubectl get pods --all-namespaces
           kubectl describe nodes
 
+<<<<<<< HEAD
 =======
 >>>>>>> 92081089e (feat: Adding github action to run the operator end-to-end tests. (#4762))
+=======
+>>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
       - name: Clean up
         if: always()
         run: |
           # Delete the KIND cluster after tests
           kind delete cluster --name kind-$KIND_CLUSTER
 <<<<<<< HEAD
+<<<<<<< HEAD
 
       
 =======
 >>>>>>> 92081089e (feat: Adding github action to run the operator end-to-end tests. (#4762))
+=======
+
+      
+>>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
