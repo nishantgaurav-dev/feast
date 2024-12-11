@@ -82,6 +82,7 @@ type FeatureStoreServices struct {
 
 // OfflineStore configures the deployed offline store service
 type OfflineStore struct {
+<<<<<<< HEAD
 	ServiceConfigs `json:",inline"`
 	Persistence    *OfflineStorePersistence `json:"persistence,omitempty"`
 <<<<<<< HEAD
@@ -92,6 +93,11 @@ type OfflineStore struct {
 	LogLevel string `json:"logLevel,omitempty"`
 =======
 	TLS            *OfflineTlsConfigs       `json:"tls,omitempty"`
+=======
+	StoreServiceConfigs `json:",inline"`
+	Persistence         *OfflineStorePersistence `json:"persistence,omitempty"`
+	TLS                 *OfflineTlsConfigs       `json:"tls,omitempty"`
+>>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
 	// LogLevel sets the logging level for the offline store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
@@ -183,6 +189,7 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 
 // OnlineStore configures the deployed online store service
 type OnlineStore struct {
+<<<<<<< HEAD
 	ServiceConfigs `json:",inline"`
 	Persistence    *OnlineStorePersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs             `json:"tls,omitempty"`
@@ -190,6 +197,11 @@ type OnlineStore struct {
 <<<<<<< HEAD
 =======
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
+=======
+	StoreServiceConfigs `json:",inline"`
+	Persistence         *OnlineStorePersistence `json:"persistence,omitempty"`
+	TLS                 *TlsConfigs             `json:"tls,omitempty"`
+>>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
 	// LogLevel sets the logging level for the online store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
@@ -460,6 +472,14 @@ type ServiceConfigs struct {
 // DefaultConfigs k8s container settings that are applied by default
 type DefaultConfigs struct {
 	Image *string `json:"image,omitempty"`
+}
+
+// StoreServiceConfigs k8s deployment settings
+type StoreServiceConfigs struct {
+	// Replicas determines the number of pods for the feast service.
+	// When Replicas > 1, persistence is recommended.
+	Replicas       *int32 `json:"replicas,omitempty"`
+	ServiceConfigs `json:",inline"`
 }
 
 // OptionalConfigs k8s container settings that are optional

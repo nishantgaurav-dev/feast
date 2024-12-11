@@ -135,6 +135,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 	Context("When deploying a resource with all db storage services", func() {
 		const resourceName = "cr-name"
 		var pullPolicy = corev1.PullAlways
+		var replicas = int32(1)
 
 		ctx := context.Background()
 
@@ -221,8 +222,12 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			By("creating the custom resource for the Kind FeatureStore")
 			err = k8sClient.Get(ctx, typeNamespacedName, featurestore)
 			if err != nil && errors.IsNotFound(err) {
+<<<<<<< HEAD
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{})
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+				resource := createFeatureStoreResource(resourceName, image, pullPolicy, replicas, &[]corev1.EnvVar{})
+>>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
 				resource.Spec.Services.OfflineStore.Persistence = &feastdevv1alpha1.OfflineStorePersistence{
 					DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
 						Type: string(offlineType),

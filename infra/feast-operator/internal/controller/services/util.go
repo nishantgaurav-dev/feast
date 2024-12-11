@@ -245,8 +245,12 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 			}
 		}
 
+<<<<<<< HEAD
 		setServiceDefaultConfigs(&services.OfflineStore.ServiceConfigs.DefaultConfigs)
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+		setStoreServiceDefaultConfigs(&services.OfflineStore.StoreServiceConfigs)
+>>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
 	}
 
 	if services.OnlineStore != nil {
@@ -294,7 +298,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		}
 
-		setServiceDefaultConfigs(&services.OnlineStore.ServiceConfigs.DefaultConfigs)
+		setStoreServiceDefaultConfigs(&services.OnlineStore.StoreServiceConfigs)
 	}
 }
 
@@ -302,6 +306,13 @@ func setServiceDefaultConfigs(defaultConfigs *feastdevv1alpha1.DefaultConfigs) {
 	if defaultConfigs.Image == nil {
 		defaultConfigs.Image = &DefaultImage
 	}
+}
+
+func setStoreServiceDefaultConfigs(storeServiceConfigs *feastdevv1alpha1.StoreServiceConfigs) {
+	if storeServiceConfigs.Replicas == nil {
+		storeServiceConfigs.Replicas = &DefaultReplicas
+	}
+	setServiceDefaultConfigs(&storeServiceConfigs.ServiceConfigs.DefaultConfigs)
 }
 
 func checkOfflineStoreFilePersistenceType(value string) error {

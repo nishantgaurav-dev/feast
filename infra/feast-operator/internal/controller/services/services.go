@@ -493,7 +493,7 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 	deploy.Spec = appsv1.DeploymentSpec{
-		Replicas: &DefaultReplicas,
+		Replicas: feast.getServiceReplicas(feastType),
 		Selector: metav1.SetAsLabelSelector(deploy.GetLabels()),
 		Strategy: appsv1.DeploymentStrategy{
 			Type: appsv1.RecreateDeploymentStrategyType,
@@ -909,8 +909,26 @@ func (feast *FeastServices) getServiceConfigs(feastType FeastServiceType) feastd
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
+=======
+func (feast *FeastServices) getServiceReplicas(feastType FeastServiceType) *int32 {
+	appliedServices := feast.Handler.FeatureStore.Status.Applied.Services
+	switch feastType {
+	case OfflineFeastType:
+		if feast.isOfflinStore() {
+			return appliedServices.OfflineStore.Replicas
+		}
+	case OnlineFeastType:
+		if feast.isOnlinStore() {
+			return appliedServices.OnlineStore.Replicas
+		}
+	}
+	return &DefaultReplicas
+}
+
+>>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
 func (feast *FeastServices) getLogLevelForType(feastType FeastServiceType) *string {
 	services := feast.Handler.FeatureStore.Status.Applied.Services
 	switch feastType {
