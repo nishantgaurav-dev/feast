@@ -18,6 +18,7 @@ on:
 jobs:
   get-version:
 <<<<<<< HEAD
+<<<<<<< HEAD
     uses: ./.github/workflows/get_semantic_release_version.yaml
     with:
       custom_version: ${{ github.event.inputs.custom_version }}
@@ -200,6 +201,14 @@ jobs:
 
   publish-python-sdk:
 <<<<<<< HEAD
+=======
+    uses: ./.github/workflows/get_semantic_release_version.yaml
+    with:
+      custom_version: ${{ github.event.inputs.custom_version }}
+      token: ${{ github.event.inputs.token }}
+
+  publish-python-sdk:
+>>>>>>> b40e0fa60 (chore: Refactoring release yamls to be more module and not use redund… (#4826))
     uses: ./.github/workflows/publish_python_sdk.yaml
     with:
       custom_version: ${{ github.event.inputs.custom_version }}
@@ -218,6 +227,7 @@ jobs:
     with:
       custom_version: ${{ github.event.inputs.custom_version }}
       token: ${{ github.event.inputs.token }}
+<<<<<<< HEAD
 =======
     if: github.repository == 'feast-dev/feast'
     runs-on: ubuntu-latest
@@ -232,6 +242,8 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_PASSWORD }}
 >>>>>>> cc3ac5b5d (chore: Rename artifact for downloading to publish python sdk)
+=======
+>>>>>>> b40e0fa60 (chore: Refactoring release yamls to be more module and not use redund… (#4826))
 
   publish-java-sdk:
     uses: ./.github/workflows/publish_java_sdk.yml

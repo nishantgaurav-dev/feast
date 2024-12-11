@@ -35,6 +35,7 @@ jobs:
 
 jobs:
   get-version:
+<<<<<<< HEAD
     runs-on:  ubuntu-latest
     outputs:
       release_version: ${{ steps.get_release_version.outputs.release_version }}
@@ -88,6 +89,12 @@ jobs:
           echo $VERSION_WITHOUT_PREFIX
           echo $HIGHEST_SEMVER_TAG
 >>>>>>> b4b4b153f (chore: Updating build_wheels to accept input from publish workflow)
+=======
+    uses: ./.github/workflows/get_semantic_release_version.yaml
+    with:
+      custom_version: ${{ github.event.inputs.custom_version }}
+      token: ${{ github.event.inputs.token }}
+>>>>>>> b40e0fa60 (chore: Refactoring release yamls to be more module and not use redund… (#4826))
 
   build-python-wheel:
     name: Build wheels
@@ -165,7 +172,11 @@ jobs:
     needs: get-version
     strategy:
       matrix:
+<<<<<<< HEAD
         component: [ feature-server, feature-server-java, feature-transformation-server, feast-operator ]
+=======
+        component: [ feature-server, feature-server-java, feature-transformation-server ]
+>>>>>>> b40e0fa60 (chore: Refactoring release yamls to be more module and not use redund… (#4826))
     env:
       REGISTRY: feastdev
     steps:

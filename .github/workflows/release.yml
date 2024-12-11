@@ -20,6 +20,10 @@ on:
         type: boolean
 
 jobs:
+<<<<<<< HEAD
+=======
+  if: github.repository == 'feast-dev/feast'
+>>>>>>> b40e0fa60 (chore: Refactoring release yamls to be more module and not use redund… (#4826))
   get_dry_release_versions:
     if: github.repository == 'feast-dev/feast'
     runs-on: ubuntu-latest
