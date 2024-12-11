@@ -651,7 +651,7 @@ var _ = Describe("FeatureStore API", func() {
 =======
 
 		It("should fail when db persistence type is invalid", func() {
-			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.online\", \"redis\", \"ikv\", \"datastore\", \"dynamodb\", \"bigtable\", \"postgres\", \"cassandra\", \"mysql\", \"hazelcast\", \"singlestore\"")
+			attemptInvalidCreationAndAsserts(ctx, onlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.online\", \"redis\", \"ikv\", \"datastore\", \"dynamodb\", \"bigtable\", \"postgres\", \"cassandra\", \"mysql\", \"hazelcast\", \"singlestore\", \"hbase\", \"elasticsearch\", \"qdrant\", \"couchbase\"")
 		})
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 	})
@@ -671,7 +671,7 @@ var _ = Describe("FeatureStore API", func() {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 		It("should fail when db persistence type is invalid", func() {
-			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.offline\", \"bigquery\", \"redshift\", \"spark\", \"postgres\", \"feast_trino.trino.TrinoOfflineStore\", \"redis\"")
+			attemptInvalidCreationAndAsserts(ctx, offlineStoreWithDBPersistenceType("invalid", featurestore), "Unsupported value: \"invalid\": supported values: \"snowflake.offline\", \"bigquery\", \"redshift\", \"spark\", \"postgres\", \"trino\", \"redis\", \"athena\", \"mssql\"")
 		})
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
 	})

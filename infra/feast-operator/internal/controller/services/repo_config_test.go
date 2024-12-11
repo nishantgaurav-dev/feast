@@ -720,6 +720,7 @@ func minimalFeatureStoreWithAllServices() *feastdevv1alpha1.FeatureStore {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func emptyMockExtractConfigFromSecret(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
 	return map[string]interface{}{}, nil
 }
@@ -739,10 +740,13 @@ func mockOidcConfigFromSecret(
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 func emptyMockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+=======
+func emptyMockExtractConfigFromSecret(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 	return map[string]interface{}{}, nil
 }
 
-func mockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+func mockExtractConfigFromSecret(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
 	return createParameterMap(), nil
 }
 
@@ -750,8 +754,8 @@ func mockExtractConfigFromSecret(secretRef string, secretKeyName string) (map[st
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 =======
 func mockOidcConfigFromSecret(
-	oidcProperties map[string]interface{}) func(secretRef string, secretKeyName string) (map[string]interface{}, error) {
-	return func(secretRef string, secretKeyName string) (map[string]interface{}, error) {
+	oidcProperties map[string]interface{}) func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
+	return func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error) {
 		return oidcProperties, nil
 	}
 }

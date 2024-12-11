@@ -440,6 +440,9 @@ spec:
                                 - spark
                                 - postgres
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
                                 - trino
                                 - redis
                                 - athena
@@ -949,6 +952,10 @@ spec:
                                 - mysql
                                 - hazelcast
                                 - singlestore
+                                - hbase
+                                - elasticsearch
+                                - qdrant
+                                - couchbase
                                 type: string
                             required:
                             - secretRef
@@ -2012,6 +2019,9 @@ spec:
                                     - spark
                                     - postgres
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
                                     - trino
                                     - redis
                                     - athena
@@ -2530,6 +2540,10 @@ spec:
                                     - mysql
                                     - hazelcast
                                     - singlestore
+                                    - hbase
+                                    - elasticsearch
+                                    - qdrant
+                                    - couchbase
                                     type: string
                                 required:
                                 - secretRef

@@ -116,10 +116,14 @@ type OfflineStorePersistence struct {
 // OfflineStoreFilePersistence configures the file-based persistence for the offline store service
 type OfflineStoreFilePersistence struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// +kubebuilder:validation:Enum=file;dask;duckdb
 =======
 	// +kubebuilder:validation:Enum=dask;duckdb
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	// +kubebuilder:validation:Enum=file;dask;duckdb
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 	Type      string     `json:"type,omitempty"`
 	PvcConfig *PvcConfig `json:"pvc,omitempty"`
 }
@@ -128,6 +132,7 @@ var ValidOfflineStoreFilePersistenceTypes = []string{
 	"dask",
 	"duckdb",
 	"file",
+<<<<<<< HEAD
 }
 
 // OfflineStoreDBStorePersistence configures the DB store persistence for the offline store service
@@ -150,11 +155,13 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 	"redis",
 	"athena",
 	"mssql",
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 }
 
 // OfflineStoreDBStorePersistence configures the DB store persistence for the offline store service
 type OfflineStoreDBStorePersistence struct {
-	// +kubebuilder:validation:Enum=snowflake.offline;bigquery;redshift;spark;postgres;feast_trino.trino.TrinoOfflineStore;redis
+	// +kubebuilder:validation:Enum=snowflake.offline;bigquery;redshift;spark;postgres;trino;redis;athena;mssql
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
@@ -168,8 +175,10 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 	"redshift",
 	"spark",
 	"postgres",
-	"feast_trino.trino.TrinoOfflineStore",
+	"trino",
 	"redis",
+	"athena",
+	"mssql",
 }
 
 // OnlineStore configures the deployed online store service
@@ -216,7 +225,11 @@ type OnlineStoreFilePersistence struct {
 // OnlineStoreDBStorePersistence configures the DB store persistence for the offline store service
 type OnlineStoreDBStorePersistence struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase;milvus
+=======
+	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
@@ -257,10 +270,14 @@ var ValidOnlineStoreDBStorePersistenceTypes = []string{
 	"hazelcast",
 	"singlestore",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 	"hbase",
 	"elasticsearch",
 	"qdrant",
 	"couchbase",
+<<<<<<< HEAD
 	"milvus",
 =======
 type OnlineStoreFilePersistence struct {
@@ -269,6 +286,8 @@ type OnlineStoreFilePersistence struct {
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 }
 
 // LocalRegistryConfig configures the deployed registry service

@@ -79,10 +79,14 @@ sqlalchemy_config_kwargs:
 `
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var secretContainingValidTypeYamlString = `
 =======
 var invalidSecretContainingTypeYamlString = `
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+var secretContainingValidTypeYamlString = `
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 type: cassandra
 hosts:
   - 192.168.1.1
@@ -324,6 +328,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(err.Error()).To(Equal("secret key invalid.secret.key doesn't exist in secret online-store-secret"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			By("Referring to a secret that contains parameter named type with invalid value")
 =======
 			By("Referring to a secret that contains parameter named type")
@@ -354,12 +359,14 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains invalid tag named type"))
 
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 			By("Referring to a secret that contains parameter named type with invalid value")
 			resource = &feastdevv1alpha1.FeatureStore{}
 			err = k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
-			secret = &corev1.Secret{}
+			secret := &corev1.Secret{}
 			err = k8sClient.Get(ctx, onlineSecretNamespacedName, secret)
 			Expect(err).NotTo(HaveOccurred())
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
@@ -378,6 +385,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			})
 			Expect(err).To(HaveOccurred())
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains tag named type with value wrong"))
 =======
@@ -415,6 +423,9 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			Expect(err.Error()).To(Equal("secret key sql in secret registry-store-secret contains invalid tag named registry_type"))
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			Expect(err.Error()).To(Equal("secret key cassandra in secret online-store-secret contains tag named type with value wrong"))
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 		})
 
 		It("should successfully reconcile the resource", func() {
@@ -550,6 +561,9 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(controllerutil.HasControllerReference(svc)).To(BeTrue())
 			Expect(svc.Spec.Ports[0].TargetPort).To(Equal(intstr.FromInt(int(services.FeastServiceConstants[services.RegistryFeastType].TargetHttpPort))))
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 
 			By("Referring to a secret that contains parameter named type")
 			resource = &feastdevv1alpha1.FeatureStore{}
@@ -604,8 +618,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				NamespacedName: typeNamespacedName,
 			})
 			Expect(err).To(Not(HaveOccurred()))
+<<<<<<< HEAD
 =======
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+>>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 		})
 
 		It("should properly encode a feature_store.yaml config", func() {
