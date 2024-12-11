@@ -20,6 +20,8 @@ import (
 
 	appsv1 "k8s.io/api/apps/v1"
 
+	appsv1 "k8s.io/api/apps/v1"
+
 	"github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 =======
 >>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
@@ -44,16 +46,22 @@ func checkIfFeatureStoreCustomResourceConditionsInReady(featureStoreName, namesp
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// Parse the JSON into FeatureStore
 	var resource v1alpha1.FeatureStore
 =======
 	// Parse the JSON into a generic map
 	var resource map[string]interface{}
 >>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
+=======
+	// Parse the JSON into FeatureStore
+	var resource v1alpha1.FeatureStore
+>>>>>>> d97becb63 (feat: Go Operator - Parsing the output to go structs (#4832))
 	if err := json.Unmarshal(out.Bytes(), &resource); err != nil {
 		return fmt.Errorf("failed to parse the resource JSON. Error: %v", err)
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	// Validate all conditions
 	for _, condition := range resource.Status.Conditions {
@@ -72,20 +80,18 @@ func checkIfFeatureStoreCustomResourceConditionsInReady(featureStoreName, namesp
 		return fmt.Errorf("conditions field is missing or invalid in the status section")
 	}
 
+=======
+>>>>>>> d97becb63 (feat: Go Operator - Parsing the output to go structs (#4832))
 	// Validate all conditions
-	for _, condition := range conditions {
-		conditionMap, ok := condition.(map[string]interface{})
-		if !ok {
-			return fmt.Errorf("invalid condition format")
-		}
-
-		conditionType := conditionMap["type"].(string)
-		conditionStatus := conditionMap["status"].(string)
-
-		if conditionStatus != "True" {
+	for _, condition := range resource.Status.Conditions {
+		if condition.Status != "True" {
 			return fmt.Errorf(" FeatureStore=%s condition '%s' is not in 'Ready' state. Status: %s",
+<<<<<<< HEAD
 				featureStoreName, conditionType, conditionStatus)
 >>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
+=======
+				featureStoreName, condition.Type, condition.Status)
+>>>>>>> d97becb63 (feat: Go Operator - Parsing the output to go structs (#4832))
 		}
 	}
 
@@ -118,16 +124,22 @@ func checkIfDeploymentExistsAndAvailable(namespace string, deploymentName string
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// Parse the JSON output into Deployment
 			var result appsv1.Deployment
 =======
 			// Parse the JSON output into a map
 			var result map[string]interface{}
 >>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
+=======
+			// Parse the JSON output into Deployment
+			var result appsv1.Deployment
+>>>>>>> d97becb63 (feat: Go Operator - Parsing the output to go structs (#4832))
 			if err := json.Unmarshal(output.Bytes(), &result); err != nil {
 				return fmt.Errorf("failed to parse deployment JSON: %v", err)
 			}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 			// Check for Available condition
 			for _, condition := range result.Status.Conditions {
@@ -152,6 +164,11 @@ func checkIfDeploymentExistsAndAvailable(namespace string, deploymentName string
 				}
 				if cond["type"] == "Available" && cond["status"] == "True" {
 >>>>>>> cc0c87aa6 (feat: Adding first feast operator e2e test. (#4791))
+=======
+			// Check for Available condition
+			for _, condition := range result.Status.Conditions {
+				if condition.Type == "Available" && condition.Status == "True" {
+>>>>>>> d97becb63 (feat: Go Operator - Parsing the output to go structs (#4832))
 					return nil // Deployment is available
 				}
 			}
