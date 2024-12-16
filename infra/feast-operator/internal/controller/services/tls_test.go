@@ -59,9 +59,12 @@ var _ = Describe("TLS Config", func() {
 			Expect(getPortStr(tls)).To(Equal("80"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			Expect(feast.offlineTls()).To(BeFalse())
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeFalse())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -91,9 +94,12 @@ var _ = Describe("TLS Config", func() {
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			Expect(feast.offlineTls()).To(BeFalse())
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -144,6 +150,7 @@ var _ = Describe("TLS Config", func() {
 			Expect(tls.SecretKeyNames).To(Equal(secretKeyNames))
 			Expect(tls.IsTLS()).To(BeTrue())
 
+<<<<<<< HEAD
 =======
 =======
 			Expect(tls.SecretRef).NotTo(BeNil())
@@ -163,6 +170,8 @@ var _ = Describe("TLS Config", func() {
 
 			Expect(feast.offlineTls()).To(BeTrue())
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeTrue())
@@ -237,9 +246,12 @@ var _ = Describe("TLS Config", func() {
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			Expect(feast.offlineTls()).To(BeFalse())
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeTrue())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeFalse())
@@ -298,9 +310,12 @@ var _ = Describe("TLS Config", func() {
 			Expect(GetTlsPath(RegistryFeastType)).To(Equal("/tls/registry/"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			Expect(feast.offlineTls()).To(BeTrue())
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			Expect(feast.remoteRegistryTls()).To(BeFalse())
 			Expect(feast.localRegistryTls()).To(BeFalse())
 			Expect(feast.isOpenShiftTls(OfflineFeastType)).To(BeTrue())

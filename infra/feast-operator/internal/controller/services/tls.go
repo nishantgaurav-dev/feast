@@ -30,10 +30,14 @@ func (feast *FeastServices) setTlsDefaults() error {
 	appliedServices := feast.Handler.FeatureStore.Status.Applied.Services
 	if feast.isOfflinStore() && appliedServices.OfflineStore.TLS != nil {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		tlsDefaults(appliedServices.OfflineStore.TLS)
 =======
 		tlsDefaults(&appliedServices.OfflineStore.TLS.TlsConfigs)
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+		tlsDefaults(appliedServices.OfflineStore.TLS)
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 	}
 	if feast.isOnlinStore() {
 		tlsDefaults(appliedServices.OnlineStore.TLS)
@@ -75,11 +79,9 @@ func (feast *FeastServices) setOpenshiftTls() error {
 =======
 >>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 	if feast.offlineOpenshiftTls() {
-		appliedServices.OfflineStore.TLS = &feastdevv1alpha1.OfflineTlsConfigs{
-			TlsConfigs: feastdevv1alpha1.TlsConfigs{
-				SecretRef: &corev1.LocalObjectReference{
-					Name: feast.initFeastSvc(OfflineFeastType).Name + tlsNameSuffix,
-				},
+		appliedServices.OfflineStore.TLS = &feastdevv1alpha1.TlsConfigs{
+			SecretRef: &corev1.LocalObjectReference{
+				Name: feast.initFeastSvc(OfflineFeastType).Name + tlsNameSuffix,
 			},
 		}
 	}
@@ -142,12 +144,17 @@ func (feast *FeastServices) getTlsConfigs(feastType FeastServiceType) (tls *feas
 	switch feastType {
 	case OfflineFeastType:
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if feast.isOfflinStore() {
 			tls = appliedServices.OfflineStore.TLS
 =======
 		if feast.isOfflinStore() && appliedServices.OfflineStore.TLS != nil {
 			tls = &appliedServices.OfflineStore.TLS.TlsConfigs
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+		if feast.isOfflinStore() {
+			tls = appliedServices.OfflineStore.TLS
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 		}
 	case OnlineFeastType:
 		if feast.isOnlinStore() {
@@ -198,6 +205,7 @@ func (feast *FeastServices) remoteRegistryOpenshiftTls() (bool, error) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 func (feast *FeastServices) offlineTls() bool {
 	return feast.isOfflinStore() &&
@@ -206,6 +214,8 @@ func (feast *FeastServices) offlineTls() bool {
 }
 
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 func (feast *FeastServices) localRegistryTls() bool {
 	return localRegistryTls(feast.Handler.FeatureStore)
 }

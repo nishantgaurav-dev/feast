@@ -60,10 +60,14 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 		featurestore := &feastdevv1alpha1.FeatureStore{}
 		localRef := corev1.LocalObjectReference{Name: "test"}
 <<<<<<< HEAD
+<<<<<<< HEAD
 		tlsConfigs := &feastdevv1alpha1.TlsConfigs{
 =======
 		tlsConfigs := feastdevv1alpha1.TlsConfigs{
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+		tlsConfigs := &feastdevv1alpha1.TlsConfigs{
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			SecretRef: &localRef,
 		}
 		BeforeEach(func() {
@@ -80,6 +84,7 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 						Services: &feastdevv1alpha1.FeatureStoreServices{
 							OnlineStore: &feastdevv1alpha1.OnlineStore{
 <<<<<<< HEAD
+<<<<<<< HEAD
 								TLS: tlsConfigs,
 							},
 							OfflineStore: &feastdevv1alpha1.OfflineStore{
@@ -90,16 +95,21 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 									TLS: tlsConfigs,
 =======
 								TLS: &tlsConfigs,
+=======
+								TLS: tlsConfigs,
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 							},
 							OfflineStore: &feastdevv1alpha1.OfflineStore{
-								TLS: &feastdevv1alpha1.OfflineTlsConfigs{
-									TlsConfigs: tlsConfigs,
-								},
+								TLS: tlsConfigs,
 							},
 							Registry: &feastdevv1alpha1.Registry{
 								Local: &feastdevv1alpha1.LocalRegistryConfig{
+<<<<<<< HEAD
 									TLS: &tlsConfigs,
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+									TLS: tlsConfigs,
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 								},
 							},
 						},
@@ -498,12 +508,16 @@ var _ = Describe("FeatureStore Controller - Feast service TLS", func() {
 					},
 					OfflineStore: &feastdevv1alpha1.OfflineStore{
 <<<<<<< HEAD
+<<<<<<< HEAD
 						TLS: tlsConfigs,
 =======
 						TLS: &feastdevv1alpha1.OfflineTlsConfigs{
 							TlsConfigs: tlsConfigs,
 						},
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+						TLS: tlsConfigs,
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 					},
 					Registry: &feastdevv1alpha1.Registry{
 						Remote: &feastdevv1alpha1.RemoteRegistryConfig{

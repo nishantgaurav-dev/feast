@@ -470,6 +470,7 @@ func getClientRepoConfig(
 			Port: HttpPort,
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if appliedServices.OfflineStore != nil && appliedServices.OfflineStore.TLS.IsTLS() {
 			clientRepoConfig.OfflineStore.Cert = GetTlsPath(OfflineFeastType) + appliedServices.OfflineStore.TLS.SecretKeyNames.TlsCrt
 =======
@@ -477,6 +478,10 @@ func getClientRepoConfig(
 			(&appliedServices.OfflineStore.TLS.TlsConfigs).IsTLS() {
 			clientRepoConfig.OfflineStore.Cert = GetTlsPath(OfflineFeastType) + appliedServices.OfflineStore.TLS.TlsConfigs.SecretKeyNames.TlsCrt
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+		if appliedServices.OfflineStore != nil && appliedServices.OfflineStore.TLS.IsTLS() {
+			clientRepoConfig.OfflineStore.Cert = GetTlsPath(OfflineFeastType) + appliedServices.OfflineStore.TLS.SecretKeyNames.TlsCrt
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 			clientRepoConfig.OfflineStore.Port = HttpsPort
 			clientRepoConfig.OfflineStore.Scheme = HttpsScheme
 		}

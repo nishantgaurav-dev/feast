@@ -96,14 +96,19 @@ type OfflineStore struct {
 =======
 	StoreServiceConfigs `json:",inline"`
 	Persistence         *OfflineStorePersistence `json:"persistence,omitempty"`
+<<<<<<< HEAD
 	TLS                 *OfflineTlsConfigs       `json:"tls,omitempty"`
 >>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
+=======
+	TLS                 *TlsConfigs              `json:"tls,omitempty"`
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 	// LogLevel sets the logging level for the offline store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
 	LogLevel string `json:"logLevel,omitempty"`
 }
 
+<<<<<<< HEAD
 // OfflineTlsConfigs configures server TLS for the offline feast service. in an openshift cluster, this is configured by default using service serving certificates.
 type OfflineTlsConfigs struct {
 	TlsConfigs `json:",inline"`
@@ -112,6 +117,8 @@ type OfflineTlsConfigs struct {
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 }
 
+=======
+>>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
 // OfflineStorePersistence configures the persistence settings for the offline store service
 // +kubebuilder:validation:XValidation:rule="[has(self.file), has(self.store)].exists_one(c, c)",message="One selection required between file or store."
 type OfflineStorePersistence struct {
