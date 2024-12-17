@@ -157,10 +157,15 @@ QDRANT_REQUIRED = ["qdrant-client>=1.12.0"]
 GO_REQUIRED = ["cffi~=1.15.0"]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 MILVUS_REQUIRED = ["pymilvus"]
 
 =======
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+MILVUS_REQUIRED = ["pymilvus"]
+
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
 CI_REQUIRED = (
     [
         "build",
@@ -369,9 +374,13 @@ setup(
         "qdrant": QDRANT_REQUIRED,
         "go": GO_REQUIRED,
 <<<<<<< HEAD
+<<<<<<< HEAD
         "milvus": MILVUS_REQUIRED,
 =======
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+        "milvus": MILVUS_REQUIRED,
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
     },
     include_package_data=True,
     license="Apache",

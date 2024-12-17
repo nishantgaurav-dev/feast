@@ -102,6 +102,7 @@ pyarrow==18.0.0
     #   feast (setup.py)
     #   dask-expr
 <<<<<<< HEAD
+<<<<<<< HEAD
 pydantic==2.10.4
     # via
     #   feast (setup.py)
@@ -113,6 +114,9 @@ pygments==2.18.0
 pyjwt==2.10.1
 =======
 pydantic==2.10.1
+=======
+pydantic==2.10.2
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
     # via
     #   feast (setup.py)
     #   fastapi

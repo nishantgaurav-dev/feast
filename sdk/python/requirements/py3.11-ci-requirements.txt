@@ -501,8 +501,14 @@ marshmallow==3.23.2
     #   great-expectations
 =======
 marshmallow==3.23.1
+<<<<<<< HEAD
     # via great-expectations
 >>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
+=======
+    # via
+    #   environs
+    #   great-expectations
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
 matplotlib-inline==0.1.7
     # via
     #   ipykernel
@@ -511,7 +517,11 @@ mdurl==0.1.2
     # via markdown-it-py
 milvus-lite==2.4.10
     # via pymilvus
+<<<<<<< HEAD
 minio==7.2.11
+=======
+minio==7.1.0
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
     # via feast (setup.py)
 mistune==3.0.2
     # via
@@ -726,12 +736,16 @@ pybindgen==0.22.1
 pycparser==2.22
     # via cffi
 <<<<<<< HEAD
+<<<<<<< HEAD
 pycryptodome==3.21.0
     # via minio
 pydantic==2.10.4
 =======
 pydantic==2.10.1
 >>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
+=======
+pydantic==2.10.2
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
     # via
     #   feast (setup.py)
     #   fastapi
@@ -761,10 +775,15 @@ pyjwt[crypto]==2.10.0
     #   singlestoredb
     #   snowflake-connector-python
 <<<<<<< HEAD
+<<<<<<< HEAD
 pymilvus==2.4.9
     # via feast (setup.py)
 =======
 >>>>>>> 26647afaa (chore: Update packages and fix lint issues (#4790))
+=======
+pymilvus==2.4.9
+    # via feast (setup.py)
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
 pymssql==2.3.2
     # via feast (setup.py)
 pymysql==1.1.1
@@ -827,7 +846,11 @@ python-dotenv==1.0.1
     # via
     #   environs
     #   uvicorn
+<<<<<<< HEAD
 python-json-logger==3.2.1
+=======
+python-json-logger==2.0.7
+>>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
     # via jupyter-events
 python-keycloak==4.2.2
     # via feast (setup.py)
