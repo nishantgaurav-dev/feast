@@ -22,7 +22,10 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.mark.integration
+<<<<<<< HEAD
 @pytest.mark.rbac_remote_integration_test
+=======
+>>>>>>> 96af22613 (feat: Loading the CA trusted store certificate into Feast to verify the public certificate. (#4852))
 @pytest.mark.parametrize(
     "tls_mode", [("True", "True"), ("True", "False"), ("False", "")], indirect=True
 )
