@@ -432,7 +432,12 @@ type PvcCreate struct {
 // The PVC name is the same as the associated deployment name.
 // +kubebuilder:validation:XValidation:rule="self == oldSelf",message="PvcCreate is immutable"
 type PvcCreate struct {
+<<<<<<< HEAD
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+	// AccessModes k8s persistent volume access modes. Defaults to ["ReadWriteOnce"].
+	AccessModes []corev1.PersistentVolumeAccessMode `json:"accessModes,omitempty"`
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 	// StorageClassName is the name of an existing StorageClass to which this persistent volume belongs. Empty value
 	// means that this volume does not belong to any StorageClass and the cluster default will be used.
 	StorageClassName *string `json:"storageClassName,omitempty"`

@@ -77,9 +77,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 		registryMountPath := "/registry"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		accessModes := []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce, corev1.ReadWriteMany}
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+		accessModes := []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce, corev1.ReadWriteMany}
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 		storageClassName := "test"
 
 		onlineStoreMountedPath := path.Join(onlineStoreMountPath, onlineStorePath)
@@ -110,9 +114,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 						PvcConfig: &feastdevv1alpha1.PvcConfig{
 							Create: &feastdevv1alpha1.PvcCreate{
 <<<<<<< HEAD
+<<<<<<< HEAD
 								AccessModes:      accessModes,
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+								AccessModes:      accessModes,
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 								StorageClassName: &storageClassName,
 							},
 							MountPath: offlineStoreMountPath,
@@ -220,9 +228,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence.FilePersistence.PvcConfig).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create).NotTo(BeNil())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(accessModes))
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(resource.Status.Applied.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(accessModes))
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			Expect(resource.Status.Applied.Services.OfflineStore.Persistence.FilePersistence.PvcConfig.Create.StorageClassName).To(Equal(&storageClassName))
 			expectedResources := corev1.VolumeResourceRequirements{
 				Requests: corev1.ResourceList{
@@ -241,9 +253,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create).NotTo(BeNil())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(services.DefaultPVCAccessModes))
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(services.DefaultPVCAccessModes))
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			Expect(resource.Status.Applied.Services.OnlineStore.Persistence.FilePersistence.PvcConfig.Create.StorageClassName).To(BeNil())
 			expectedResources = corev1.VolumeResourceRequirements{
 				Requests: corev1.ResourceList{
@@ -268,9 +284,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig).NotTo(BeNil())
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create).NotTo(BeNil())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(services.DefaultPVCAccessModes))
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.AccessModes).To(Equal(services.DefaultPVCAccessModes))
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			Expect(resource.Status.Applied.Services.Registry.Local.Persistence.FilePersistence.PvcConfig.Create.StorageClassName).To(BeNil())
 			expectedResources = corev1.VolumeResourceRequirements{
 				Requests: corev1.ResourceList{
@@ -416,6 +436,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 =======
 			Expect(pvc.Name).To(Equal(deploy.Name))
 			Expect(pvc.Spec.StorageClassName).To(Equal(&storageClassName))
+			Expect(pvc.Spec.AccessModes).To(Equal(accessModes))
 			Expect(pvc.Spec.Resources.Requests.Storage().String()).To(Equal(services.DefaultOfflineStorageRequest))
 			Expect(pvc.DeletionTimestamp).To(BeNil())
 
@@ -468,6 +489,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(registryVolMount.Name).To(Equal(registryPvcName))
 =======
 			Expect(pvc.Name).To(Equal(deploy.Name))
+			Expect(pvc.Spec.AccessModes).To(Equal(services.DefaultPVCAccessModes))
 			Expect(pvc.Spec.Resources.Requests.Storage().String()).To(Equal(services.DefaultOnlineStorageRequest))
 			Expect(pvc.DeletionTimestamp).To(BeNil())
 
@@ -507,7 +529,11 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(pvc.Spec.AccessModes).To(Equal(services.DefaultPVCAccessModes))
 =======
 			Expect(pvc.Name).To(Equal(deploy.Name))
+<<<<<<< HEAD
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(pvc.Spec.AccessModes).To(Equal(services.DefaultPVCAccessModes))
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			Expect(pvc.Spec.Resources.Requests.Storage().String()).To(Equal(services.DefaultRegistryStorageRequest))
 			Expect(pvc.DeletionTimestamp).To(BeNil())
 

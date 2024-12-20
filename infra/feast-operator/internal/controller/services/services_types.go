@@ -21,9 +21,13 @@ import (
 	feastdevv1alpha1 "github.com/feast-dev/feast/infra/feast-operator/api/v1alpha1"
 	handler "github.com/feast-dev/feast/infra/feast-operator/internal/controller/handler"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	corev1 "k8s.io/api/core/v1"
 =======
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+	corev1 "k8s.io/api/core/v1"
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

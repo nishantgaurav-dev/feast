@@ -195,10 +195,14 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 
 			if services.Registry.Local.Persistence.FilePersistence.PvcConfig != nil {
 				pvc := services.Registry.Local.Persistence.FilePersistence.PvcConfig
+<<<<<<< HEAD
 				if pvc.Create != nil {
 					ensureRequestedStorage(&pvc.Create.Resources, DefaultRegistryStorageRequest)
 				}
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+				ensurePVCDefaults(pvc, RegistryFeastType)
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			}
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		}
@@ -239,9 +243,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 =======
 			if services.OfflineStore.Persistence.FilePersistence.PvcConfig != nil {
 				pvc := services.OfflineStore.Persistence.FilePersistence.PvcConfig
-				if pvc.Create != nil {
-					ensureRequestedStorage(&pvc.Create.Resources, DefaultOfflineStorageRequest)
-				}
+				ensurePVCDefaults(pvc, OfflineFeastType)
 			}
 		}
 
@@ -290,10 +292,14 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 
 			if services.OnlineStore.Persistence.FilePersistence.PvcConfig != nil {
 				pvc := services.OnlineStore.Persistence.FilePersistence.PvcConfig
+<<<<<<< HEAD
 				if pvc.Create != nil {
 					ensureRequestedStorage(&pvc.Create.Resources, DefaultOnlineStorageRequest)
 				}
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+				ensurePVCDefaults(pvc, OnlineFeastType)
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			}
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 		}
@@ -592,6 +598,24 @@ func ensureRequestedStorage(resources *v1.VolumeResourceRequirements, requestedS
 	}
 	if _, ok := resources.Requests[v1.ResourceStorage]; !ok {
 		resources.Requests[v1.ResourceStorage] = resource.MustParse(requestedStorage)
+	}
+}
+
+func ensurePVCDefaults(pvc *feastdevv1alpha1.PvcConfig, feastType FeastServiceType) {
+	var storageRequest string
+	switch feastType {
+	case OnlineFeastType:
+		storageRequest = DefaultOnlineStorageRequest
+	case OfflineFeastType:
+		storageRequest = DefaultOfflineStorageRequest
+	case RegistryFeastType:
+		storageRequest = DefaultRegistryStorageRequest
+	}
+	if pvc.Create != nil {
+		ensureRequestedStorage(&pvc.Create.Resources, storageRequest)
+		if pvc.Create.AccessModes == nil {
+			pvc.Create.AccessModes = DefaultPVCAccessModes
+		}
 	}
 }
 

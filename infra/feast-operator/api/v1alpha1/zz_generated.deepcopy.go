@@ -631,13 +631,19 @@ func (in *PvcConfig) DeepCopy() *PvcConfig {
 func (in *PvcCreate) DeepCopyInto(out *PvcCreate) {
 	*out = *in
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 	if in.AccessModes != nil {
 		in, out := &in.AccessModes, &out.AccessModes
 		*out = make([]v1.PersistentVolumeAccessMode, len(*in))
 		copy(*out, *in)
 	}
+<<<<<<< HEAD
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 	if in.StorageClassName != nil {
 		in, out := &in.StorageClassName, &out.StorageClassName
 		*out = new(string)
