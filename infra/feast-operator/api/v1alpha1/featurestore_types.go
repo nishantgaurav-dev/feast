@@ -83,6 +83,7 @@ type FeatureStoreServices struct {
 // OfflineStore configures the deployed offline store service
 type OfflineStore struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	ServiceConfigs `json:",inline"`
 	Persistence    *OfflineStorePersistence `json:"persistence,omitempty"`
 <<<<<<< HEAD
@@ -102,6 +103,11 @@ type OfflineStore struct {
 =======
 	TLS                 *TlsConfigs              `json:"tls,omitempty"`
 >>>>>>> f36959cb2 (fix: Remove verifyClient TLS offlineStore option from the Operator (#4847))
+=======
+	ServiceConfigs `json:",inline"`
+	Persistence    *OfflineStorePersistence `json:"persistence,omitempty"`
+	TLS            *TlsConfigs              `json:"tls,omitempty"`
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	// LogLevel sets the logging level for the offline store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
@@ -197,6 +203,7 @@ var ValidOfflineStoreDBStorePersistenceTypes = []string{
 // OnlineStore configures the deployed online store service
 type OnlineStore struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	ServiceConfigs `json:",inline"`
 	Persistence    *OnlineStorePersistence `json:"persistence,omitempty"`
 	TLS            *TlsConfigs             `json:"tls,omitempty"`
@@ -209,6 +216,11 @@ type OnlineStore struct {
 	Persistence         *OnlineStorePersistence `json:"persistence,omitempty"`
 	TLS                 *TlsConfigs             `json:"tls,omitempty"`
 >>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
+=======
+	ServiceConfigs `json:",inline"`
+	Persistence    *OnlineStorePersistence `json:"persistence,omitempty"`
+	TLS            *TlsConfigs             `json:"tls,omitempty"`
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	// LogLevel sets the logging level for the online store service
 	// Allowed values: "debug", "info", "warning", "error", "critical".
 	// +kubebuilder:validation:Enum=debug;info;warning;error;critical
@@ -232,10 +244,14 @@ type OnlineStorePersistence struct {
 // +kubebuilder:validation:XValidation:rule="(has(self.pvc) && has(self.path)) ? !self.path.startsWith('/') : true",message="PVC path must be a file name only, with no slashes."
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // +kubebuilder:validation:XValidation:rule="has(self.path) ? !(self.path.startsWith('s3://') || self.path.startsWith('gs://')) : true",message="Online store does not support S3 or GS buckets."
 =======
 // +kubebuilder:validation:XValidation:rule="has(self.path) && !self.path.startsWith('s3://') && !self.path.startsWith('gs://')",message="Online store does not support S3 or GS buckets."
 >>>>>>> bc64ddfac (feat: Object store persistence in operator (#4758))
+=======
+// +kubebuilder:validation:XValidation:rule="has(self.path) ? !(self.path.startsWith('s3://') || self.path.startsWith('gs://')) : true",message="Online store does not support S3 or GS buckets."
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 type OnlineStoreFilePersistence struct {
 	Path      string     `json:"path,omitempty"`
 	PvcConfig *PvcConfig `json:"pvc,omitempty"`
@@ -415,6 +431,7 @@ type PvcConfig struct {
 	// MountPath within the container at which the volume should be mounted.
 	// Must start by "/" and cannot contain ':'.
 <<<<<<< HEAD
+<<<<<<< HEAD
 	MountPath string `json:"mountPath"`
 }
 
@@ -426,10 +443,13 @@ type PvcCreate struct {
 	AccessModes []corev1.PersistentVolumeAccessMode `json:"accessModes,omitempty"`
 =======
 	MountPath string `json:"mountPath,omitempty"`
+=======
+	MountPath string `json:"mountPath"`
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 }
 
 // PvcCreate defines the immutable settings to create a new PVC mounted at the given path.
-// The PVC name is the same as the associated deployment name.
+// The PVC name is the same as the associated deployment & feast service name.
 // +kubebuilder:validation:XValidation:rule="self == oldSelf",message="PvcCreate is immutable"
 type PvcCreate struct {
 <<<<<<< HEAD
@@ -484,14 +504,6 @@ type ServiceConfigs struct {
 // DefaultConfigs k8s container settings that are applied by default
 type DefaultConfigs struct {
 	Image *string `json:"image,omitempty"`
-}
-
-// StoreServiceConfigs k8s deployment settings
-type StoreServiceConfigs struct {
-	// Replicas determines the number of pods for the feast service.
-	// When Replicas > 1, persistence is recommended.
-	Replicas       *int32 `json:"replicas,omitempty"`
-	ServiceConfigs `json:",inline"`
 }
 
 // OptionalConfigs k8s container settings that are optional

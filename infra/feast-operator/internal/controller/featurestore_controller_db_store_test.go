@@ -135,7 +135,6 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 	Context("When deploying a resource with all db storage services", func() {
 		const resourceName = "cr-name"
 		var pullPolicy = corev1.PullAlways
-		var replicas = int32(1)
 
 		ctx := context.Background()
 
@@ -217,6 +216,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			By("creating the custom resource for the Kind FeatureStore")
 			err = k8sClient.Get(ctx, typeNamespacedName, featurestore)
 			if err != nil && errors.IsNotFound(err) {
+<<<<<<< HEAD
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{}, withEnvFrom())
 =======
 			By("creating the custom resource for the Kind FeatureStore")
@@ -228,6 +228,9 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 =======
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, replicas, &[]corev1.EnvVar{})
 >>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
+=======
+				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{})
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				resource.Spec.Services.OfflineStore.Persistence = &feastdevv1alpha1.OfflineStorePersistence{
 					DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
 						Type: string(offlineType),
@@ -532,6 +535,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(resource.Status.Phase).To(Equal(feastdevv1alpha1.ReadyPhase))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -544,17 +548,24 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
 =======
+=======
+			// check deployment
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			svc := &corev1.Service{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
@@ -654,10 +665,14 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			err = k8sClient.List(ctx, &deployList, listOpts)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(deployList.Items).To(HaveLen(1))
 =======
 			Expect(deployList.Items).To(HaveLen(3))
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			Expect(deployList.Items).To(HaveLen(1))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			svcList := corev1.ServiceList{}
 			err = k8sClient.List(ctx, &svcList, listOpts)
@@ -679,6 +694,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -695,20 +711,27 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
 =======
 			// check registry config
+=======
+			// check deployment
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
-			env := getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			registryContainer := services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(registryContainer.Env).To(HaveLen(1))
+			env := getFeatureStoreYamlEnvVar(registryContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64(services.RegistryFeastType)
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -725,28 +748,41 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				Provider:                      services.LocalProviderType,
 				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				OfflineStore: services.OfflineStoreConfig{
 					Type:         services.OfflineDBPersistenceSnowflakeConfigType,
 					DBParameters: unmarshallYamlString(snowflakeYamlString),
 				},
+<<<<<<< HEAD
 =======
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				Registry: services.RegistryConfig{
 					Path:         copyMap["path"].(string),
 					RegistryType: services.RegistryDBPersistenceSQLConfigType,
 					DBParameters: dbParametersMap,
 				},
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				OnlineStore: services.OnlineStoreConfig{
 					Type:         onlineType,
 					DBParameters: unmarshallYamlString(cassandraYamlString),
 				},
+<<<<<<< HEAD
 =======
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfig).To(Equal(testConfig))
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 			offlineContainer := services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(offlineContainer.Env).To(HaveLen(1))
@@ -771,6 +807,14 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			offlineContainer := services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(offlineContainer.Env).To(HaveLen(1))
+			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -779,6 +823,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigOffline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(testConfig))
 
@@ -808,23 +853,23 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOffline).To(Equal(offlineConfig))
+=======
+			Expect(repoConfigOffline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
-			// check online config
-			deploy = &appsv1.Deployment{}
-			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
-			Expect(deploy.Spec.Template.Spec.Containers[0].ImagePullPolicy).To(Equal(corev1.PullAlways))
-			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			onlineContainer := services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(onlineContainer.VolumeMounts).To(HaveLen(1))
+			Expect(onlineContainer.Env).To(HaveLen(1))
+			Expect(onlineContainer.ImagePullPolicy).To(Equal(corev1.PullAlways))
+			env = getFeatureStoreYamlEnvVar(onlineContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -833,6 +878,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			repoConfigOnline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(repoConfigOnline).To(Equal(testConfig))
 			onlineContainer = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
@@ -858,6 +904,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			Expect(repoConfigOnline).To(Equal(testConfig))
+			onlineContainer = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(onlineContainer.Env).To(HaveLen(1))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			// check client config
 			cm := &corev1.ConfigMap{}
@@ -872,6 +923,9 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			err = yaml.Unmarshal([]byte(cm.Data[services.FeatureStoreYamlCmKey]), repoConfigClient)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			offlineRemote := services.OfflineStoreConfig{
 				Host: fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
 				Type: services.OfflineRemoteConfigType,
@@ -881,8 +935,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 				RegistryType: services.RegistryRemoteConfigType,
 				Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:80", resourceName),
 			}
+<<<<<<< HEAD
 =======
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			clientConfig := &services.RepoConfig{
 				Project:                       feastProject,
 				Provider:                      services.LocalProviderType,
@@ -918,6 +975,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 
 			// check online config
 <<<<<<< HEAD
+<<<<<<< HEAD
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      objMeta.Name,
 				Namespace: objMeta.Namespace,
@@ -930,17 +988,23 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
 =======
 			deploy = &appsv1.Deployment{}
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
-			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			onlineContainer = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
+			env = getFeatureStoreYamlEnvVar(onlineContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -951,6 +1015,7 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			testConfig.OnlineStore.Type = services.OnlineDBPersistenceSnowflakeConfigType
 			testConfig.OnlineStore.DBParameters = unmarshallYamlString(snowflakeYamlString)
 			Expect(repoConfigOnline).To(Equal(testConfig))
@@ -959,6 +1024,11 @@ var _ = Describe("FeatureStore Controller - db storage services", func() {
 			onlineConfig.OnlineStore.DBParameters = unmarshallYamlString(snowflakeYamlString)
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 >>>>>>> 966b02846 (feat: Updated feast Go operator db stores (#4809))
+=======
+			testConfig.OnlineStore.Type = services.OnlineDBPersistenceSnowflakeConfigType
+			testConfig.OnlineStore.DBParameters = unmarshallYamlString(snowflakeYamlString)
+			Expect(repoConfigOnline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		})
 	})
 })

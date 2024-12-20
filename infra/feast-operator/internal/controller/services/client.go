@@ -47,10 +47,14 @@ func (feast *FeastServices) createClientConfigMap() error {
 
 func (feast *FeastServices) setClientConfigMap(cm *corev1.ConfigMap) error {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	cm.Labels = feast.getFeastTypeLabels(ClientFeastType)
 =======
 	cm.Labels = feast.getLabels(ClientFeastType)
 >>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
+=======
+	cm.Labels = feast.getFeastTypeLabels(ClientFeastType)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	clientYaml, err := feast.getClientFeatureStoreYaml(feast.extractConfigFromSecret)
 	if err != nil {
 		return err
@@ -119,7 +123,7 @@ func (feast *FeastServices) setCaConfigMap(cm *corev1.ConfigMap) error {
 
 func (feast *FeastServices) initCaConfigMap() *corev1.ConfigMap {
 	cm := &corev1.ConfigMap{
-		ObjectMeta: feast.GetObjectMeta(ClientCaFeastType),
+		ObjectMeta: feast.GetObjectMetaType(ClientCaFeastType),
 	}
 	cm.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("ConfigMap"))
 	return cm

@@ -230,16 +230,23 @@ func (feast *FeastServices) mountRegistryClientTls(podSpec *corev1.PodSpec) {
 			feast.mountTlsConfig(RegistryFeastType, podSpec)
 		} else if feast.remoteRegistryTls() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			mountTlsRemoteRegistryConfig(podSpec,
 =======
 			mountTlsRemoteRegistryConfig(RegistryFeastType, podSpec,
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			mountTlsRemoteRegistryConfig(podSpec,
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.TLS)
 		}
 	}
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) mountTlsConfigs(podSpec *corev1.PodSpec) {
 	// how deal w/ client deployment tls mounts when the time comes? new function?
 	feast.mountRegistryClientTls(podSpec)
@@ -247,8 +254,11 @@ func (feast *FeastServices) mountTlsConfigs(podSpec *corev1.PodSpec) {
 	feast.mountTlsConfig(OnlineFeastType, podSpec)
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) mountTlsConfig(feastType FeastServiceType, podSpec *corev1.PodSpec) {
 	tls := feast.getTlsConfigs(feastType)
 	if tls.IsTLS() && podSpec != nil {
@@ -262,6 +272,9 @@ func (feast *FeastServices) mountTlsConfig(feastType FeastServiceType, podSpec *
 			},
 		})
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		if i, container := getContainerByType(feastType, podSpec.Containers); container != nil {
 			podSpec.Containers[i].VolumeMounts = append(podSpec.Containers[i].VolumeMounts, corev1.VolumeMount{
 				Name:      volName,
@@ -269,6 +282,7 @@ func (feast *FeastServices) mountTlsConfig(feastType FeastServiceType, podSpec *
 				ReadOnly:  true,
 			})
 		}
+<<<<<<< HEAD
 	}
 }
 
@@ -282,13 +296,19 @@ func mountTlsRemoteRegistryConfig(podSpec *corev1.PodSpec, tls *feastdevv1alpha1
 			MountPath: GetTlsPath(feastType),
 			ReadOnly:  true,
 		})
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 }
 
-func mountTlsRemoteRegistryConfig(feastType FeastServiceType, podSpec *corev1.PodSpec, tls *feastdevv1alpha1.TlsRemoteRegistryConfigs) {
+func mountTlsRemoteRegistryConfig(podSpec *corev1.PodSpec, tls *feastdevv1alpha1.TlsRemoteRegistryConfigs) {
 	if tls != nil {
+<<<<<<< HEAD
 		volName := string(feastType) + tlsNameSuffix
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+		volName := string(RegistryFeastType) + tlsNameSuffix
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		podSpec.Volumes = append(podSpec.Volumes, corev1.Volume{
 			Name: volName,
 			VolumeSource: corev1.VolumeSource{
@@ -298,6 +318,9 @@ func mountTlsRemoteRegistryConfig(feastType FeastServiceType, podSpec *corev1.Po
 			},
 		})
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		for i := range podSpec.Containers {
 			podSpec.Containers[i].VolumeMounts = append(podSpec.Containers[i].VolumeMounts, corev1.VolumeMount{
 				Name:      volName,
@@ -305,6 +328,7 @@ func mountTlsRemoteRegistryConfig(feastType FeastServiceType, podSpec *corev1.Po
 				ReadOnly:  true,
 			})
 		}
+<<<<<<< HEAD
 =======
 		container := &podSpec.Containers[0]
 		container.VolumeMounts = append(container.VolumeMounts, corev1.VolumeMount{
@@ -313,6 +337,8 @@ func mountTlsRemoteRegistryConfig(feastType FeastServiceType, podSpec *corev1.Po
 			ReadOnly:  true,
 		})
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 }
 

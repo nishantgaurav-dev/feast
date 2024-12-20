@@ -6,9 +6,13 @@ spec:
   feastProject: my_project
   services:
 <<<<<<< HEAD
+<<<<<<< HEAD
     # demonstrates using a pre-existing PVC
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+    # demonstrates using a pre-existing PVC
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
     onlineStore:
       persistence:
         file:
@@ -18,9 +22,13 @@ spec:
               name: online-pvc
             mountPath: /data/online
 <<<<<<< HEAD
+<<<<<<< HEAD
     # demonstrates specifying a storageClassName and storage size
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+    # demonstrates specifying a storageClassName and storage size
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
     offlineStore:
       persistence:
         file:
@@ -33,9 +41,13 @@ spec:
                   storage: 5Gi
             mountPath: /data/offline
 <<<<<<< HEAD
+<<<<<<< HEAD
     # demonstrates letting the Operator create a PVC w/ defaults set
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+    # demonstrates letting the Operator create a PVC w/ defaults set
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
     registry:
       local:
         persistence:
@@ -52,10 +64,14 @@ metadata:
 spec:
   accessModes:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - ReadWriteOnce
 =======
     - ReadWriteMany
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+    - ReadWriteOnce
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
   resources:
     requests:
       storage: 5Gi

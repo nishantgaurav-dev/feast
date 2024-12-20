@@ -34,6 +34,9 @@ import (
 const (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	TmpFeatureStoreYamlEnvVar = "TMP_FEATURE_STORE_YAML_BASE64"
 	FeatureStoreYamlCmKey     = "feature_store.yaml"
 	EphemeralPath             = "/feast-data"
@@ -229,6 +232,9 @@ var (
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 // feast server types, not the client types
 var feastServerTypes = []FeastServiceType{
 	RegistryFeastType,

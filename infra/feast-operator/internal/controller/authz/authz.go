@@ -196,11 +196,15 @@ func (authz *FeastAuthorization) initFeastRoleBinding() *rbacv1.RoleBinding {
 func (authz *FeastAuthorization) setFeastRoleBinding(roleBinding *rbacv1.RoleBinding) error {
 	roleBinding.Labels = authz.getLabels()
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	roleBinding.Subjects = append(roleBinding.Subjects, rbacv1.Subject{
 		Kind:      rbacv1.ServiceAccountKind,
 		Name:      services.GetFeastName(authz.Handler.FeatureStore),
 		Namespace: authz.Handler.FeatureStore.Namespace,
 	})
+<<<<<<< HEAD
 =======
 	roleBinding.Subjects = []rbacv1.Subject{}
 	if authz.Handler.FeatureStore.Status.Applied.Services.OfflineStore != nil {
@@ -225,6 +229,8 @@ func (authz *FeastAuthorization) setFeastRoleBinding(roleBinding *rbacv1.RoleBin
 		})
 	}
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	roleBinding.RoleRef = rbacv1.RoleRef{
 		APIGroup: rbacv1.GroupName,
 		Kind:     "Role",

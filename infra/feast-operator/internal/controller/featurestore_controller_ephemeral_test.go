@@ -62,7 +62,6 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 		const offlineType = "duckdb"
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		var pullPolicy = corev1.PullAlways
-		var replicas = int32(1)
 		var testEnvVarName = "testEnvVarName"
 		var testEnvVarValue = "testEnvVarValue"
 
@@ -91,6 +90,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err := k8sClient.Get(ctx, typeNamespacedName, featurestore)
 			if err != nil && errors.IsNotFound(err) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue},
 <<<<<<< HEAD
 					{Name: "fieldRefName", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{APIVersion: "v1", FieldPath: "metadata.namespace"}}}}, withEnvFrom())
@@ -98,6 +98,9 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 =======
 				resource := createFeatureStoreResource(resourceName, image, pullPolicy, replicas, &[]corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue},
 >>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
+=======
+				resource := createFeatureStoreResource(resourceName, image, pullPolicy, &[]corev1.EnvVar{{Name: testEnvVarName, Value: testEnvVarValue},
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 					{Name: "fieldRefName", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{APIVersion: "v1", FieldPath: "metadata.namespace"}}}})
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 				resource.Spec.Services.OfflineStore.Persistence = &feastdevv1alpha1.OfflineStorePersistence{
@@ -274,6 +277,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(resource.Status.Phase).To(Equal(feastdevv1alpha1.ReadyPhase))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -286,17 +290,24 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
 =======
+=======
+			// check deployment
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
+<<<<<<< HEAD
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			svc := &corev1.Service{}
 			err = k8sClient.Get(ctx, types.NamespacedName{
@@ -341,10 +352,14 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err = k8sClient.List(ctx, &deployList, listOpts)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Expect(deployList.Items).To(HaveLen(1))
 =======
 			Expect(deployList.Items).To(HaveLen(3))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(deployList.Items).To(HaveLen(1))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			svcList := corev1.ServiceList{}
 			err = k8sClient.List(ctx, &svcList, listOpts)
@@ -394,21 +409,26 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
 
-			// check registry config
+			// check deployment
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(1))
-			env := getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+			registryContainer := services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(registryContainer.Env).To(HaveLen(1))
+			env := getFeatureStoreYamlEnvVar(registryContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64(services.RegistryFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			fsYamlStr, err := feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -422,17 +442,26 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 				Provider:                      services.LocalProviderType,
 				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				OfflineStore: services.OfflineStoreConfig{
 					Type: services.OfflineFilePersistenceDuckDbConfigType,
 				},
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+				OfflineStore: services.OfflineStoreConfig{
+					Type: services.OfflineFilePersistenceDuckDbConfigType,
+				},
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				Registry: services.RegistryConfig{
 					RegistryType: services.RegistryFileConfigType,
 					Path:         registryPath,
 				},
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				OnlineStore: services.OnlineStoreConfig{
 					Path: onlineStorePath,
 					Type: services.OnlineSqliteConfigType,
@@ -443,6 +472,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			offlineContainer := services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers)
 			Expect(offlineContainer.Env).To(HaveLen(1))
+<<<<<<< HEAD
 			assertEnvFrom(*offlineContainer)
 			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
 			Expect(env).NotTo(BeNil())
@@ -473,6 +503,12 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -481,6 +517,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			repoConfigOffline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(testConfig))
 
@@ -507,23 +544,22 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 				AuthzConfig: noAuthzConfig(),
 			}
 			Expect(repoConfigOffline).To(Equal(offlineConfig))
+=======
+			Expect(repoConfigOffline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
-			// check online config
-			deploy = &appsv1.Deployment{}
-			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
-			Expect(deploy.Spec.Template.Spec.Containers[0].ImagePullPolicy).To(Equal(corev1.PullAlways))
-			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			onlineContainer := services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
+			Expect(onlineContainer.Env).To(HaveLen(3))
+			Expect(onlineContainer.ImagePullPolicy).To(Equal(corev1.PullAlways))
+			env = getFeatureStoreYamlEnvVar(onlineContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -532,6 +568,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			repoConfigOnline := &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(repoConfigOnline).To(Equal(testConfig))
 =======
@@ -555,6 +592,9 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 			Expect(deploy.Spec.Template.Spec.Containers[0].Env).To(HaveLen(3))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			Expect(repoConfigOnline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			// check client config
 			cm := &corev1.ConfigMap{}
@@ -573,30 +613,42 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 				Provider:                      services.LocalProviderType,
 				EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				OfflineStore: services.OfflineStoreConfig{
 					Host: fmt.Sprintf("feast-%s-offline.default.svc.cluster.local", resourceName),
 					Type: services.OfflineRemoteConfigType,
 					Port: services.HttpPort,
 				},
+<<<<<<< HEAD
 =======
 				OfflineStore:                  offlineRemote,
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				OnlineStore: services.OnlineStoreConfig{
 					Path: fmt.Sprintf("http://feast-%s-online.default.svc.cluster.local:80", resourceName),
 					Type: services.OnlineRemoteConfigType,
 				},
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				Registry: services.RegistryConfig{
 					RegistryType: services.RegistryRemoteConfigType,
 					Path:         fmt.Sprintf("feast-%s-registry.default.svc.cluster.local:80", resourceName),
 				},
+<<<<<<< HEAD
 				AuthzConfig: noAuthzConfig(),
 =======
 				Registry: regRemote,
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
 				Registry:    regRemote,
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 				AuthzConfig: noAuthzConfig(),
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 			}
@@ -623,6 +675,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			feast.Handler.FeatureStore = resource
 
 			// check registry
+<<<<<<< HEAD
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      objMeta.Name,
 				Namespace: objMeta.Namespace,
@@ -640,16 +693,22 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			// check registry config
 			deploy = &appsv1.Deployment{}
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
-			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			registryContainer = services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
+			env = getFeatureStoreYamlEnvVar(registryContainer.Env)
 			Expect(env).NotTo(BeNil())
+<<<<<<< HEAD
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.RegistryFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -659,13 +718,18 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err = yaml.Unmarshal(envByte, repoConfig)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			testConfig.OnlineStore.Path = newOnlineStorePath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			testConfig.OnlineStore.Path = newOnlineStorePath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			testConfig.Registry.Path = newRegistryPath
 			Expect(repoConfig).To(Equal(testConfig))
 
 			// check offline config
+<<<<<<< HEAD
 <<<<<<< HEAD
 			offlineContainer = services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
 			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
@@ -685,6 +749,13 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OfflineFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			offlineContainer = services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers)
+			env = getFeatureStoreYamlEnvVar(offlineContainer.Env)
+			Expect(env).NotTo(BeNil())
+
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -693,6 +764,7 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			repoConfigOffline = &services.RepoConfig{}
 			err = yaml.Unmarshal(envByte, repoConfigOffline)
 			Expect(err).NotTo(HaveOccurred())
+<<<<<<< HEAD
 <<<<<<< HEAD
 			Expect(repoConfigOffline).To(Equal(testConfig))
 
@@ -708,20 +780,21 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
 =======
 			Expect(repoConfigOffline).To(Equal(offlineConfig))
+=======
+			Expect(repoConfigOffline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			// check online config
-			deploy = &appsv1.Deployment{}
-			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
-			Expect(err).NotTo(HaveOccurred())
-			env = getFeatureStoreYamlEnvVar(deploy.Spec.Template.Spec.Containers[0].Env)
+			onlineContainer = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers)
+			env = getFeatureStoreYamlEnvVar(onlineContainer.Env)
 			Expect(env).NotTo(BeNil())
 
+<<<<<<< HEAD
 			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64(services.OnlineFeastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			fsYamlStr, err = feast.GetServiceFeatureStoreYamlBase64()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(fsYamlStr).To(Equal(env.Value))
 
@@ -732,12 +805,17 @@ var _ = Describe("FeatureStore Controller-Ephemeral services", func() {
 			err = yaml.Unmarshal(envByte, repoConfigOnline)
 			Expect(err).NotTo(HaveOccurred())
 <<<<<<< HEAD
+<<<<<<< HEAD
 			testConfig.OnlineStore.Path = newOnlineStorePath
 			Expect(repoConfigOnline).To(Equal(testConfig))
 =======
 			onlineConfig.OnlineStore.Path = newOnlineStorePath
 			Expect(repoConfigOnline).To(Equal(onlineConfig))
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+			testConfig.OnlineStore.Path = newOnlineStorePath
+			Expect(repoConfigOnline).To(Equal(testConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		})
 	})
 })

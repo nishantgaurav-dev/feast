@@ -155,6 +155,7 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 			Expect(resource.Status.Phase).To(Equal(feastdevv1alpha1.ReadyPhase))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -176,33 +177,28 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 
 			command = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers).Command
 =======
+=======
+			// check deployment
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
+			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
 			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			command := deploy.Spec.Template.Spec.Containers[0].Command
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+			command := services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers).Command
 			Expect(command).To(ContainElement("--log-level"))
 			Expect(command).To(ContainElement("ERROR"))
 
-			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
-				Namespace: resource.Namespace,
-			},
-				deploy)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Replicas).To(Equal(&services.DefaultReplicas))
-			Expect(controllerutil.HasControllerReference(deploy)).To(BeTrue())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			command = deploy.Spec.Template.Spec.Containers[0].Command
+			command = services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers).Command
 			Expect(command).To(ContainElement("--log-level"))
 			Expect(command).To(ContainElement("INFO"))
 
+<<<<<<< HEAD
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
 				Namespace: resource.Namespace,
@@ -214,6 +210,9 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
 			command = deploy.Spec.Template.Spec.Containers[0].Command
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
+=======
+			command = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers).Command
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(command).To(ContainElement("--log-level"))
 			Expect(command).To(ContainElement("DEBUG"))
 		})
@@ -253,6 +252,7 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			// check deployment
 			deploy := &appsv1.Deployment{}
 			objMeta := feast.GetObjectMeta()
@@ -270,25 +270,24 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 
 			command = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers).Command
 =======
+=======
+			// check deployment
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			deploy := &appsv1.Deployment{}
+			objMeta := feast.GetObjectMeta()
 			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.RegistryFeastType),
-				Namespace: resource.Namespace,
+				Name:      objMeta.Name,
+				Namespace: objMeta.Namespace,
 			}, deploy)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			command := deploy.Spec.Template.Spec.Containers[0].Command
+			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+			command := services.GetRegistryContainer(deploy.Spec.Template.Spec.Containers).Command
 			Expect(command).NotTo(ContainElement("--log-level"))
 
-			err = k8sClient.Get(ctx, types.NamespacedName{
-				Name:      feast.GetFeastServiceName(services.OfflineFeastType),
-				Namespace: resource.Namespace,
-			}, deploy)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
-			command = deploy.Spec.Template.Spec.Containers[0].Command
+			command = services.GetOfflineContainer(deploy.Spec.Template.Spec.Containers).Command
 			Expect(command).NotTo(ContainElement("--log-level"))
 
+<<<<<<< HEAD
 			err = k8sClient.Get(ctx, types.NamespacedName{
 				Name:      feast.GetFeastServiceName(services.OnlineFeastType),
 				Namespace: resource.Namespace,
@@ -297,6 +296,9 @@ var _ = Describe("FeatureStore Controller - Feast service LogLevel", func() {
 			Expect(deploy.Spec.Template.Spec.Containers).To(HaveLen(1))
 			command = deploy.Spec.Template.Spec.Containers[0].Command
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
+=======
+			command = services.GetOnlineContainer(deploy.Spec.Template.Spec.Containers).Command
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(command).NotTo(ContainElement("--log-level"))
 		})
 

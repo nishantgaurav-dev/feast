@@ -44,6 +44,7 @@ var _ = Describe("Repo Config", func() {
 			featureStore := minimalFeatureStore()
 			ApplyDefaultsToStatus(featureStore)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 			var repoConfig RepoConfig
@@ -74,12 +75,22 @@ var _ = Describe("Repo Config", func() {
 =======
 				Path:         DefaultRegistryEphemeralPath,
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+
+			expectedRegistryConfig := RegistryConfig{
+				RegistryType: "file",
+				Path:         EphemeralPath + "/" + DefaultRegistryPath,
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			}
 			expectedOnlineConfig := OnlineStoreConfig{
 				Type: "sqlite",
 				Path: EphemeralPath + "/" + DefaultOnlineStorePath,
 			}
 
+<<<<<<< HEAD
+=======
+			var repoConfig RepoConfig
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			repoConfig, err := getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
@@ -101,6 +112,7 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -124,6 +136,9 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
 			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			expectedRegistryConfig = RegistryConfig{
 				RegistryType: "file",
 				Path:         "file.db",
@@ -148,6 +163,7 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 <<<<<<< HEAD
 			repoConfig, err = getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
 =======
@@ -213,6 +229,14 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
 			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
 			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
+=======
+			repoConfig, err = getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
+			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 			By("Having the all the file services")
@@ -243,6 +267,7 @@ var _ = Describe("Repo Config", func() {
 				},
 			}
 			ApplyDefaultsToStatus(featureStore)
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 			expectedOfflineConfig := OfflineStoreConfig{
@@ -276,6 +301,12 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
 			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+
+			expectedOfflineConfig := OfflineStoreConfig{
+				Type: "duckdb",
+			}
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			expectedRegistryConfig = RegistryConfig{
 				RegistryType: "file",
 				Path:         "/data/registry.db",
@@ -290,6 +321,131 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
 			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
 			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+<<<<<<< HEAD
+			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
+
+			By("Having kubernetes authorization")
+			featureStore = minimalFeatureStore()
+			featureStore.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{
+				KubernetesAuthz: &feastdevv1alpha1.KubernetesAuthz{},
+			}
+			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+				OfflineStore: &feastdevv1alpha1.OfflineStore{},
+				OnlineStore:  &feastdevv1alpha1.OnlineStore{},
+				Registry: &feastdevv1alpha1.Registry{
+					Local: &feastdevv1alpha1.LocalRegistryConfig{},
+				},
+			}
+			ApplyDefaultsToStatus(featureStore)
+
+			expectedOfflineConfig = OfflineStoreConfig{
+				Type: "dask",
+			}
+
+			repoConfig, err = getServiceRepoConfig(featureStore, mockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(KubernetesAuthType))
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(defaultOnlineStoreConfig(featureStore)))
+			Expect(repoConfig.Registry).To(Equal(defaultRegistryConfig(featureStore)))
+
+			By("Having oidc authorization")
+			featureStore.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{
+				OidcAuthz: &feastdevv1alpha1.OidcAuthz{
+					SecretRef: corev1.LocalObjectReference{
+						Name: "oidc-secret",
+					},
+				},
+			}
+			ApplyDefaultsToStatus(featureStore)
+
+			secretExtractionFunc := mockOidcConfigFromSecret(map[string]interface{}{
+				string(OidcAuthDiscoveryUrl): "discovery-url",
+				string(OidcClientId):         "client-id",
+				string(OidcClientSecret):     "client-secret",
+				string(OidcUsername):         "username",
+				string(OidcPassword):         "password"})
+			repoConfig, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(defaultOnlineStoreConfig(featureStore)))
+			Expect(repoConfig.Registry).To(Equal(defaultRegistryConfig(featureStore)))
+
+			repoConfig, err = getClientRepoConfig(featureStore, secretExtractionFunc)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(3))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientSecret)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcUsername)))
+			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcPassword)))
+
+			By("Having the all the db services")
+			featureStore = minimalFeatureStore()
+			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+				OfflineStore: &feastdevv1alpha1.OfflineStore{
+					Persistence: &feastdevv1alpha1.OfflineStorePersistence{
+						DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
+							Type: string(OfflineDBPersistenceSnowflakeConfigType),
+							SecretRef: corev1.LocalObjectReference{
+								Name: "offline-test-secret",
+							},
+						},
+					},
+				},
+				OnlineStore: &feastdevv1alpha1.OnlineStore{
+					Persistence: &feastdevv1alpha1.OnlineStorePersistence{
+						DBPersistence: &feastdevv1alpha1.OnlineStoreDBStorePersistence{
+							Type: string(OnlineDBPersistenceSnowflakeConfigType),
+							SecretRef: corev1.LocalObjectReference{
+								Name: "online-test-secret",
+							},
+						},
+					},
+				},
+				Registry: &feastdevv1alpha1.Registry{
+					Local: &feastdevv1alpha1.LocalRegistryConfig{
+						Persistence: &feastdevv1alpha1.RegistryPersistence{
+							DBPersistence: &feastdevv1alpha1.RegistryDBStorePersistence{
+								Type: string(RegistryDBPersistenceSnowflakeConfigType),
+								SecretRef: corev1.LocalObjectReference{
+									Name: "registry-test-secret",
+								},
+							},
+						},
+					},
+				},
+			}
+			parameterMap := createParameterMap()
+			ApplyDefaultsToStatus(featureStore)
+			featureStore.Spec.Services.OfflineStore.Persistence.FilePersistence = nil
+			featureStore.Spec.Services.OnlineStore.Persistence.FilePersistence = nil
+			featureStore.Spec.Services.Registry.Local.Persistence.FilePersistence = nil
+			repoConfig, err = getServiceRepoConfig(featureStore, mockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			newMap := CopyMap(parameterMap)
+			port := parameterMap["port"].(int)
+			delete(newMap, "port")
+			expectedOfflineConfig = OfflineStoreConfig{
+				Type:         OfflineDBPersistenceSnowflakeConfigType,
+				Port:         port,
+				DBParameters: newMap,
+			}
+			expectedOnlineConfig = OnlineStoreConfig{
+				Type:         OnlineDBPersistenceSnowflakeConfigType,
+				DBParameters: CopyMap(parameterMap),
+			}
+			expectedRegistryConfig = RegistryConfig{
+				RegistryType: RegistryDBPersistenceSnowflakeConfigType,
+				DBParameters: parameterMap,
+			}
+			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
 
 			By("Having kubernetes authorization")
@@ -413,204 +569,6 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
 			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
 			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
-
-			By("Having kubernetes authorization")
-			featureStore = minimalFeatureStore()
-			featureStore.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{
-				KubernetesAuthz: &feastdevv1alpha1.KubernetesAuthz{},
-			}
-			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
-				OfflineStore: &feastdevv1alpha1.OfflineStore{
-					Persistence: &feastdevv1alpha1.OfflineStorePersistence{
-						FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{},
-					},
-				},
-				OnlineStore: &feastdevv1alpha1.OnlineStore{
-					Persistence: &feastdevv1alpha1.OnlineStorePersistence{
-						FilePersistence: &feastdevv1alpha1.OnlineStoreFilePersistence{},
-					},
-				},
-				Registry: &feastdevv1alpha1.Registry{
-					Local: &feastdevv1alpha1.LocalRegistryConfig{
-						Persistence: &feastdevv1alpha1.RegistryPersistence{
-							FilePersistence: &feastdevv1alpha1.RegistryFilePersistence{},
-						},
-					},
-				},
-			}
-			ApplyDefaultsToStatus(featureStore)
-			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(KubernetesAuthType))
-			expectedOfflineConfig = OfflineStoreConfig{
-				Type: "dask",
-			}
-			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(KubernetesAuthType))
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			expectedOnlineConfig = OnlineStoreConfig{
-				Type: "sqlite",
-				Path: DefaultOnlineStoreEphemeralPath,
-			}
-			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(KubernetesAuthType))
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			expectedRegistryConfig = RegistryConfig{
-				RegistryType: "file",
-				Path:         DefaultRegistryEphemeralPath,
-			}
-			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
-
-			By("Having oidc authorization")
-			featureStore.Spec.AuthzConfig = &feastdevv1alpha1.AuthzConfig{
-				OidcAuthz: &feastdevv1alpha1.OidcAuthz{
-					SecretRef: corev1.LocalObjectReference{
-						Name: "oidc-secret",
-					},
-				},
-			}
-			ApplyDefaultsToStatus(featureStore)
-
-			secretExtractionFunc := mockOidcConfigFromSecret(map[string]interface{}{
-				string(OidcAuthDiscoveryUrl): "discovery-url",
-				string(OidcClientId):         "client-id",
-				string(OidcClientSecret):     "client-secret",
-				string(OidcUsername):         "username",
-				string(OidcPassword):         "password"})
-			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
-			expectedOfflineConfig = OfflineStoreConfig{
-				Type: "dask",
-			}
-			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			expectedOnlineConfig = OnlineStoreConfig{
-				Type: "sqlite",
-				Path: DefaultOnlineStoreEphemeralPath,
-			}
-			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(2))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientId)))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcAuthDiscoveryUrl)))
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			expectedRegistryConfig = RegistryConfig{
-				RegistryType: "file",
-				Path:         DefaultRegistryEphemeralPath,
-			}
-			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
-
-			repoConfig, err = getClientRepoConfig(featureStore, secretExtractionFunc)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.AuthzConfig.Type).To(Equal(OidcAuthType))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveLen(3))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcClientSecret)))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcUsername)))
-			Expect(repoConfig.AuthzConfig.OidcParameters).To(HaveKey(string(OidcPassword)))
-
-			By("Having the all the db services")
-			featureStore = minimalFeatureStore()
-			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
-				OfflineStore: &feastdevv1alpha1.OfflineStore{
-					Persistence: &feastdevv1alpha1.OfflineStorePersistence{
-						DBPersistence: &feastdevv1alpha1.OfflineStoreDBStorePersistence{
-							Type: string(OfflineDBPersistenceSnowflakeConfigType),
-							SecretRef: corev1.LocalObjectReference{
-								Name: "offline-test-secret",
-							},
-						},
-					},
-				},
-				OnlineStore: &feastdevv1alpha1.OnlineStore{
-					Persistence: &feastdevv1alpha1.OnlineStorePersistence{
-						DBPersistence: &feastdevv1alpha1.OnlineStoreDBStorePersistence{
-							Type: string(OnlineDBPersistenceSnowflakeConfigType),
-							SecretRef: corev1.LocalObjectReference{
-								Name: "online-test-secret",
-							},
-						},
-					},
-				},
-				Registry: &feastdevv1alpha1.Registry{
-					Local: &feastdevv1alpha1.LocalRegistryConfig{
-						Persistence: &feastdevv1alpha1.RegistryPersistence{
-							DBPersistence: &feastdevv1alpha1.RegistryDBStorePersistence{
-								Type: string(RegistryDBPersistenceSnowflakeConfigType),
-								SecretRef: corev1.LocalObjectReference{
-									Name: "registry-test-secret",
-								},
-							},
-						},
-					},
-				},
-			}
-			parameterMap := createParameterMap()
-			ApplyDefaultsToStatus(featureStore)
-			featureStore.Spec.Services.OfflineStore.Persistence.FilePersistence = nil
-			featureStore.Spec.Services.OnlineStore.Persistence.FilePersistence = nil
-			featureStore.Spec.Services.Registry.Local.Persistence.FilePersistence = nil
-			repoConfig, err = getServiceRepoConfig(OfflineFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			newMap := CopyMap(parameterMap)
-			port := parameterMap["port"].(int)
-			delete(newMap, "port")
-			expectedOfflineConfig = OfflineStoreConfig{
-				Type:         OfflineDBPersistenceSnowflakeConfigType,
-				Port:         port,
-				DBParameters: newMap,
-			}
-			Expect(repoConfig.OfflineStore).To(Equal(expectedOfflineConfig))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(OnlineFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			newMap = CopyMap(parameterMap)
-			expectedOnlineConfig = OnlineStoreConfig{
-				Type:         OnlineDBPersistenceSnowflakeConfigType,
-				DBParameters: newMap,
-			}
-			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
-			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig()))
-
-			repoConfig, err = getServiceRepoConfig(RegistryFeastType, featureStore, mockExtractConfigFromSecret)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(repoConfig.OfflineStore).To(Equal(emptyOfflineStoreConfig()))
-			Expect(repoConfig.OnlineStore).To(Equal(emptyOnlineStoreConfig()))
-			expectedRegistryConfig = RegistryConfig{
-				RegistryType: RegistryDBPersistenceSnowflakeConfigType,
-				DBParameters: parameterMap,
-			}
-			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
 		})
 	})
 	It("should fail to create the repo configs", func() {
@@ -632,6 +590,7 @@ var _ = Describe("Repo Config", func() {
 			string(OidcUsername):     "username",
 			string(OidcPassword):     "password"})
 <<<<<<< HEAD
+<<<<<<< HEAD
 		_, err := getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
@@ -641,13 +600,20 @@ var _ = Describe("Repo Config", func() {
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 =======
 		_, err := getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
+=======
+		_, err := getServiceRepoConfig(featureStore, secretExtractionFunc)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
-		_, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
+		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+<<<<<<< HEAD
 		_, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
 >>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
+=======
+		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getClientRepoConfig(featureStore, secretExtractionFunc)
@@ -669,6 +635,7 @@ var _ = Describe("Repo Config", func() {
 			string(OidcUsername):         "username",
 			string(OidcPassword):         "password"})
 <<<<<<< HEAD
+<<<<<<< HEAD
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
@@ -678,13 +645,20 @@ var _ = Describe("Repo Config", func() {
 		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 =======
 		_, err = getServiceRepoConfig(OfflineFeastType, featureStore, secretExtractionFunc)
+=======
+		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
-		_, err = getServiceRepoConfig(OnlineFeastType, featureStore, secretExtractionFunc)
+		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
+<<<<<<< HEAD
 		_, err = getServiceRepoConfig(RegistryFeastType, featureStore, secretExtractionFunc)
 >>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
+=======
+		_, err = getServiceRepoConfig(featureStore, secretExtractionFunc)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("missing OIDC secret"))
 		_, err = getClientRepoConfig(featureStore, secretExtractionFunc)

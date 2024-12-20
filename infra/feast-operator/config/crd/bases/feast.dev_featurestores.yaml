@@ -379,10 +379,15 @@ spec:
                                     type: object
                                     x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 required:
                                 - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                required:
+                                - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection is required between ref and
@@ -473,12 +478,6 @@ spec:
                         x-kubernetes-validations:
                         - message: One selection required between file or store.
                           rule: '[has(self.file), has(self.store)].exists_one(c, c)'
-                      replicas:
-                        description: |-
-                          Replicas determines the number of pods for the feast service.
-                          When Replicas > 1, persistence is recommended.
-                        format: int32
-                        type: integer
                       resources:
                         description: ResourceRequirements describes the compute resource
                           requirements.
@@ -862,10 +861,15 @@ spec:
                                     type: object
                                     x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 required:
                                 - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                required:
+                                - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                 type: object
                                 x-kubernetes-validations:
                                 - message: One selection is required between ref and
@@ -943,8 +947,8 @@ spec:
                               rule: '(has(self.pvc) && has(self.path)) ? !self.path.startsWith(''/'')
                                 : true'
                             - message: Online store does not support S3 or GS buckets.
-                              rule: has(self.path) && !self.path.startsWith('s3://')
-                                && !self.path.startsWith('gs://')
+                              rule: 'has(self.path) ? !(self.path.startsWith(''s3://'')
+                                || self.path.startsWith(''gs://'')) : true'
                           store:
                             description: OnlineStoreDBStorePersistence configures
                               the DB store persistence for the offline store service
@@ -992,12 +996,6 @@ spec:
                         x-kubernetes-validations:
                         - message: One selection required between file or store.
                           rule: '[has(self.file), has(self.store)].exists_one(c, c)'
-                      replicas:
-                        description: |-
-                          Replicas determines the number of pods for the feast service.
-                          When Replicas > 1, persistence is recommended.
-                        format: int32
-                        type: integer
                       resources:
                         description: ResourceRequirements describes the compute resource
                           requirements.
@@ -1365,10 +1363,15 @@ spec:
                                         type: object
                                         x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     required:
                                     - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                    required:
+                                    - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -1995,10 +1998,15 @@ spec:
                                         type: object
                                         x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     required:
                                     - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                    required:
+                                    - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -2092,12 +2100,6 @@ spec:
                             - message: One selection required between file or store.
                               rule: '[has(self.file), has(self.store)].exists_one(c,
                                 c)'
-                          replicas:
-                            description: |-
-                              Replicas determines the number of pods for the feast service.
-                              When Replicas > 1, persistence is recommended.
-                            format: int32
-                            type: integer
                           resources:
                             description: ResourceRequirements describes the compute
                               resource requirements.
@@ -2485,10 +2487,15 @@ spec:
                                         type: object
                                         x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     required:
                                     - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                    required:
+                                    - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                     type: object
                                     x-kubernetes-validations:
                                     - message: One selection is required between ref
@@ -2569,8 +2576,8 @@ spec:
                                     : true'
                                 - message: Online store does not support S3 or GS
                                     buckets.
-                                  rule: has(self.path) && !self.path.startsWith('s3://')
-                                    && !self.path.startsWith('gs://')
+                                  rule: 'has(self.path) ? !(self.path.startsWith(''s3://'')
+                                    || self.path.startsWith(''gs://'')) : true'
                               store:
                                 description: OnlineStoreDBStorePersistence configures
                                   the DB store persistence for the offline store service
@@ -2620,12 +2627,6 @@ spec:
                             - message: One selection required between file or store.
                               rule: '[has(self.file), has(self.store)].exists_one(c,
                                 c)'
-                          replicas:
-                            description: |-
-                              Replicas determines the number of pods for the feast service.
-                              When Replicas > 1, persistence is recommended.
-                            format: int32
-                            type: integer
                           resources:
                             description: ResourceRequirements describes the compute
                               resource requirements.
@@ -3001,10 +3002,15 @@ spec:
                                             type: object
                                             x-kubernetes-map-type: atomic
 <<<<<<< HEAD
+<<<<<<< HEAD
                                         required:
                                         - mountPath
 =======
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+                                        required:
+                                        - mountPath
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
                                         type: object
                                         x-kubernetes-validations:
                                         - message: One selection is required between

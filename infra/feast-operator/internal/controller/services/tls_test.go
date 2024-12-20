@@ -183,6 +183,7 @@ var _ = Describe("TLS Config", func() {
 
 			// check k8s deployment objects
 <<<<<<< HEAD
+<<<<<<< HEAD
 			feastDeploy := feast.initFeastDeploy()
 			err = feast.setDeployment(feastDeploy)
 			Expect(err).To(BeNil())
@@ -211,6 +212,17 @@ var _ = Describe("TLS Config", func() {
 			Expect(onlineDeploy.Spec.Template.Spec.Containers[0].Command).To(ContainElements(ContainSubstring("--key")))
 			Expect(onlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(3))
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			feastDeploy := feast.initFeastDeploy()
+			err = feast.setDeployment(feastDeploy)
+			Expect(err).To(BeNil())
+			Expect(feastDeploy.Spec.Template.Spec.InitContainers).To(HaveLen(1))
+			Expect(feastDeploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+			Expect(feastDeploy.Spec.Template.Spec.Containers[0].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(feastDeploy.Spec.Template.Spec.Containers[1].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(feastDeploy.Spec.Template.Spec.Containers[2].Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(feastDeploy.Spec.Template.Spec.Volumes).To(HaveLen(4))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 			// registry service w/ tls and in an openshift cluster
 			feast.Handler.FeatureStore = minimalFeatureStore()
@@ -341,6 +353,7 @@ var _ = Describe("TLS Config", func() {
 
 			// check k8s deployment objects
 <<<<<<< HEAD
+<<<<<<< HEAD
 			feastDeploy = feast.initFeastDeploy()
 			err = feast.setDeployment(feastDeploy)
 			Expect(err).To(BeNil())
@@ -372,6 +385,21 @@ var _ = Describe("TLS Config", func() {
 			Expect(onlineDeploy.Spec.Template.Spec.Containers[0].Command).NotTo(ContainElements(ContainSubstring("--key")))
 			Expect(onlineDeploy.Spec.Template.Spec.Volumes).To(HaveLen(1))
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+			feastDeploy = feast.initFeastDeploy()
+			err = feast.setDeployment(feastDeploy)
+			Expect(err).To(BeNil())
+			Expect(feastDeploy.Spec.Template.Spec.Containers).To(HaveLen(3))
+			Expect(GetOfflineContainer(feastDeploy.Spec.Template.Spec.Containers)).NotTo(BeNil())
+			Expect(feastDeploy.Spec.Template.Spec.Volumes).To(HaveLen(2))
+
+			Expect(GetRegistryContainer(feastDeploy.Spec.Template.Spec.Containers).Command).NotTo(ContainElements(ContainSubstring("--key")))
+			Expect(GetRegistryContainer(feastDeploy.Spec.Template.Spec.Containers).VolumeMounts).To(HaveLen(1))
+			Expect(GetOfflineContainer(feastDeploy.Spec.Template.Spec.Containers).Command).To(ContainElements(ContainSubstring("--key")))
+			Expect(GetOfflineContainer(feastDeploy.Spec.Template.Spec.Containers).VolumeMounts).To(HaveLen(2))
+			Expect(GetOnlineContainer(feastDeploy.Spec.Template.Spec.Containers).Command).NotTo(ContainElements(ContainSubstring("--key")))
+			Expect(GetOnlineContainer(feastDeploy.Spec.Template.Spec.Containers).VolumeMounts).To(HaveLen(1))
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		})
 	})
 })

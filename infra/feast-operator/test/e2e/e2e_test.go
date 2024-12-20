@@ -28,12 +28,16 @@ import (
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 const (
 	feastControllerNamespace = "feast-operator-system"
 	timeout                  = 2 * time.Minute
 	controllerDeploymentName = "feast-operator-controller-manager"
 	feastPrefix              = "feast-"
 )
+<<<<<<< HEAD
 =======
 const feastControllerNamespace = "feast-operator-system"
 <<<<<<< HEAD
@@ -42,6 +46,8 @@ const feastControllerNamespace = "feast-operator-system"
 const timeout = 2 * time.Minute
 const controllerDeploymentName = "feast-operator-controller-manager"
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
 var _ = Describe("controller", Ordered, func() {
 	BeforeAll(func() {
@@ -287,11 +293,15 @@ func validateTheFeatureStoreCustomResource(namespace string, featureStoreName st
 		featureStoreName, err))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	feastResourceName := feastPrefix + featureStoreName
 	k8sResourceNames := []string{feastResourceName}
 	feastK8sResourceNames := []string{
 		feastResourceName + "-online",
 		feastResourceName + "-offline",
+<<<<<<< HEAD
 	}
 
 	if !hasRemoteRegistry {
@@ -302,14 +312,20 @@ func validateTheFeatureStoreCustomResource(namespace string, featureStoreName st
 =======
 	k8ResourceNames := []string{fmt.Sprintf("feast-%s-online", featureStoreName),
 		fmt.Sprintf("feast-%s-offline", featureStoreName),
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 
 	if !hasRemoteRegistry {
-		k8ResourceNames = append(k8ResourceNames, fmt.Sprintf("feast-%s-registry", featureStoreName))
+		feastK8sResourceNames = append(feastK8sResourceNames, feastResourceName+"-registry")
 	}
 
+<<<<<<< HEAD
 	for _, deploymentName := range k8ResourceNames {
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
+=======
+	for _, deploymentName := range k8sResourceNames {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		By(fmt.Sprintf("validate the feast deployment: %s is up and in availability state.", deploymentName))
 		err = checkIfDeploymentExistsAndAvailable(namespace, deploymentName, timeout)
 		Expect(err).To(BeNil(), fmt.Sprintf(
@@ -321,10 +337,14 @@ func validateTheFeatureStoreCustomResource(namespace string, featureStoreName st
 
 	By("Check if the feast client - kubernetes config map exists.")
 <<<<<<< HEAD
+<<<<<<< HEAD
 	configMapName := feastResourceName + "-client"
 =======
 	configMapName := fmt.Sprintf("feast-%s-client", featureStoreName)
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
+=======
+	configMapName := feastResourceName + "-client"
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	err = checkIfConfigMapExists(namespace, configMapName)
 	Expect(err).To(BeNil(), fmt.Sprintf(
 		"config map %s is not available but expected to be available. \nError: %v\n",
@@ -333,10 +353,14 @@ func validateTheFeatureStoreCustomResource(namespace string, featureStoreName st
 	fmt.Printf("Feast Deployment client config map %s is available\n", configMapName)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	for _, serviceAccountName := range k8sResourceNames {
 =======
 	for _, serviceAccountName := range k8ResourceNames {
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
+=======
+	for _, serviceAccountName := range k8sResourceNames {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		By(fmt.Sprintf("validate the feast service account: %s is available.", serviceAccountName))
 		err = checkIfServiceAccountExists(namespace, serviceAccountName)
 		Expect(err).To(BeNil(), fmt.Sprintf(
@@ -347,10 +371,14 @@ func validateTheFeatureStoreCustomResource(namespace string, featureStoreName st
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	for _, serviceName := range feastK8sResourceNames {
 =======
 	for _, serviceName := range k8ResourceNames {
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))
+=======
+	for _, serviceName := range feastK8sResourceNames {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 		By(fmt.Sprintf("validate the kubernetes service name: %s is available.", serviceName))
 		err = checkIfKubernetesServiceExists(namespace, serviceName)
 		Expect(err).To(BeNil(), fmt.Sprintf(

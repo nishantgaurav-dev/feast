@@ -51,6 +51,7 @@ func (feast *FeastServices) getServiceFeatureStoreYaml() ([]byte, error) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) getServiceRepoConfig() (RepoConfig, error) {
 	return getServiceRepoConfig(feast.Handler.FeatureStore, feast.extractConfigFromSecret)
 }
@@ -88,17 +89,59 @@ func getServiceRepoConfig(
 =======
 func (feast *FeastServices) getServiceRepoConfig(feastType FeastServiceType) (RepoConfig, error) {
 	return getServiceRepoConfig(feastType, feast.Handler.FeatureStore, feast.extractConfigFromSecret)
+=======
+func (feast *FeastServices) getServiceRepoConfig() (RepoConfig, error) {
+	return getServiceRepoConfig(feast.Handler.FeatureStore, feast.extractConfigFromSecret)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 }
 
 func getServiceRepoConfig(
-	feastType FeastServiceType,
 	featureStore *feastdevv1alpha1.FeatureStore,
 	secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error)) (RepoConfig, error) {
-	appliedSpec := featureStore.Status.Applied
-
-	repoConfig, err := getClientRepoConfig(featureStore, secretExtractionFunc)
+	repoConfig, err := getBaseServiceRepoConfig(featureStore, secretExtractionFunc)
 	if err != nil {
 		return repoConfig, err
+	}
+
+	appliedSpec := featureStore.Status.Applied
+	if appliedSpec.Services != nil {
+		services := appliedSpec.Services
+		if services.OfflineStore != nil {
+			err := setRepoConfigOffline(services, secretExtractionFunc, &repoConfig)
+			if err != nil {
+				return repoConfig, err
+			}
+		}
+		if services.OnlineStore != nil {
+			err := setRepoConfigOnline(services, secretExtractionFunc, &repoConfig)
+			if err != nil {
+				return repoConfig, err
+			}
+		}
+		if IsLocalRegistry(featureStore) {
+			err := setRepoConfigRegistry(services, secretExtractionFunc, &repoConfig)
+			if err != nil {
+				return repoConfig, err
+			}
+		}
+	}
+
+	return repoConfig, nil
+}
+
+func getBaseServiceRepoConfig(
+	featureStore *feastdevv1alpha1.FeatureStore,
+	secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error)) (RepoConfig, error) {
+
+	appliedSpec := featureStore.Status.Applied
+	repoConfig := defaultRepoConfig(featureStore)
+	clientRepoConfig, err := getClientRepoConfig(featureStore, secretExtractionFunc)
+	if err != nil {
+		return repoConfig, err
+	}
+	repoConfig.AuthzConfig = clientRepoConfig.AuthzConfig
+	if isRemoteRegistry(featureStore) {
+		repoConfig.Registry = clientRepoConfig.Registry
 	}
 
 	if appliedSpec.AuthzConfig != nil && appliedSpec.AuthzConfig.OidcAuthz != nil {
@@ -118,6 +161,7 @@ func getServiceRepoConfig(
 		repoConfig.AuthzConfig.OidcParameters = oidcServerProperties
 	}
 
+<<<<<<< HEAD
 	if appliedSpec.Services != nil {
 		services := appliedSpec.Services
 
@@ -151,6 +195,8 @@ func getServiceRepoConfig(
 		}
 	}
 
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	return repoConfig, nil
 }
 
@@ -193,9 +239,12 @@ func getBaseServiceRepoConfig(
 func setRepoConfigRegistry(services *feastdevv1alpha1.FeatureStoreServices, secretExtractionFunc func(secretRef string, secretKeyName string) (map[string]interface{}, error), repoConfig *RepoConfig) error {
 =======
 func setRepoConfigRegistry(services *feastdevv1alpha1.FeatureStoreServices, secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error), repoConfig *RepoConfig) error {
+<<<<<<< HEAD
 >>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
 	repoConfig.Registry = RegistryConfig{}
 	repoConfig.Registry.Path = DefaultRegistryEphemeralPath
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	registryPersistence := services.Registry.Local.Persistence
 
 	if registryPersistence != nil {
@@ -226,18 +275,10 @@ func setRepoConfigRegistry(services *feastdevv1alpha1.FeatureStoreServices, secr
 			repoConfig.Registry.DBParameters = parametersMap
 		}
 	}
-
-	repoConfig.OfflineStore = OfflineStoreConfig{}
-	repoConfig.OnlineStore = OnlineStoreConfig{}
-
 	return nil
 }
 
 func setRepoConfigOnline(services *feastdevv1alpha1.FeatureStoreServices, secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error), repoConfig *RepoConfig) error {
-	repoConfig.OnlineStore = OnlineStoreConfig{}
-
-	repoConfig.OnlineStore.Path = DefaultOnlineStoreEphemeralPath
-	repoConfig.OnlineStore.Type = OnlineSqliteConfigType
 	onlineStorePersistence := services.OnlineStore.Persistence
 
 	if onlineStorePersistence != nil {
@@ -267,13 +308,11 @@ func setRepoConfigOnline(services *feastdevv1alpha1.FeatureStoreServices, secret
 			repoConfig.OnlineStore.DBParameters = parametersMap
 		}
 	}
-
 	return nil
 }
 
 func setRepoConfigOffline(services *feastdevv1alpha1.FeatureStoreServices, secretExtractionFunc func(storeType string, secretRef string, secretKeyName string) (map[string]interface{}, error), repoConfig *RepoConfig) error {
-	repoConfig.OfflineStore = OfflineStoreConfig{}
-	repoConfig.OfflineStore.Type = OfflineFilePersistenceDaskConfigType
+	repoConfig.OfflineStore = defaultOfflineStoreConfig
 	offlineStorePersistence := services.OfflineStore.Persistence
 
 	if offlineStorePersistence != nil {
@@ -302,9 +341,6 @@ func setRepoConfigOffline(services *feastdevv1alpha1.FeatureStoreServices, secre
 			repoConfig.OfflineStore.DBParameters = parametersMap
 		}
 	}
-
-	repoConfig.OnlineStore = OnlineStoreConfig{}
-
 	return nil
 }
 
@@ -453,6 +489,7 @@ func getClientRepoConfig(
 	status := featureStore.Status
 	appliedServices := status.Applied.Services
 <<<<<<< HEAD
+<<<<<<< HEAD
 	clientRepoConfig, err := getRepoConfig(featureStore, secretExtractionFunc)
 	if err != nil {
 		return clientRepoConfig, err
@@ -462,6 +499,11 @@ func getClientRepoConfig(
 		Provider:                      LocalProviderType,
 		EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+	clientRepoConfig, err := getRepoConfig(featureStore, secretExtractionFunc)
+	if err != nil {
+		return clientRepoConfig, err
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 	if len(status.ServiceHostnames.OfflineStore) > 0 {
 		clientRepoConfig.OfflineStore = OfflineStoreConfig{
@@ -512,6 +554,9 @@ func getClientRepoConfig(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	return clientRepoConfig, nil
 }
 
@@ -547,6 +592,7 @@ func getRepoConfig(
 		}
 	}
 	return repoConfig, nil
+<<<<<<< HEAD
 }
 
 func getActualPath(filePath string, pvcConfig *feastdevv1alpha1.PvcConfig) string {
@@ -705,6 +751,8 @@ var defaultAuthzConfig = AuthzConfig{
 	}
 	return clientRepoConfig, nil
 >>>>>>> cd341f8f6 (feat: OIDC authorization in Feast Operator (#4801))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 }
 
 func getActualPath(filePath string, pvcConfig *feastdevv1alpha1.PvcConfig) string {
@@ -768,4 +816,50 @@ func mergeStructWithDBParametersMap(parametersMap *map[string]interface{}, s int
 	}
 
 	return nil
+}
+
+func (feast *FeastServices) GetDefaultRepoConfig() RepoConfig {
+	return defaultRepoConfig(feast.Handler.FeatureStore)
+}
+
+func defaultRepoConfig(featureStore *feastdevv1alpha1.FeatureStore) RepoConfig {
+	repoConfig := initRepoConfig(featureStore.Status.Applied.FeastProject)
+	repoConfig.OnlineStore = defaultOnlineStoreConfig(featureStore)
+	repoConfig.Registry = defaultRegistryConfig(featureStore)
+	return repoConfig
+}
+
+func (feast *FeastServices) GetInitRepoConfig() RepoConfig {
+	return initRepoConfig(feast.Handler.FeatureStore.Status.Applied.FeastProject)
+}
+
+func initRepoConfig(feastProject string) RepoConfig {
+	return RepoConfig{
+		Project:                       feastProject,
+		Provider:                      LocalProviderType,
+		EntityKeySerializationVersion: feastdevv1alpha1.SerializationVersion,
+		AuthzConfig:                   defaultAuthzConfig,
+	}
+}
+
+func defaultOnlineStoreConfig(featureStore *feastdevv1alpha1.FeatureStore) OnlineStoreConfig {
+	return OnlineStoreConfig{
+		Type: OnlineSqliteConfigType,
+		Path: defaultOnlineStorePath(featureStore),
+	}
+}
+
+func defaultRegistryConfig(featureStore *feastdevv1alpha1.FeatureStore) RegistryConfig {
+	return RegistryConfig{
+		RegistryType: RegistryFileConfigType,
+		Path:         defaultRegistryPath(featureStore),
+	}
+}
+
+var defaultOfflineStoreConfig = OfflineStoreConfig{
+	Type: OfflineFilePersistenceDaskConfigType,
+}
+
+var defaultAuthzConfig = AuthzConfig{
+	Type: NoAuthAuthType,
 }

@@ -287,6 +287,7 @@ func isFeatureStoreHavingRemoteRegistry(namespace, featureStoreName string) (boo
 		registryConfig.Remote.FeastRef.Name != ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return hasHostname || hasValidFeastRef, nil
 }
 =======
@@ -297,5 +298,8 @@ func isFeatureStoreHavingRemoteRegistry(namespace, featureStoreName string) (boo
 	}
 
 	return false, nil
+=======
+	return hasHostname || hasValidFeastRef, nil
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 }
 >>>>>>> 5ce0acd36 (feat: Operator E2E test to validate FeatureStore custom resource using remote registry (#4822))

@@ -321,12 +321,6 @@ func (feast *FeastServices) deployFeastServiceByType(feastType FeastServiceType)
 	if err := feast.createService(feastType); err != nil {
 		return feast.setFeastServiceCondition(err, feastType)
 	}
-	if err := feast.createServiceAccount(feastType); err != nil {
-		return feast.setFeastServiceCondition(err, feastType)
-	}
-	if err := feast.createDeployment(feastType); err != nil {
-		return feast.setFeastServiceCondition(err, feastType)
-	}
 	return feast.setFeastServiceCondition(nil, feastType)
 }
 
@@ -336,6 +330,7 @@ func (feast *FeastServices) removeFeastServiceByType(feastType FeastServiceType)
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType)); err != nil {
 =======
 	if err := feast.deleteOwnedFeastObj(feast.initFeastSvc(feastType)); err != nil {
@@ -364,6 +359,8 @@ func (feast *FeastServices) removeFeastServiceByType(feastType FeastServiceType)
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initFeastSA(feastType)); err != nil {
 		return err
 	}
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	if err := feast.Handler.DeleteOwnedFeastObj(feast.initPVC(feastType)); err != nil {
 		return err
 	}
@@ -386,6 +383,7 @@ func (feast *FeastServices) createService(feastType FeastServiceType) error {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) createServiceAccount() error {
 	logger := log.FromContext(feast.Handler.Context)
 	sa := feast.initFeastSA()
@@ -393,11 +391,18 @@ func (feast *FeastServices) createServiceAccount() error {
 		return feast.setServiceAccount(sa)
 =======
 func (feast *FeastServices) createServiceAccount(feastType FeastServiceType) error {
+=======
+func (feast *FeastServices) createServiceAccount() error {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	logger := log.FromContext(feast.Handler.Context)
-	sa := feast.initFeastSA(feastType)
+	sa := feast.initFeastSA()
 	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, sa, controllerutil.MutateFn(func() error {
+<<<<<<< HEAD
 		return feast.setServiceAccount(sa, feastType)
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
+=======
+		return feast.setServiceAccount(sa)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	})); err != nil {
 		return err
 	} else if op == controllerutil.OperationResultCreated || op == controllerutil.OperationResultUpdated {
@@ -407,6 +412,7 @@ func (feast *FeastServices) createServiceAccount(feastType FeastServiceType) err
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) createDeployment() error {
 	logger := log.FromContext(feast.Handler.Context)
 	deploy := feast.initFeastDeploy()
@@ -414,11 +420,18 @@ func (feast *FeastServices) createDeployment() error {
 		return feast.setDeployment(deploy)
 =======
 func (feast *FeastServices) createDeployment(feastType FeastServiceType) error {
+=======
+func (feast *FeastServices) createDeployment() error {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	logger := log.FromContext(feast.Handler.Context)
-	deploy := feast.initFeastDeploy(feastType)
+	deploy := feast.initFeastDeploy()
 	if op, err := controllerutil.CreateOrUpdate(feast.Handler.Context, feast.Handler.Client, deploy, controllerutil.MutateFn(func() error {
+<<<<<<< HEAD
 		return feast.setDeployment(deploy, feastType)
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
+=======
+		return feast.setDeployment(deploy)
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	})); err != nil {
 		return err
 	} else if op == controllerutil.OperationResultCreated || op == controllerutil.OperationResultUpdated {
@@ -456,6 +469,7 @@ func (feast *FeastServices) createPVC(pvcCreate *feastdevv1alpha1.PvcCreate, fea
 	return nil
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment, feastType FeastServiceType) error {
 	fsYamlB64, err := feast.GetServiceFeatureStoreYamlBase64(feastType)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
@@ -492,8 +506,12 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 	probeHandler := getProbeHandler(feastType, tls)
 
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
+	deploy.Labels = feast.getLabels()
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	deploy.Spec = appsv1.DeploymentSpec{
-		Replicas: feast.getServiceReplicas(feastType),
+		Replicas: &DefaultReplicas,
 		Selector: metav1.SetAsLabelSelector(deploy.GetLabels()),
 		Strategy: appsv1.DeploymentStrategy{
 			Type: appsv1.RecreateDeploymentStrategyType,
@@ -503,6 +521,7 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 				Labels: deploy.GetLabels(),
 			},
 			Spec: corev1.PodSpec{
+<<<<<<< HEAD
 <<<<<<< HEAD
 				ServiceAccountName: feast.initFeastSA().Name,
 =======
@@ -568,11 +587,23 @@ func (feast *FeastServices) setDeployment(deploy *appsv1.Deployment) error {
 	return controllerutil.SetControllerReference(feast.FeatureStore, deploy, feast.Scheme)
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
 =======
+=======
+				ServiceAccountName: feast.initFeastSA().Name,
+			},
+		},
+	}
+	if err := feast.setPod(&deploy.Spec.Template.Spec); err != nil {
+		return err
+	}
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, deploy, feast.Handler.Scheme)
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) setPod(podSpec *corev1.PodSpec) error {
 	if err := feast.setContainers(podSpec); err != nil {
 		return err
@@ -668,6 +699,7 @@ func (feast *FeastServices) setContainer(containers *[]corev1.Container, feastTy
 	*containers = append(*containers, *container)
 }
 
+<<<<<<< HEAD
 func (feast *FeastServices) getContainerCommand(feastType FeastServiceType) []string {
 	baseCommand := "feast"
 	options := []string{}
@@ -723,6 +755,8 @@ func (feast *FeastServices) setService(svc *corev1.Service, feastType FeastServi
 	}
 
 =======
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) getContainerCommand(feastType FeastServiceType) []string {
 	baseCommand := "feast"
 	options := []string{}
@@ -749,38 +783,28 @@ func (feast *FeastServices) getContainerCommand(feastType FeastServiceType) []st
 	return feastCommand
 }
 
-func (feast *FeastServices) offlineClientPodConfigs(podSpec *corev1.PodSpec) {
-	feast.mountTlsConfig(OfflineFeastType, podSpec)
-}
-
-func (feast *FeastServices) registryClientPodConfigs(podSpec *corev1.PodSpec) {
-	feast.setRegistryClientInitContainer(podSpec)
-	feast.mountRegistryClientTls(podSpec)
-}
-
 func (feast *FeastServices) setRegistryClientInitContainer(podSpec *corev1.PodSpec) {
 	hostname := feast.Handler.FeatureStore.Status.ServiceHostnames.Registry
-	if len(hostname) > 0 {
+	// add grpc init container if remote registry reference (feastRef) is configured
+	if len(hostname) > 0 && feast.IsRemoteRefRegistry() {
 		grpcurlFlag := "-plaintext"
 		hostSplit := strings.Split(hostname, ":")
 		if len(hostSplit) > 1 && hostSplit[1] == "443" {
 			grpcurlFlag = "-insecure"
 		}
-		podSpec.InitContainers = []corev1.Container{
-			{
-				Name:  "init-registry",
-				Image: "fullstorydev/grpcurl:v1.9.1-alpine",
-				Command: []string{
-					"sh", "-c",
-					"until grpcurl " + grpcurlFlag + " -d '' -format text " + hostname + " grpc.health.v1.Health/Check; do echo waiting for registry; sleep 2; done",
-				},
+		podSpec.InitContainers = append(podSpec.InitContainers, corev1.Container{
+			Name:  "init-registry",
+			Image: "fullstorydev/grpcurl:v1.9.1-alpine",
+			Command: []string{
+				"sh", "-c",
+				"until grpcurl -H \"authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\" " +
+					grpcurlFlag + " -d '' -format text " + hostname + " grpc.health.v1.Health/Check; do echo waiting for registry; sleep 2; done",
 			},
-		}
+		})
 	}
 }
-
 func (feast *FeastServices) setService(svc *corev1.Service, feastType FeastServiceType) error {
-	svc.Labels = feast.getLabels(feastType)
+	svc.Labels = feast.getFeastTypeLabels(feastType)
 	if feast.isOpenShiftTls(feastType) {
 		svc.Annotations = map[string]string{
 			"service.beta.openshift.io/serving-cert-secret-name": svc.Name + tlsNameSuffix,
@@ -832,8 +856,8 @@ func (feast *FeastServices) createNewPVC(pvcCreate *feastdevv1alpha1.PvcCreate, 
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 }
 
-func (feast *FeastServices) setServiceAccount(sa *corev1.ServiceAccount, feastType FeastServiceType) error {
-	sa.Labels = feast.getLabels(feastType)
+func (feast *FeastServices) setServiceAccount(sa *corev1.ServiceAccount) error {
+	sa.Labels = feast.getLabels()
 	return controllerutil.SetControllerReference(feast.Handler.FeatureStore, sa, feast.Handler.Scheme)
 }
 
@@ -903,6 +927,7 @@ func (feast *FeastServices) getServiceConfigs(feastType FeastServiceType) feastd
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 =======
@@ -922,6 +947,8 @@ func (feast *FeastServices) getServiceReplicas(feastType FeastServiceType) *int3
 }
 
 >>>>>>> 47204bcaf (feat: Add online/offline replica support (#4812))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) getLogLevelForType(feastType FeastServiceType) *string {
 	services := feast.Handler.FeatureStore.Status.Applied.Services
 	switch feastType {
@@ -942,6 +969,9 @@ func (feast *FeastServices) getLogLevelForType(feastType FeastServiceType) *stri
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 // GetObjectMeta returns the feast k8s object metadata with type
 func (feast *FeastServices) GetObjectMeta() metav1.ObjectMeta {
 	return metav1.ObjectMeta{Name: GetFeastName(feast.Handler.FeatureStore), Namespace: feast.Handler.FeatureStore.Namespace}
@@ -949,12 +979,15 @@ func (feast *FeastServices) GetObjectMeta() metav1.ObjectMeta {
 
 // GetObjectMeta returns the feast k8s object metadata with type
 func (feast *FeastServices) GetObjectMetaType(feastType FeastServiceType) metav1.ObjectMeta {
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> fb0874ae1 (feat: Feast Operator support log level configuration for services (#4808))
 // GetObjectMeta returns the feast k8s object metadata
 func (feast *FeastServices) GetObjectMeta(feastType FeastServiceType) metav1.ObjectMeta {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	return metav1.ObjectMeta{Name: feast.GetFeastServiceName(feastType), Namespace: feast.Handler.FeatureStore.Namespace}
 }
 
@@ -980,11 +1013,15 @@ func (feast *FeastServices) getFeastTypeLabels(feastType FeastServiceType) map[s
 func (feast *FeastServices) getLabels() map[string]string {
 	return map[string]string{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		NameLabelKey: feast.Handler.FeatureStore.Name,
 =======
 		NameLabelKey:        feast.Handler.FeatureStore.Name,
 		ServiceTypeLabelKey: string(feastType),
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+		NameLabelKey: feast.Handler.FeatureStore.Name,
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 }
 
@@ -1031,17 +1068,17 @@ func (feast *FeastServices) setServiceHostnames() error {
 =======
 	domain := svcDomain + ":"
 	if feast.isOfflinStore() {
-		objMeta := feast.GetObjectMeta(OfflineFeastType)
+		objMeta := feast.initFeastSvc(OfflineFeastType)
 		feast.Handler.FeatureStore.Status.ServiceHostnames.OfflineStore = objMeta.Name + "." + objMeta.Namespace + domain +
 			getPortStr(feast.Handler.FeatureStore.Status.Applied.Services.OfflineStore.TLS)
 	}
 	if feast.isOnlinStore() {
-		objMeta := feast.GetObjectMeta(OnlineFeastType)
+		objMeta := feast.initFeastSvc(OnlineFeastType)
 		feast.Handler.FeatureStore.Status.ServiceHostnames.OnlineStore = objMeta.Name + "." + objMeta.Namespace + domain +
 			getPortStr(feast.Handler.FeatureStore.Status.Applied.Services.OnlineStore.TLS)
 	}
 	if feast.isLocalRegistry() {
-		objMeta := feast.GetObjectMeta(RegistryFeastType)
+		objMeta := feast.initFeastSvc(RegistryFeastType)
 		feast.Handler.FeatureStore.Status.ServiceHostnames.Registry = objMeta.Name + "." + objMeta.Namespace + domain +
 			getPortStr(feast.Handler.FeatureStore.Status.Applied.Services.Registry.Local.TLS)
 	} else if feast.isRemoteRegistry() {
@@ -1097,10 +1134,6 @@ func (feast *FeastServices) getRemoteRegistryFeastHandler() (*FeastServices, err
 	if feast.IsRemoteRefRegistry() {
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
 		feastRemoteRef := feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.FeastRef
-		// default to FeatureStore namespace if not set
-		if len(feastRemoteRef.Namespace) == 0 {
-			feastRemoteRef.Namespace = feast.Handler.FeatureStore.Namespace
-		}
 		nsName := types.NamespacedName{Name: feastRemoteRef.Name, Namespace: feastRemoteRef.Namespace}
 		crNsName := client.ObjectKeyFromObject(feast.Handler.FeatureStore)
 		if nsName == crNsName {
@@ -1176,6 +1209,7 @@ func (feast *FeastServices) isRemoteRegistry() bool {
 func (feast *FeastServices) IsRemoteRefRegistry() bool {
 	return feast.isRemoteRegistry() &&
 		feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.FeastRef != nil
+<<<<<<< HEAD
 }
 
 func (feast *FeastServices) isRemoteHostnameRegistry() bool {
@@ -1204,6 +1238,13 @@ func (feast *FeastServices) isRemoteHostnameRegistry() bool {
 	}
 	return false
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
+=======
+}
+
+func (feast *FeastServices) isRemoteHostnameRegistry() bool {
+	return feast.isRemoteRegistry() &&
+		feast.Handler.FeatureStore.Status.Applied.Services.Registry.Remote.Hostname != nil
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 }
 
 func (feast *FeastServices) isOfflinStore() bool {
@@ -1217,10 +1258,14 @@ func (feast *FeastServices) isOnlinStore() bool {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) initFeastDeploy() *appsv1.Deployment {
 =======
 func (feast *FeastServices) initFeastDeploy(feastType FeastServiceType) *appsv1.Deployment {
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+func (feast *FeastServices) initFeastDeploy() *appsv1.Deployment {
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	deploy := &appsv1.Deployment{
 		ObjectMeta: feast.GetObjectMeta(),
 	}
@@ -1238,6 +1283,7 @@ func (feast *FeastServices) initFeastSvc(feastType FeastServiceType) *corev1.Ser
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (feast *FeastServices) initFeastSA() *corev1.ServiceAccount {
 	sa := &corev1.ServiceAccount{
 		ObjectMeta: feast.GetObjectMeta(),
@@ -1246,6 +1292,11 @@ func (feast *FeastServices) initFeastSA(feastType FeastServiceType) *corev1.Serv
 	sa := &corev1.ServiceAccount{
 		ObjectMeta: feast.GetObjectMeta(feastType),
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
+=======
+func (feast *FeastServices) initFeastSA() *corev1.ServiceAccount {
+	sa := &corev1.ServiceAccount{
+		ObjectMeta: feast.GetObjectMeta(),
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	}
 	sa.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("ServiceAccount"))
 	return sa
@@ -1260,7 +1311,7 @@ func (feast *FeastServices) initPVC(feastType FeastServiceType) *corev1.Persiste
 >>>>>>> 48e3c47c2 (feat: Operator will create k8s serviceaccount for each feast service (#4767))
 func (feast *FeastServices) initPVC(feastType FeastServiceType) *corev1.PersistentVolumeClaim {
 	pvc := &corev1.PersistentVolumeClaim{
-		ObjectMeta: feast.GetObjectMeta(feastType),
+		ObjectMeta: feast.GetObjectMetaType(feastType),
 	}
 	pvc.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("PersistentVolumeClaim"))
 	return pvc
@@ -1311,6 +1362,9 @@ func applyOptionalContainerConfigs(container *corev1.Container, optionalConfigs 
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 func (feast *FeastServices) mountPvcConfigs(podSpec *corev1.PodSpec) {
 	for _, feastType := range feastServerTypes {
 		if pvcConfig, hasPvcConfig := hasPvcConfig(feast.Handler.FeatureStore, feastType); hasPvcConfig {
@@ -1320,6 +1374,7 @@ func (feast *FeastServices) mountPvcConfigs(podSpec *corev1.PodSpec) {
 }
 
 func (feast *FeastServices) mountPvcConfig(podSpec *corev1.PodSpec, pvcConfig *feastdevv1alpha1.PvcConfig, feastType FeastServiceType) {
+<<<<<<< HEAD
 	if podSpec != nil && pvcConfig != nil {
 		volName := feast.initPVC(feastType).Name
 		pvcName := volName
@@ -1412,27 +1467,66 @@ func getProbeHandler(feastType FeastServiceType, tls *feastdevv1alpha1.TlsConfig
 =======
 >>>>>>> 33db9cabb (fix: Operator envVar positioning & tls.SecretRef.Name (#4806))
 func mountPvcConfig(podSpec *corev1.PodSpec, pvcConfig *feastdevv1alpha1.PvcConfig, deployName string) {
+=======
+>>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 	if podSpec != nil && pvcConfig != nil {
-		container := &podSpec.Containers[0]
-		var pvcName string
-		if pvcConfig.Create != nil {
-			pvcName = deployName
-		} else {
+		volName := feast.initPVC(feastType).Name
+		pvcName := volName
+		if pvcConfig.Ref != nil {
 			pvcName = pvcConfig.Ref.Name
 		}
-
 		podSpec.Volumes = append(podSpec.Volumes, corev1.Volume{
-			Name: pvcName,
+			Name: volName,
 			VolumeSource: corev1.VolumeSource{
 				PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
 					ClaimName: pvcName,
 				},
 			},
 		})
-		container.VolumeMounts = append(container.VolumeMounts, corev1.VolumeMount{
-			Name:      pvcName,
-			MountPath: pvcConfig.MountPath,
+		if feastType == OfflineFeastType {
+			for i := range podSpec.InitContainers {
+				podSpec.InitContainers[i].VolumeMounts = append(podSpec.InitContainers[i].VolumeMounts, corev1.VolumeMount{
+					Name:      volName,
+					MountPath: pvcConfig.MountPath,
+				})
+			}
+		}
+		for i := range podSpec.Containers {
+			podSpec.Containers[i].VolumeMounts = append(podSpec.Containers[i].VolumeMounts, corev1.VolumeMount{
+				Name:      volName,
+				MountPath: pvcConfig.MountPath,
+			})
+		}
+	}
+}
+
+func (feast *FeastServices) mountEmptyDirVolumes(podSpec *corev1.PodSpec) {
+	if shouldMountEmptyDir(feast.Handler.FeatureStore) {
+		mountEmptyDirVolume(podSpec)
+	}
+}
+
+func mountEmptyDirVolume(podSpec *corev1.PodSpec) {
+	if podSpec != nil {
+		volName := strings.TrimPrefix(EphemeralPath, "/")
+		podSpec.Volumes = append(podSpec.Volumes, corev1.Volume{
+			Name: volName,
+			VolumeSource: corev1.VolumeSource{
+				EmptyDir: &corev1.EmptyDirVolumeSource{},
+			},
 		})
+		for i := range podSpec.InitContainers {
+			podSpec.InitContainers[i].VolumeMounts = append(podSpec.InitContainers[i].VolumeMounts, corev1.VolumeMount{
+				Name:      volName,
+				MountPath: EphemeralPath,
+			})
+		}
+		for i := range podSpec.Containers {
+			podSpec.Containers[i].VolumeMounts = append(podSpec.Containers[i].VolumeMounts, corev1.VolumeMount{
+				Name:      volName,
+				MountPath: EphemeralPath,
+			})
+		}
 	}
 }
 
