@@ -1757,7 +1757,11 @@ class FeatureStore:
         query: Union[str, List[float]],
         top_k: int,
         features: Optional[List[str]] = None,
+<<<<<<< HEAD
         distance_metric: Optional[str] = "L2",
+=======
+        distance_metric: Optional[str] = None,
+>>>>>>> dd534f064 (feat: Adding features field to retrieve_online_features to return mor… (#4869))
     ) -> OnlineResponse:
         """
         Retrieves the top k closest document features. Note, embeddings are a subset of features.
@@ -1984,19 +1988,13 @@ class FeatureStore:
         )
 
     def serve_registry(
-        self,
-        port: int,
-        tls_key_path: str = "",
-        tls_cert_path: str = "",
+        self, port: int, tls_key_path: str = "", tls_cert_path: str = ""
     ) -> None:
         """Start registry server locally on a given port."""
         from feast import registry_server
 
         registry_server.start_server(
-            self,
-            port=port,
-            tls_key_path=tls_key_path,
-            tls_cert_path=tls_cert_path,
+            self, port=port, tls_key_path=tls_key_path, tls_cert_path=tls_cert_path
         )
 
     def serve_offline(
