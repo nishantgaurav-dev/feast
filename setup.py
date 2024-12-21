@@ -171,10 +171,14 @@ CI_REQUIRED = (
         "build",
         "virtualenv==20.23.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "cryptography>=43.0,<44",
 =======
         "cryptography>=35.0,<43",
 >>>>>>> f7fbdc9d2 (fix: Add adapters for sqlite datetime conversion (#4797))
+=======
+        "cryptography>=43.0,<44",
+>>>>>>> 50b1288d1 (feat: Snyk vulnerability issues fix. (#4867))
         "ruff>=0.8.0",
         "mypy-protobuf>=3.1",
         "grpcio-tools>=1.56.2,<2",
