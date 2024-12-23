@@ -68,6 +68,7 @@ func hasPvcConfig(featureStore *feastdevv1alpha1.FeatureStore, feastType FeastSe
 		case OnlineFeastType:
 			if services.OnlineStore != nil && services.OnlineStore.Persistence != nil &&
 				services.OnlineStore.Persistence.FilePersistence != nil {
+<<<<<<< HEAD
 				pvcConfig = services.OnlineStore.Persistence.FilePersistence.PvcConfig
 			}
 		case OfflineFeastType:
@@ -106,14 +107,18 @@ func hasPvcConfig(featureStore *feastdevv1alpha1.FeatureStore, feastType FeastSe
 		switch feastType {
 		case OnlineFeastType:
 			if services.OnlineStore != nil && services.OnlineStore.Persistence.FilePersistence != nil {
+=======
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 				pvcConfig = services.OnlineStore.Persistence.FilePersistence.PvcConfig
 			}
 		case OfflineFeastType:
-			if services.OfflineStore != nil && services.OfflineStore.Persistence.FilePersistence != nil {
+			if services.OfflineStore != nil && services.OfflineStore.Persistence != nil &&
+				services.OfflineStore.Persistence.FilePersistence != nil {
 				pvcConfig = services.OfflineStore.Persistence.FilePersistence.PvcConfig
 			}
 		case RegistryFeastType:
-			if IsLocalRegistry(featureStore) && services.Registry.Local.Persistence.FilePersistence != nil {
+			if IsLocalRegistry(featureStore) && services.Registry.Local.Persistence != nil &&
+				services.Registry.Local.Persistence.FilePersistence != nil {
 				pvcConfig = services.Registry.Local.Persistence.FilePersistence.PvcConfig
 			}
 >>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
@@ -140,6 +145,7 @@ func shouldMountEmptyDir(featureStore *feastdevv1alpha1.FeatureStore) bool {
 
 func getOfflineMountPath(featureStore *feastdevv1alpha1.FeatureStore) string {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if pvcConfig, ok := hasPvcConfig(featureStore, OfflineFeastType); ok {
 		return pvcConfig.MountPath
 =======
@@ -148,6 +154,10 @@ func getOfflineMountPath(featureStore *feastdevv1alpha1.FeatureStore) string {
 			return pvcConfig.MountPath
 		}
 >>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
+=======
+	if pvcConfig, ok := hasPvcConfig(featureStore, OfflineFeastType); ok {
+		return pvcConfig.MountPath
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 	}
 	return EphemeralPath
 }
@@ -162,6 +172,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 	cr.Spec.DeepCopyInto(&cr.Status.Applied)
 	cr.Status.FeastVersion = feastversion.FeastVersion
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	applied := &cr.Status.Applied
 =======
@@ -175,6 +186,10 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 >>>>>>> 39eb4d80c (feat: RBAC Authorization in Feast Operator (#4786))
 =======
 >>>>>>> 668d47b8e (feat: Add TLS support to the Operator (#4796))
+=======
+
+	applied := &cr.Status.Applied
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 	if applied.Services == nil {
 		applied.Services = &feastdevv1alpha1.FeatureStoreServices{}
 	}
@@ -210,6 +225,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 			}
 
 			ensurePVCDefaults(services.Registry.Local.Persistence.FilePersistence.PvcConfig, RegistryFeastType)
+<<<<<<< HEAD
 =======
 		if services.Registry.Local.Persistence.FilePersistence == nil {
 			services.Registry.Local.Persistence.FilePersistence = &feastdevv1alpha1.RegistryFilePersistence{}
@@ -240,6 +256,8 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 >>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			}
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 		}
 
 		setServiceDefaultConfigs(&services.Registry.Local.ServiceConfigs.DefaultConfigs)
@@ -262,6 +280,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			ensurePVCDefaults(services.OfflineStore.Persistence.FilePersistence.PvcConfig, OfflineFeastType)
 		}
 <<<<<<< HEAD
@@ -280,6 +299,9 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 				pvc := services.OfflineStore.Persistence.FilePersistence.PvcConfig
 				ensurePVCDefaults(pvc, OfflineFeastType)
 			}
+=======
+			ensurePVCDefaults(services.OfflineStore.Persistence.FilePersistence.PvcConfig, OfflineFeastType)
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 		}
 
 <<<<<<< HEAD
@@ -315,6 +337,7 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 			}
 
 			ensurePVCDefaults(services.OnlineStore.Persistence.FilePersistence.PvcConfig, OnlineFeastType)
+<<<<<<< HEAD
 =======
 		if services.OnlineStore.Persistence.FilePersistence == nil {
 			services.OnlineStore.Persistence.FilePersistence = &feastdevv1alpha1.OnlineStoreFilePersistence{}
@@ -345,6 +368,8 @@ func ApplyDefaultsToStatus(cr *feastdevv1alpha1.FeatureStore) {
 >>>>>>> 487aaa743 (feat: Added pvc accessModes support (#4851))
 			}
 >>>>>>> 6c1a66ea8 (feat: PVC configuration and impl (#4750))
+=======
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 		}
 
 		setServiceDefaultConfigs(&services.OnlineStore.ServiceConfigs.DefaultConfigs)
@@ -638,19 +663,21 @@ func ensureRequestedStorage(resources *v1.VolumeResourceRequirements, requestedS
 }
 
 func ensurePVCDefaults(pvc *feastdevv1alpha1.PvcConfig, feastType FeastServiceType) {
-	var storageRequest string
-	switch feastType {
-	case OnlineFeastType:
-		storageRequest = DefaultOnlineStorageRequest
-	case OfflineFeastType:
-		storageRequest = DefaultOfflineStorageRequest
-	case RegistryFeastType:
-		storageRequest = DefaultRegistryStorageRequest
-	}
-	if pvc.Create != nil {
-		ensureRequestedStorage(&pvc.Create.Resources, storageRequest)
-		if pvc.Create.AccessModes == nil {
-			pvc.Create.AccessModes = DefaultPVCAccessModes
+	if pvc != nil {
+		var storageRequest string
+		switch feastType {
+		case OnlineFeastType:
+			storageRequest = DefaultOnlineStorageRequest
+		case OfflineFeastType:
+			storageRequest = DefaultOfflineStorageRequest
+		case RegistryFeastType:
+			storageRequest = DefaultRegistryStorageRequest
+		}
+		if pvc.Create != nil {
+			ensureRequestedStorage(&pvc.Create.Resources, storageRequest)
+			if pvc.Create.AccessModes == nil {
+				pvc.Create.AccessModes = DefaultPVCAccessModes
+			}
 		}
 	}
 }

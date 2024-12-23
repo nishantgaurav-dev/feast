@@ -88,9 +88,12 @@ var _ = Describe("Repo Config", func() {
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			var repoConfig RepoConfig
 >>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
+=======
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 			repoConfig, err := getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
@@ -238,7 +241,39 @@ var _ = Describe("Repo Config", func() {
 			Expect(repoConfig.Registry).To(Equal(emptyRegistryConfig))
 >>>>>>> b0a04af1d (fix: Refactor Operator to deploy all feast services to the same Deployment/Pod (#4863))
 
+<<<<<<< HEAD
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
+=======
+			By("Having an offlineStore with PVC")
+			mountPath := "/testing"
+			expectedOnlineConfig.Path = mountPath + "/" + DefaultOnlineStorePath
+			expectedRegistryConfig.Path = mountPath + "/" + DefaultRegistryPath
+
+			featureStore = minimalFeatureStore()
+			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
+				OfflineStore: &feastdevv1alpha1.OfflineStore{
+					Persistence: &feastdevv1alpha1.OfflineStorePersistence{
+						FilePersistence: &feastdevv1alpha1.OfflineStoreFilePersistence{
+							PvcConfig: &feastdevv1alpha1.PvcConfig{
+								MountPath: mountPath,
+							},
+						},
+					},
+				},
+			}
+			ApplyDefaultsToStatus(featureStore)
+			appliedServices := featureStore.Status.Applied.Services
+			Expect(appliedServices.OnlineStore).To(BeNil())
+			Expect(appliedServices.Registry.Local.Persistence.FilePersistence.Path).To(Equal(expectedRegistryConfig.Path))
+
+			repoConfig, err = getServiceRepoConfig(featureStore, emptyMockExtractConfigFromSecret)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(repoConfig.OfflineStore).To(Equal(defaultOfflineStoreConfig))
+			Expect(repoConfig.AuthzConfig.Type).To(Equal(NoAuthAuthType))
+			Expect(repoConfig.Registry).To(Equal(expectedRegistryConfig))
+			Expect(repoConfig.OnlineStore).To(Equal(expectedOnlineConfig))
+
+>>>>>>> e664d4a1f (fix: Improve status.applied updates & add offline pvc unit test (#4871))
 			By("Having the all the file services")
 			featureStore = minimalFeatureStore()
 			featureStore.Spec.Services = &feastdevv1alpha1.FeatureStoreServices{
