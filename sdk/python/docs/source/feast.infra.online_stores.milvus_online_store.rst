@@ -5,6 +5,9 @@ Submodules
 ----------
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 feast.infra.online\_stores.milvus\_online\_store.milvus module
 --------------------------------------------------------------
 
@@ -13,8 +16,11 @@ feast.infra.online\_stores.milvus\_online\_store.milvus module
    :undoc-members:
    :show-inheritance:
 
+<<<<<<< HEAD
 =======
 >>>>>>> ed584a9cf (chore: Update sphinx docs (#4856))
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 feast.infra.online\_stores.milvus\_online\_store.milvus\_repo\_configuration module
 -----------------------------------------------------------------------------------
 

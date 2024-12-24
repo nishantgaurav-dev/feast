@@ -1,5 +1,8 @@
 from datetime import datetime
+<<<<<<< HEAD
 from pathlib import Path
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 from typing import Any, Callable, Dict, List, Literal, Optional, Sequence, Tuple, Union
 
 from pydantic import StrictStr
@@ -8,8 +11,14 @@ from pymilvus import (
     CollectionSchema,
     DataType,
     FieldSchema,
+<<<<<<< HEAD
     MilvusClient,
 )
+=======
+    connections,
+)
+from pymilvus.orm.connections import Connections
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 
 from feast import Entity
 from feast.feature_view import FeatureView
@@ -85,16 +94,26 @@ class MilvusOnlineStoreConfig(FeastConfigBaseModel, VectorStoreConfig):
     """
 
     type: Literal["milvus"] = "milvus"
+<<<<<<< HEAD
     path: Optional[StrictStr] = "data/online_store.db"
     host: Optional[StrictStr] = "localhost"
     port: Optional[int] = 19530
     index_type: Optional[str] = "FLAT"
+=======
+
+    host: Optional[StrictStr] = "localhost"
+    port: Optional[int] = 19530
+    index_type: Optional[str] = "IVF_FLAT"
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
     metric_type: Optional[str] = "L2"
     embedding_dim: Optional[int] = 128
     vector_enabled: Optional[bool] = True
     nlist: Optional[int] = 128
+<<<<<<< HEAD
     username: Optional[StrictStr] = ""
     password: Optional[StrictStr] = ""
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 
 
 class MilvusOnlineStore(OnlineStore):
@@ -105,6 +124,7 @@ class MilvusOnlineStore(OnlineStore):
         _collections: Dictionary to cache Milvus collections.
     """
 
+<<<<<<< HEAD
     client: Optional[MilvusClient] = None
     _collections: Dict[str, Any] = {}
 
@@ -139,6 +159,26 @@ class MilvusOnlineStore(OnlineStore):
         self.client = self._connect(config)
         collection_name = _table_id(config.project, table)
         if collection_name not in self._collections:
+=======
+    _conn: Optional[Connections] = None
+    _collections: Dict[str, Collection] = {}
+
+    def _connect(self, config: RepoConfig) -> connections:
+        if not self._conn:
+            if not connections.has_connection("feast"):
+                self._conn = connections.connect(
+                    alias="feast",
+                    host=config.online_store.host,
+                    port=str(config.online_store.port),
+                )
+        return self._conn
+
+    def _get_collection(self, config: RepoConfig, table: FeatureView) -> Collection:
+        collection_name = _table_id(config.project, table)
+        if collection_name not in self._collections:
+            self._connect(config)
+
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
             # Create a composite key by combining entity fields
             composite_key_name = (
                 "_".join([field.name for field in table.entity_columns]) + "_pk"
@@ -184,6 +224,7 @@ class MilvusOnlineStore(OnlineStore):
             schema = CollectionSchema(
                 fields=fields, description="Feast feature view data"
             )
+<<<<<<< HEAD
             collection_exists = self.client.has_collection(
                 collection_name=collection_name
             )
@@ -216,6 +257,25 @@ class MilvusOnlineStore(OnlineStore):
             self._collections[collection_name] = self.client.describe_collection(
                 collection_name
             )
+=======
+            collection = Collection(name=collection_name, schema=schema, using="feast")
+            if not collection.has_index():
+                index_params = {
+                    "index_type": config.online_store.index_type,
+                    "metric_type": config.online_store.metric_type,
+                    "params": {"nlist": config.online_store.nlist},
+                }
+            for vector_field in schema.fields:
+                if vector_field.dtype in [
+                    DataType.FLOAT_VECTOR,
+                    DataType.BINARY_VECTOR,
+                ]:
+                    collection.create_index(
+                        field_name=vector_field.name, index_params=index_params
+                    )
+            collection.load()
+            self._collections[collection_name] = collection
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
         return self._collections[collection_name]
 
     def online_write_batch(
@@ -232,7 +292,10 @@ class MilvusOnlineStore(OnlineStore):
         ],
         progress: Optional[Callable[[int], Any]],
     ) -> None:
+<<<<<<< HEAD
         self.client = self._connect(config)
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
         collection = self._get_collection(config, table)
         entity_batch_to_insert = []
         for entity_key, values_dict, timestamp, created_ts in data:
@@ -265,10 +328,15 @@ class MilvusOnlineStore(OnlineStore):
             if progress:
                 progress(1)
 
+<<<<<<< HEAD
         self.client.insert(
             collection_name=collection["collection_name"],
             data=entity_batch_to_insert,
         )
+=======
+        collection.insert(entity_batch_to_insert)
+        collection.flush()
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 
     def online_read(
         self,
@@ -288,6 +356,7 @@ class MilvusOnlineStore(OnlineStore):
         entities_to_keep: Sequence[Entity],
         partial: bool,
     ):
+<<<<<<< HEAD
         self.client = self._connect(config)
         for table in tables_to_keep:
             self._collections = self._get_collection(config, table)
@@ -296,6 +365,16 @@ class MilvusOnlineStore(OnlineStore):
             collection_name = _table_id(config.project, table)
             if self._collections.get(collection_name, None):
                 self.client.drop_collection(collection_name)
+=======
+        self._connect(config)
+        for table in tables_to_keep:
+            self._get_collection(config, table)
+        for table in tables_to_delete:
+            collection_name = _table_id(config.project, table)
+            collection = Collection(name=collection_name)
+            if collection.exists():
+                collection.drop()
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
                 self._collections.pop(collection_name, None)
 
     def plan(
@@ -309,12 +388,21 @@ class MilvusOnlineStore(OnlineStore):
         tables: Sequence[FeatureView],
         entities: Sequence[Entity],
     ):
+<<<<<<< HEAD
         self.client = self._connect(config)
         for table in tables:
             collection_name = _table_id(config.project, table)
             if self._collections.get(collection_name, None):
                 self.client.drop_collection(collection_name)
                 self._collections.pop(collection_name, None)
+=======
+        self._connect(config)
+        for table in tables:
+            collection = self._get_collection(config, table)
+            if collection:
+                collection.drop()
+                self._collections.pop(collection.name, None)
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 
     def retrieve_online_documents(
         self,
@@ -334,8 +422,11 @@ class MilvusOnlineStore(OnlineStore):
             Optional[ValueProto],
         ]
     ]:
+<<<<<<< HEAD
         self.client = self._connect(config)
         collection_name = _table_id(config.project, table)
+=======
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
         collection = self._get_collection(config, table)
         if not config.online_store.vector_enabled:
             raise ValueError("Vector search is not enabled in the online store config")
@@ -359,6 +450,7 @@ class MilvusOnlineStore(OnlineStore):
             + ["created_ts", "event_ts"]
         )
         assert all(
+<<<<<<< HEAD
             field in [f["name"] for f in collection["fields"]]
             for field in output_fields
         ), f"field(s) [{[field for field in output_fields if field not in [f['name'] for f in collection['fields']]]}] not found in collection schema"
@@ -380,6 +472,30 @@ class MilvusOnlineStore(OnlineStore):
             search_params=search_params,
             limit=top_k,
             output_fields=output_fields,
+=======
+            field
+            for field in output_fields
+            if field in [f.name for f in collection.schema.fields]
+        ), f"field(s) [{[field for field in output_fields if field not in [f.name for f in collection.schema.fields]]}'] not found in collection schema"
+
+        # Note we choose the first vector field as the field to search on. Not ideal but it's something.
+        ann_search_field = None
+        for field in collection.schema.fields:
+            if (
+                field.dtype in [DataType.FLOAT_VECTOR, DataType.BINARY_VECTOR]
+                and field.name in output_fields
+            ):
+                ann_search_field = field.name
+                break
+
+        results = collection.search(
+            data=[embedding],
+            anns_field=ann_search_field,
+            param=search_params,
+            limit=top_k,
+            output_fields=output_fields,
+            consistency_level="Strong",
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
         )
 
         result_list = []
@@ -387,6 +503,7 @@ class MilvusOnlineStore(OnlineStore):
             for hit in hits:
                 single_record = {}
                 for field in output_fields:
+<<<<<<< HEAD
                     single_record[field] = hit.get("entity", {}).get(field, None)
 
                 entity_key_bytes = bytes.fromhex(
@@ -398,6 +515,15 @@ class MilvusOnlineStore(OnlineStore):
                 event_ts = datetime.fromtimestamp(
                     hit.get("entity", {}).get("event_ts") / 1e6
                 )
+=======
+                    single_record[field] = hit.entity.get(field)
+
+                entity_key_bytes = bytes.fromhex(hit.entity.get(composite_key_name))
+                embedding = hit.entity.get(ann_search_field)
+                serialized_embedding = _serialize_vector_to_float_list(embedding)
+                distance = hit.distance
+                event_ts = datetime.fromtimestamp(hit.entity.get("event_ts") / 1e6)
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
                 prepared_result = _build_retrieve_online_document_record(
                     entity_key_bytes,
                     # This may have a bug
@@ -453,7 +579,11 @@ class MilvusTable(InfraObject):
         self._connect()
 
     def _connect(self):
+<<<<<<< HEAD
         raise NotImplementedError
+=======
+        return connections.connect(alias="default", host=self.host, port=str(self.port))
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
 
     def to_infra_object_proto(self) -> InfraObjectProto:
         # Implement serialization if needed

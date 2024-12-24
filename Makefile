@@ -383,7 +383,11 @@ test-python-universal-milvus-online:
 		FULL_REPO_CONFIGS_MODULE=sdk.python.feast.infra.online_stores.milvus_online_store.milvus_repo_configuration \
 		PYTEST_PLUGINS=sdk.python.tests.integration.feature_repos.universal.online_store.milvus \
 		python -m pytest -n 8 --integration \
+<<<<<<< HEAD
 		-k "test_retrieve_online_milvus_documents" \
+=======
+		-k "test_retrieve_online_milvus_ocuments" \
+>>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
  			sdk/python/tests --ignore=sdk/python/tests/integration/offline_store/test_dqm_validation.py
 
 test-python-universal-singlestore-online:
