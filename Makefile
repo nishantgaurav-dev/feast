@@ -31,9 +31,13 @@ PYTHON_VERSION = ${shell python --version | grep -Eo '[0-9]\.[0-9]+'}
 
 PYTHON_VERSIONS := 3.9 3.10 3.11
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> d1c3c906e (chore: Clean up makefile (#4799))
+=======
+
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 define get_env_name
 $(subst .,,py$(1))
 endef
@@ -591,6 +595,9 @@ build-ui:
 
 # Go SDK & embedded
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 PB_REL = https://github.com/protocolbuffers/protobuf/releases
 PB_VERSION = 3.11.2
 PB_ARCH := $(shell uname -m)
@@ -598,6 +605,7 @@ ifeq ($(PB_ARCH), arm64)
 	PB_ARCH=aarch_64
 endif
 PB_PROTO_FOLDERS=core registry serving types storage
+<<<<<<< HEAD
 
 $(TOOL_DIR)/protoc-$(PB_VERSION)-$(OS)-$(PB_ARCH).zip: $(TOOL_DIR)
 	cd $(TOOL_DIR) && \
@@ -621,16 +629,37 @@ compile-protos-go: install-go-proto-dependencies
 =======
 install-protoc-dependencies:
 	pip install "protobuf>=4.24.0,<5.0.0" "grpcio-tools>=1.56.2,<2" "mypy-protobuf>=3.1"
+=======
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 
-install-go-proto-dependencies:
+$(TOOL_DIR)/protoc-$(PB_VERSION)-$(OS)-$(PB_ARCH).zip: $(TOOL_DIR)
+	cd $(TOOL_DIR) && \
+	curl -LO $(PB_REL)/download/v$(PB_VERSION)/protoc-$(PB_VERSION)-$(OS)-$(PB_ARCH).zip
+
+.PHONY: install-go-proto-dependencies
+install-go-proto-dependencies: $(TOOL_DIR)/protoc-$(PB_VERSION)-$(OS)-$(PB_ARCH).zip
+	unzip -u $(TOOL_DIR)/protoc-$(PB_VERSION)-$(OS)-$(PB_ARCH).zip -d $(TOOL_DIR)
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.31.0
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
 
+<<<<<<< HEAD
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+.PHONY: compile-protos-go
+compile-protos-go: install-go-proto-dependencies
+	$(foreach folder,$(PB_PROTO_FOLDERS), \
+		protoc --proto_path=$(ROOT_DIR)/protos \
+			--go_out=$(ROOT_DIR)/go/protos \
+			--go_opt=module=github.com/feast-dev/feast/go/protos \
+			--go-grpc_out=$(ROOT_DIR)/go/protos \
+			--go-grpc_opt=module=github.com/feast-dev/feast/go/protos $(ROOT_DIR)/protos/feast/$(folder)/*.proto; ) true
+
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 #install-go-ci-dependencies:
 	# go install golang.org/x/tools/cmd/goimports
 	# python -m pip install "pybindgen==0.22.1" "grpcio-tools>=1.56.2,<2" "mypy-protobuf>=3.1"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 .PHONY: build-go
 build-go: compile-protos-go 
@@ -656,30 +685,39 @@ lint-go: compile-protos-go
 =======
 build-go: 
 	compile-protos-go 
+=======
+.PHONY: build-go
+build-go: compile-protos-go 
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 	go build -o feast ./go/main.go
 
+.PHONY: install-feast-ci-locally
 install-feast-ci-locally:
-	pip install -e ".[ci]"
+	uv pip install -e ".[ci]"
 
-test-go: 
-	compile-protos-go 
-	compile-protos-python 
-	install-feast-ci-locally
+.PHONY: test-go
+test-go: compile-protos-go install-feast-ci-locally compile-protos-python  
 	CGO_ENABLED=1 go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html
 
+.PHONY: format-go
 format-go:
 	gofmt -s -w go/
 
-lint-go: 
-	compile-protos-go
+.PHONY: lint-go
+lint-go: compile-protos-go
 	go vet ./go/internal/feast
 
+<<<<<<< HEAD
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+.PHONY: build-go-docker-dev
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 build-go-docker-dev:
 	docker buildx build --build-arg VERSION=dev \
 		-t feastdev/feature-server-go:dev \
 		-f go/infra/docker/feature-server/Dockerfile --load .
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 compile-protos-go: 
@@ -687,3 +725,5 @@ compile-protos-go:
 	install-protoc-dependencies
 	python setup.py build_go_protos
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))

@@ -274,6 +274,7 @@ else:
 PYTHON_CODE_PREFIX = "sdk/python"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 def _generate_path_with_gopath():
     go_path = subprocess.check_output(["go", "env", "GOPATH"]).decode("utf-8")
@@ -331,6 +332,8 @@ class BuildGoProtosCommand(Command):
             self._generate_go_protos(f"feast/{sub_folder}/*.proto")
 
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+>>>>>>> 7edeeac4e (chore: Update go targets in Makefile (#4861))
 
 setup(
     name=NAME,
@@ -402,7 +405,4 @@ setup(
         "pybindgen==0.22.0",  # TODO do we need this?
         "setuptools_scm>=6.2",  # TODO do we need this?
     ],
-    cmdclass={
-        "build_go_protos": BuildGoProtosCommand
-    },
 )
