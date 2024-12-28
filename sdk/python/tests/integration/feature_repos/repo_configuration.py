@@ -163,7 +163,11 @@ if os.getenv("FEAST_IS_LOCAL_TEST", "False") != "True":
     AVAILABLE_ONLINE_STORES["datastore"] = ("datastore", None)
     AVAILABLE_ONLINE_STORES["snowflake"] = (SNOWFLAKE_CONFIG, None)
     AVAILABLE_ONLINE_STORES["bigtable"] = (BIGTABLE_CONFIG, None)
+<<<<<<< HEAD
     # AVAILABLE_ONLINE_STORES["milvus"] = (MILVUS_CONFIG, None)
+=======
+    AVAILABLE_ONLINE_STORES["milvus"] = (MILVUS_CONFIG, None)
+>>>>>>> 9975d0414 (chore: Fixing testing in Milvus, Makefile, and repo_configuration (#4881))
 
     # Uncomment to test using private IKV account. Currently not enabled as
     # there is no dedicated IKV instance for CI testing and there is no

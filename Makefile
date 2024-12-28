@@ -388,10 +388,14 @@ test-python-universal-milvus-online:
 		PYTEST_PLUGINS=sdk.python.tests.integration.feature_repos.universal.online_store.milvus \
 		python -m pytest -n 8 --integration \
 <<<<<<< HEAD
+<<<<<<< HEAD
 		-k "test_retrieve_online_milvus_documents" \
 =======
 		-k "test_retrieve_online_milvus_ocuments" \
 >>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
+=======
+		-k "test_retrieve_online_milvus_documents" \
+>>>>>>> 9975d0414 (chore: Fixing testing in Milvus, Makefile, and repo_configuration (#4881))
  			sdk/python/tests --ignore=sdk/python/tests/integration/offline_store/test_dqm_validation.py
 
 test-python-universal-singlestore-online:

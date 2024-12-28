@@ -900,12 +900,17 @@ def test_retrieve_online_documents(environment, fake_document_data):
 @pytest.mark.integration
 @pytest.mark.universal_online_stores(only=["milvus"])
 <<<<<<< HEAD
+<<<<<<< HEAD
 def test_retrieve_online_milvus_documents(environment, fake_document_data):
     fs = environment.feature_store
 =======
 def test_retrieve_online_milvus_documents(vectordb_environment, fake_document_data):
     fs = vectordb_environment.feature_store
 >>>>>>> c239766f2 (feat: Add Milvus Vector Database Implementation (#4751))
+=======
+def test_retrieve_online_milvus_documents(environment, fake_document_data):
+    fs = environment.feature_store
+>>>>>>> 9975d0414 (chore: Fixing testing in Milvus, Makefile, and repo_configuration (#4881))
     df, data_source = fake_document_data
     item_embeddings_feature_view = create_item_embeddings_feature_view(data_source)
     fs.apply([item_embeddings_feature_view, item()])
