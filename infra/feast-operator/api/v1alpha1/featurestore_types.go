@@ -261,10 +261,14 @@ type OnlineStoreFilePersistence struct {
 type OnlineStoreDBStorePersistence struct {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase;milvus
 =======
 	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase
 >>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
+=======
+	// +kubebuilder:validation:Enum=snowflake.online;redis;ikv;datastore;dynamodb;bigtable;postgres;cassandra;mysql;hazelcast;singlestore;hbase;elasticsearch;qdrant;couchbase;milvus
+>>>>>>> 524506b31 (feat: Add milvus package to release image & option to Operator (#4870))
 	Type string `json:"type"`
 	// Data store parameters should be placed as-is from the "feature_store.yaml" under the secret key. "registry_type" & "type" fields should be removed.
 	SecretRef corev1.LocalObjectReference `json:"secretRef"`
@@ -313,6 +317,7 @@ var ValidOnlineStoreDBStorePersistenceTypes = []string{
 	"qdrant",
 	"couchbase",
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"milvus",
 =======
 type OnlineStoreFilePersistence struct {
@@ -323,6 +328,9 @@ type OnlineStoreFilePersistence struct {
 >>>>>>> 863a82cb7 (feat: Added feast Go operator db stores support (#4771))
 =======
 >>>>>>> 4b8378c2a (fix: Made fixes to Go Operator DB persistence (#4830))
+=======
+	"milvus",
+>>>>>>> 524506b31 (feat: Add milvus package to release image & option to Operator (#4870))
 }
 
 // LocalRegistryConfig configures the deployed registry service

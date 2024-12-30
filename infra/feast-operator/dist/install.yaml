@@ -995,6 +995,7 @@ spec:
                                 - elasticsearch
                                 - qdrant
                                 - couchbase
+                                - milvus
                                 type: string
                             required:
                             - secretRef
@@ -2625,6 +2626,7 @@ spec:
                                     - elasticsearch
                                     - qdrant
                                     - couchbase
+                                    - milvus
                                     type: string
                                 required:
                                 - secretRef
