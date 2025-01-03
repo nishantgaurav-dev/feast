@@ -92,6 +92,9 @@ func TestNewFeatureStore(t *testing.T) {
 		},
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			got, err := NewFeatureStore(test.config, nil)
@@ -99,6 +102,7 @@ func TestNewFeatureStore(t *testing.T) {
 				assert.Nil(t, got)
 				require.Error(t, err)
 				assert.ErrorContains(t, err, test.errMessage)
+<<<<<<< HEAD
 
 			} else {
 				require.NoError(t, err)
@@ -112,43 +116,18 @@ func TestNewFeatureStore(t *testing.T) {
 	fs, err := NewFeatureStore(&config, nil)
 	assert.Nil(t, err)
 	assert.IsType(t, &onlinestore.RedisOnlineStore{}, fs.onlineStore)
+=======
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 
-	t.Run("valid config", func(t *testing.T) {
-		config := &registry.RepoConfig{
-			Project:  "feature_repo",
-			Registry: getRegistryPath(),
-			Provider: "local",
-			OnlineStore: map[string]interface{}{
-				"type": "redis",
-			},
-			FeatureServer: map[string]interface{}{
-				"transformation_service_endpoint": "localhost:50051",
-			},
-		}
-		fs, err := NewFeatureStore(config, nil)
-		assert.Nil(t, err)
-		assert.NotNil(t, fs)
-		assert.IsType(t, &onlinestore.RedisOnlineStore{}, fs.onlineStore)
-		assert.NotNil(t, fs.transformationService)
-	})
-
-	t.Run("missing transformation service endpoint", func(t *testing.T) {
-		config := &registry.RepoConfig{
-			Project:  "feature_repo",
-			Registry: getRegistryPath(),
-			Provider: "local",
-			OnlineStore: map[string]interface{}{
-				"type": "redis",
-			},
-		}
-		defer func() {
-			if r := recover(); r == nil {
-				t.Errorf("The code did not panic")
+			} else {
+				require.NoError(t, err)
+				assert.NotNil(t, got)
+				assert.IsType(t, test.expectOnlineStoreType, got.onlineStore)
 			}
-		}()
-		NewFeatureStore(config, nil)
-	})
+		})
+	}
 
+<<<<<<< HEAD
 	t.Run("invalid online store config", func(t *testing.T) {
 		config := &registry.RepoConfig{
 			Project:  "feature_repo",
@@ -166,6 +145,8 @@ func TestNewFeatureStore(t *testing.T) {
 		assert.Nil(t, fs)
 	})
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 }
 
 type MockRedis struct {

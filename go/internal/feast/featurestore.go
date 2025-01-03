@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	"github.com/apache/arrow/go/v17/arrow/memory"
 
@@ -11,6 +12,11 @@ import (
 	"fmt"
 	"github.com/apache/arrow/go/v17/arrow/memory"
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
+=======
+
+	"github.com/apache/arrow/go/v17/arrow/memory"
+
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 	//"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 
 	"github.com/feast-dev/feast/go/internal/feast/model"
@@ -67,12 +73,16 @@ func NewFeatureStore(config *registry.RepoConfig, callback transformation.Transf
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 	var transformationService *transformation.GrpcTransformationService
 	if transformationServerEndpoint, ok := config.FeatureServer["transformation_service_endpoint"]; ok {
 		// Use a scalable transformation service like Python Transformation Service.
 		// Assume the user will define the "transformation_service_endpoint" in the feature_store.yaml file
 		// under the "feature_server" section.
 		transformationService, _ = transformation.NewGrpcTransformationService(config, transformationServerEndpoint.(string))
+<<<<<<< HEAD
 	}
 =======
 	// Use a scalable transformation service like Python Transformation Service.
@@ -87,6 +97,10 @@ func NewFeatureStore(config *registry.RepoConfig, callback transformation.Transf
 	transformationService, _ := transformation.NewGrpcTransformationService(config, transformationServerEndpoint.(string))
 >>>>>>> 96da3d849 (feat: Update the go feature server from Expedia code repo. (#4665))
 
+=======
+	}
+
+>>>>>>> 95426bd76 (fix: Make transformation_service_endpoint configuration optional (#4880))
 	return &FeatureStore{
 		config:                 config,
 		registry:               registry,
