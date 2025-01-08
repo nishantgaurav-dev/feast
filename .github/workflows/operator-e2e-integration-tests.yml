@@ -11,6 +11,9 @@ on:
       - synchronize
       - labeled
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1a593ae9d (feat: Separating the RBAC and Remote related integration tests. (#4905))
     paths-ignore:
       - 'community/**'
       - 'docs/**'
