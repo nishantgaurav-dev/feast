@@ -898,6 +898,7 @@ def test_retrieve_online_documents(environment, fake_document_data):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @pytest.mark.integration
 @pytest.mark.universal_online_stores(only=["milvus"])
 <<<<<<< HEAD
@@ -912,6 +913,12 @@ def test_retrieve_online_milvus_documents(vectordb_environment, fake_document_da
 def test_retrieve_online_milvus_documents(environment, fake_document_data):
     fs = environment.feature_store
 >>>>>>> 9975d0414 (chore: Fixing testing in Milvus, Makefile, and repo_configuration (#4881))
+=======
+@pytest.mark.integration
+@pytest.mark.universal_online_stores(only=["milvus"])
+def test_retrieve_online_milvus_documents(environment, fake_document_data):
+    fs = environment.feature_store
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
     df, data_source = fake_document_data
     item_embeddings_feature_view = create_item_embeddings_feature_view(data_source)
     fs.apply([item_embeddings_feature_view, item()])
@@ -931,6 +938,7 @@ def test_retrieve_online_milvus_documents(environment, fake_document_data):
 
     assert len(documents["item_id"]) == 2
     assert documents["item_id"] == [2, 3]
+<<<<<<< HEAD
 =======
 # @pytest.mark.integration
 # @pytest.mark.universal_online_stores(only=["milvus"])
@@ -956,3 +964,5 @@ def test_retrieve_online_milvus_documents(environment, fake_document_data):
 #     assert len(documents["item_id"]) == 2
 #     assert documents["item_id"] == [2, 3]
 >>>>>>> f2b94335b (chore: Commenting out Milvus tests and removing from integration tests configuration (#4888))
+=======
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))

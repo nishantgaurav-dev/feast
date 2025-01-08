@@ -1,12 +1,18 @@
 from typing import Any, Dict
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import docker
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_for_logs
 =======
 from testcontainers.milvus import MilvusContainer
 >>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
+=======
+import docker
+from testcontainers.core.container import DockerContainer
+from testcontainers.core.waiting_utils import wait_for_logs
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
 
 from tests.integration.feature_repos.universal.online_store_creator import (
     OnlineStoreCreator,
@@ -18,6 +24,7 @@ class MilvusOnlineStoreCreator(OnlineStoreCreator):
         super().__init__(project_name)
         self.fixed_port = 19530
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.container = DockerContainer("milvusdb/milvus:v2.4.4").with_exposed_ports(
             self.fixed_port
         )
@@ -27,18 +34,30 @@ class MilvusOnlineStoreCreator(OnlineStoreCreator):
             self.fixed_port
         )
 >>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
+=======
+        self.container = DockerContainer("milvusdb/milvus:v2.4.4").with_exposed_ports(
+            self.fixed_port
+        )
+        self.client = docker.from_env()
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
 
     def create_online_store(self) -> Dict[str, Any]:
         self.container.start()
         # Wait for Milvus server to be ready
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
         # log_string_to_wait_for = "Ready to accept connections"
         log_string_to_wait_for = ""
         wait_for_logs(
             container=self.container, predicate=log_string_to_wait_for, timeout=30
         )
+<<<<<<< HEAD
 =======
 >>>>>>> 702a5fbb8 (feat: Adding packages for Milvus Online Store (#4854))
+=======
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
         host = "localhost"
         port = self.container.get_exposed_port(self.fixed_port)
         return {

@@ -1758,10 +1758,14 @@ class FeatureStore:
         top_k: int,
         features: Optional[List[str]] = None,
 <<<<<<< HEAD
+<<<<<<< HEAD
         distance_metric: Optional[str] = "L2",
 =======
         distance_metric: Optional[str] = None,
 >>>>>>> dd534f064 (feat: Adding features field to retrieve_online_features to return mor… (#4869))
+=======
+        distance_metric: Optional[str] = "L2",
+>>>>>>> 24ddac9b6 (chore: Moving Milvus client to PyMilvus (#4907))
     ) -> OnlineResponse:
         """
         Retrieves the top k closest document features. Note, embeddings are a subset of features.
